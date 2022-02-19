@@ -3,9 +3,10 @@ import binascii
 import pathlib
 import xml.etree.ElementTree as ET
 
+# input: font sbix ttx
 data = ET.parse(sys.argv[1]).getroot()
 
-for strike in data.findall('sbix/strike'):
+for strike in data.iter('strike'):
     ppem = strike.find('ppem').attrib['value']
     pathlib.Path(f'out/{ppem}').mkdir(parents=True, exist_ok=True) 
     for glyph in strike.findall('glyph'):

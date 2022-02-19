@@ -1,6 +1,7 @@
 import sys
 import xml.etree.ElementTree as ET
 
+# input: font sbix ttx
 data = ET.parse(sys.argv[1]).getroot()
 
 sbix = data.find('sbix')
