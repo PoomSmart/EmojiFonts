@@ -1,5 +1,6 @@
 *.ttx
 *.ttc
 *.ttf
+images
 Packages
 .DS_Store
