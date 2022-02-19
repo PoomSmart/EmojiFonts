@@ -1,0 +1,5 @@
+*.ttx
+*.ttc
+*.ttf
+Packages
+.DS_Store
