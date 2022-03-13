@@ -9,11 +9,21 @@ Python scripts to backport Apple Color Emoji font.
 - [fonttools](https://github.com/fonttools/fonttools) (`pip3 install fonttools`)
 - (Optional) [Pillow](https://pillow.readthedocs.io/en/stable/) (`python3 -m pip install --upgrade Pillow`)
 
-# How to use
+# Prerequisites (Theming)
 
-1. Copy `Apple Color Emoji.ttc` from `/System/Library/Fonts` of your macOS instance to the root of this repository and rename it to `AppleColorEmoji@2x.ttc`.
-2. Execute `get-fonts.sh`
-3. Once finished, you will get `AppleColorEmoji@2x-out.ttc` that's compatible with iOS 13 and below and `AppleColorEmoji@2x.ttf` that's compatible with iOS 9 and below.
+- [getfonts](https://github.com/DavidBarts/getfonts) (for `getfonts`, `getfontname` and `stripttc`)
+- [ImageMagick](https://imagemagick.org/index.php) (`brew install freetype imagemagick`)
+- [Wand](https://pypi.org/project/Wand/) (`pip3 install Wand`)
+- [librsvg](https://wiki.gnome.org/Projects/LibRsvg) (`brew install librsvg`)
+
+# Before anything
+
+- Copy `Apple Color Emoji.ttc` from `/System/Library/Fonts` of your macOS instance to the root of this repository and rename it to `AppleColorEmoji@2x.ttc`.
+
+# Optimizing font for iOS 13-
+
+1. Execute `get-fonts.sh`
+2. Once finished, you will get `AppleColorEmoji@2x-out.ttc` that's compatible with iOS 13 and below and `AppleColorEmoji@2x.ttf` that's compatible with iOS 9 and below.
 
 # Scripts
 
@@ -28,3 +38,11 @@ EmojiFonts modifies two font tables; `hmtx` and `sbix`.
 `extractor.py` extracts PNG emoji images from the font - and opens up the possibility to theme the emoji font!
 
 `otf2otc.py` combines TTF (True Type Font) fonts into a single TTC (True Type Collection) font. Fron iOS 10, Apple Color Emoji is built as TTC.
+
+# Theming
+
+## Twemoji
+
+1. Clone [twemoji](https://github.com/twitter/twemoji) and place it alongside this project.
+2. Execute `generate-twemoji-png.sh` to convert their emoji SVGs into compatible PNGs.
+3. Execute `twemoji.sh` to create iOS-compatible Twemoji font, output at `twemoji/twemoji.ttc`

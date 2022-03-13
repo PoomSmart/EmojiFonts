@@ -9,7 +9,7 @@ from wand.image import Image
 from PIL import Image as PImage
 
 debug = False
-extract = True
+extract = False
 direct = True
 
 # input: font ttf, assets folder
@@ -87,6 +87,7 @@ def norm_dual(name):
         m_print(f'Fallback to default for {name}')
         return '1f9d1-200d-1f91d-200d-1f9d1'
     if '.l' in name or '.r' in name or 'silhoette.' in name:
+        # FIXME: Create extra SVGs specific for Apple?
         m_print(f'Not modified: {name}')
         return None
     return name
@@ -165,14 +166,14 @@ def norm_special(name):
 
 whitelists = ['00a9', '00ae', 'hiddenglyph']
 
-# remove some strikes
+# remove some strikes to make font smaller
 del f['sbix'].strikes[160]
 del f['sbix'].strikes[52]
 del f['sbix'].strikes[26]
 print('Removed strikes 160, 52 and 26')
 
 for ppem, strike in f['sbix'].strikes.items():
-    print(f'Reading of strike {ppem}')
+    print(f'Reading strike of size {ppem}x{ppem}')
     if not direct:
         pathlib.Path(f'twemoji/{ppem}').mkdir(parents=True, exist_ok=True) 
     for code, glyph in strike.glyphs.items():
@@ -181,7 +182,6 @@ for ppem, strike in f['sbix'].strikes.items():
         name = norm_joiner(code)
         if '20e3' in name or name in whitelists:
             continue
-        o = name
         name = norm_fam(name)
         name = norm_dual(name)
         if name is None:
@@ -194,6 +194,7 @@ for ppem, strike in f['sbix'].strikes.items():
                 stream = io.BytesIO()
                 img.save(stream, format='png')
                 glyph.imageData = stream.getvalue()
+                stream.close()
         else:
             svg = svg_to_blob(f'{assets}/svg/{name}.svg', ppem)
             if extract:
