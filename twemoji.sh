@@ -2,12 +2,14 @@
 
 set -e
 
-ASSETS=twemoji/images
+FONT_NAME=AppleColorEmoji@2x
+NAME=twemoji
+ASSETS=$NAME/images
 
-./getfonts AppleColorEmoji@2x.ttc
-python3 twemoji.py AppleColorEmoji@2x_00.ttf $ASSETS
-python3 twemoji.py AppleColorEmoji@2x_01.ttf $ASSETS
+./getfonts $FONT_NAME.ttc
+python3 $NAME.py ${FONT_NAME}_00.ttf $ASSETS
+python3 $NAME.py ${FONT_NAME}_01.ttf $ASSETS
 
-python3 otf2otc.py twemoji/AppleColorEmoji@2x_00.ttf twemoji/AppleColorEmoji@2x_01.ttf -o twemoji/twemoji.ttc
+python3 otf2otc.py $NAME/${FONT_NAME}_00.ttf $NAME/${FONT_NAME}_01.ttf -o $NAME/$NAME.ttc
 
-echo "Output file at twemoji/twemoji.ttc"
+echo "Output file at $NAME/$NAME.ttc"

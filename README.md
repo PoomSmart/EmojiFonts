@@ -45,4 +45,9 @@ EmojiFonts modifies two font tables; `hmtx` and `sbix`.
 
 1. Clone [twemoji](https://github.com/twitter/twemoji) and place it alongside this project.
 2. Execute `generate-twemoji-png.sh` to convert their emoji SVGs into compatible PNGs.
-3. Execute `twemoji.sh` to create iOS-compatible Twemoji font, output at `twemoji/twemoji.ttc`
+3. Execute `twemoji.sh` to create iOS-compatible Twemoji font, output at `twemoji/twemoji.ttc`.
+
+## Noto Emoji
+
+1. Clone [noto-emoji](https://github.com/googlefonts/noto-emoji) and place it alongside this project.
+2. Execute `noto-emoji.sh` to create iOS-compatible Noto Color Emoji font, output at `noto-emoji/noto-emoji.ttc`.

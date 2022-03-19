@@ -11,6 +11,7 @@ from PIL import Image as PImage
 debug = False
 extract = False
 direct = True
+fontname = 'twemoji'
 
 # input: font ttf, assets folder
 
@@ -18,17 +19,6 @@ ttf = sys.argv[1]
 assets = sys.argv[2]
 
 f = ttLib.TTFont(ttf)
-
-def m_print(str):
-    if debug:
-        print(str)
-
-def svg_to_blob(svg_file, size):
-    with Image(filename=svg_file, background=Color('transparent'), width=size, height=size, format='svg') as image:
-        return image.make_blob('png')
-
-def norm_joiner(name):
-    return name.replace('u', '').replace('_', '-').lower()
 
 # and hairs
 professions = [
@@ -58,6 +48,20 @@ persons = {
     'g': girl,
     '': ''
 }
+
+def m_print(str):
+    if debug:
+        print(str)
+
+def svg_to_blob(svg_file, size):
+    with Image(filename=svg_file, background=Color('transparent'), width=size, height=size, format='svg') as image:
+        return image.make_blob('png')
+
+def norm_joiner(name):
+    if 'silhouette' in name:
+        return name
+    return name.replace('u', '').replace('_', '-').lower()
+
 def norm_fam(name):
     if '1f46a.' not in name:
         return name
@@ -86,7 +90,7 @@ def norm_dual(name):
     if name == '1f9d1-1f91d-1f9d1.66':
         m_print(f'Fallback to default for {name}')
         return '1f9d1-200d-1f91d-200d-1f9d1'
-    if '.l' in name or '.r' in name or 'silhoette.' in name:
+    if '.l' in name or '.r' in name or 'silhouette.' in name:
         # FIXME: Create extra SVGs specific for Apple?
         m_print(f'Not modified: {name}')
         return None
@@ -198,8 +202,8 @@ for ppem, strike in f['sbix'].strikes.items():
         else:
             svg = svg_to_blob(f'{assets}/svg/{name}.svg', ppem)
             if extract:
-                with open(f'twemoji/{ppem}/{name}.png', 'wb') as fout:
+                with open(f'{fontname}/{ppem}/{name}.png', 'wb') as fout:
                     fout.write(svg)
             glyph.imageData = svg
 
-f.save(f'twemoji/{ttf}')
+f.save(f'{fontname}/{ttf}')

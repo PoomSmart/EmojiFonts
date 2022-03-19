@@ -1,12 +1,18 @@
+# Font assets
 *.ttx
 *.ttc
 *.ttf
+
+# Project assets
 images
 Packages
 .DS_Store
 
+# Tools
 getfonts
 getfontname
 stripttc
 
+# Other emoji fonts
 twemoji
+noto-emoji
