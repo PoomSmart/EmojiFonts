@@ -14,5 +14,9 @@ getfontname
 stripttc
 
 # Other emoji fonts
-twemoji
+facebook
 noto-emoji
+twemoji
+
+# Python assets
+__pycache__

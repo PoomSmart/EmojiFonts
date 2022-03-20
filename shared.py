@@ -1,0 +1,171 @@
+debug = False
+
+# and hairs
+professions = [
+    '1f33e', '1f373', '1f37c', '1f393', '1f3a4',
+    '1f3a8', '1f3eb', '1f3ed', '1f4bb', '1f4bc',
+    '1f527', '1f52c', '1f680', '1f692', '1f9af',
+    '1f9b0', '1f9b1', '1f9b2', '1f9b3', '1f9bc',
+    '1f9bd'
+]
+heart = '2764'
+kiss = '1f48b'
+modifiers = ['2695', '2696', '2708']
+skins = {
+    1: '1f3fb',
+    2: '1f3fc',
+    3: '1f3fd',
+    4: '1f3fe',
+    5: '1f3ff'
+}
+
+man, woman, neutral = '1f468', '1f469', '1f9d1'
+boy, girl = '1f466', '1f467'
+persons = {
+    'm': man,
+    'w': woman,
+    'b': boy,
+    'g': girl,
+    '': ''
+}
+whitelists = ['00a9', '00ae', 'hiddenglyph']
+
+def base_is_whitelist(name):
+    return '20e3' in name or name in whitelists
+
+def m_print(str):
+    if debug:
+        print(str)
+
+def remove_strikes(f):
+    # remove some strikes to make font smaller
+    del f['sbix'].strikes[160]
+    del f['sbix'].strikes[52]
+    del f['sbix'].strikes[26]
+    print('Removed strikes 160, 52 and 26')
+
+def norm_name(name):
+    tokens = name.split('_')
+    n = []
+    for t in tokens:
+        if t[0] == 'u':
+            t = t[1:] # strip u prefix
+        n.append(t)
+    return '_'.join(n).lower()
+
+def norm_fam(name):
+    if '1f46a.' not in name:
+        return name
+    for p1 in ['m', 'w', '']:
+        for p2 in ['m', 'w']:
+            for c1 in ['g', 'b', '']:
+                for c2 in ['g', 'b']:
+                    suffix = f'.{p1}{p2}{c1}{c2}'
+                    if suffix in name:
+                        seq = [persons[p1], persons[p2], persons[c1], persons[c2]]
+                        return '_200d_'.join(list(filter(len, seq)))
+    return name
+
+def norm_dual(name):
+    for s in range(1, 6):
+        if name == f'{man}_1f91d_{man}.{s}{s}':
+            return f'1f46c_{skins[s]}'
+        if name == f'{woman}_1f91d_{man}.{s}{s}':
+            return f'1f46b_{skins[s]}'
+        if name == f'{woman}_1f91d_{woman}.{s}{s}':
+            return f'1f46d_{skins[s]}'
+    for s1 in range(1, 6):
+        for s2 in range(1, 6):
+            if name == f'{neutral}_1f91d_{neutral}.{s1}{s2}':
+                return f'{neutral}_{skins[s1]}_200d_1f91d_200d_{neutral}_{skins[s2]}'
+    if name == '1f9d1_1f91d_1f9d1.66':
+        m_print(f'Fallback to default for {name}')
+        return '1f9d1_200d_1f91d_200d_1f9d1'
+    if '.l' in name or '.r' in name or 'silhouette.' in name:
+        # FIXME: Create extra SVGs specific for Apple?
+        m_print(f'Not modified: {name}')
+        return None
+    return name
+
+gender_with_selector = [
+    '26f9', '1f3cb', '1f3cc', '1f3fb', '1f575'
+]
+
+def base_norm_variants(name, with_variant_selector = False, with_condition = False):
+    v = '_fe0f' if with_variant_selector else ''
+    if '.m' in name:
+        name = name.replace('.m', '')
+    for s in range(1, 6):
+        if f'.{s}.w' in name:
+            name = name.replace(f'.{s}.w', f'_{skins[s]}_200d_2640{v}')
+    if '.w' in name:
+        found = False
+        if with_condition:
+            for x in gender_with_selector:
+                if x in name:
+                    found = True
+                    name = name.replace('.w', f'_fe0f_200d_2640{v}')
+                    break
+        if not found:
+            name = name.replace('.w', f'_200d_2640{v}')
+    for s in range(1, 6):
+        for m in modifiers:
+            if f'_{m}.{s}' in name:
+                name = name.replace(f'_{m}.{s}', f'_{skins[s]}_200d_{m}{v}')
+    for p in professions:
+        for s in range(1, 6):
+            if f'_{p}.{s}' in name:
+                return name.replace(f'_{p}.{s}', f'_{skins[s]}_200d_{p}')
+    if '.0' in name:
+        name = name.replace('.0', '')
+    for s in range(1, 6):
+        if f'.{s}' in name:
+            if '1f9d1_1f384' in name:
+                return name.replace(f'_1f384.{s}', f'_{skins[s]}_200d_1f384')
+            else:
+                return name.replace(f'.{s}', f'_{skins[s]}')
+    return name
+
+def base_norm_special(name, with_variant_selector = False):
+    v = '_fe0f' if with_variant_selector else ''
+    if name == '2764_1f525':
+        return f'2764{v}_200d_1f525'
+    if name == '2764_1fa79':
+        return f'2764{v}_200d_1fa79'
+    if name == '1f3f3_26a7':
+        return f'1f3f3{v}_200d_26a7{v}'
+    if name == '1f3f3_1f308':
+        return f'1f3f3{v}_200d_1f308'
+    if name == '1f3f4_2620':
+        return f'1f3f4_200d_2620{v}'
+    if name == '1f43b_2744':
+        return f'1f43b_200d_2744{v}'
+    if name == '1f636_1f32b':
+        return f'1f636_200d_1f32b{v}'
+    if name == '1f408_2b1b':
+        return '1f408_200d_2b1b'
+    if name == '1f415_1f9ba':
+        return '1f415_200d_1f9ba'
+    if name == '1f441_1f5e8':
+        return '1f441_200d_1f5e8'
+    if name == '1f62e_1f4a8':
+        return '1f62e_200d_1f4a8'
+    if name == '1f635_1f4ab':
+        return '1f635_200d_1f4ab'
+    if name == '1f9d1_1f384':
+        return '1f9d1_200d_1f384'
+    for m in modifiers:
+        if name == f'1f9d1_{m}':
+            return f'1f9d1_200d_{m}{v}'
+    for g in [man, woman]:
+        for m in modifiers:
+            if name == f'{g}_{m}':
+                return f'{g}_200d_{m}{v}'
+    for p in professions:
+        if name == f'1f9d1_{p}':
+            return f'1f9d1_200d_{p}'
+    for p in professions:
+        for g in [man, woman]:
+            if name == f'{g}_{p}':
+                return f'{g}_200d_{p}'
+    return name

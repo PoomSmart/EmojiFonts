@@ -4,6 +4,7 @@
 # brew install librsvg
 
 ASSETS=twemoji/images
+MAX_SIZE=96
 rm -rf $ASSETS
 mkdir -p $ASSETS
 
@@ -11,5 +12,5 @@ mkdir -p $ASSETS
 for svg in $(find ../twemoji/assets/svg -type f -name '*.svg')
 do
     name=`basename $svg`
-    rsvg-convert -a -h 96 $svg > $ASSETS/${name/.svg/.png}
+    rsvg-convert -a -h $MAX_SIZE $svg > $ASSETS/${name/.svg/.png}
 done

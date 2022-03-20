@@ -15,6 +15,7 @@ Python scripts to backport Apple Color Emoji font.
 - [ImageMagick](https://imagemagick.org/index.php) (`brew install freetype imagemagick`)
 - [Wand](https://pypi.org/project/Wand/) (`pip3 install Wand`)
 - [librsvg](https://wiki.gnome.org/Projects/LibRsvg) (`brew install librsvg`)
+- php (`brew install php`)
 
 # Before anything
 
@@ -51,3 +52,9 @@ EmojiFonts modifies two font tables; `hmtx` and `sbix`.
 
 1. Clone [noto-emoji](https://github.com/googlefonts/noto-emoji) and place it alongside this project.
 2. Execute `noto-emoji.sh` to create iOS-compatible Noto Color Emoji font, output at `noto-emoji/noto-emoji.ttc`.
+
+## Facebook Emoji
+
+1. Shallow clone [emoji-data](https://github.com/iamcal/emoji-data) and place it alongside this project.
+2. Run `php facebook-fetch.php` to get some missing emojis.
+3. Execute `facebook.sh` to create iOS-compatible Facebook Emoji font, output at `facebook/facebook.ttc`.
