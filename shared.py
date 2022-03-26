@@ -45,7 +45,9 @@ def remove_strikes(f):
     print('Removed strikes 160, 52 and 26')
 
 def norm_name(name):
-    tokens = name.split('_')
+    if len(name) == 13 and 'silhouette.' in name:
+        return name
+    tokens = name.replace('.u', '_').split('_')
     n = []
     for t in tokens:
         if t[0] == 'u':
@@ -81,10 +83,8 @@ def norm_dual(name):
     if name == '1f9d1_1f91d_1f9d1.66':
         m_print(f'Fallback to default for {name}')
         return '1f9d1_200d_1f91d_200d_1f9d1'
-    if '.l' in name or '.r' in name or 'silhouette.' in name:
-        # FIXME: Create extra SVGs specific for Apple?
-        m_print(f'Not modified: {name}')
-        return None
+    if '.ra' in name:
+        name = name.replace('.ra', '.r')
     return name
 
 gender_with_selector = [

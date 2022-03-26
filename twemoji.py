@@ -1,5 +1,6 @@
 # brew install freetype imagemagick
 # pip3 install Wand
+import os
 import sys
 import io
 import pathlib
@@ -51,14 +52,20 @@ for ppem, strike in f['sbix'].strikes.items():
         name = norm_special(name)
         name = twitter_name(name)
         if direct:
-            with PImage.open(f'{assets}/{name}.png') as fin:
+            path = f'{assets}/{name}.png'
+            if not os.path.exists(path):
+                path = f'twemoji-extra/{name}.png'
+            with PImage.open(path) as fin:
                 img = fin.resize((ppem, ppem), PImage.ANTIALIAS)
                 stream = io.BytesIO()
                 img.save(stream, format='png')
                 glyph.imageData = stream.getvalue()
                 stream.close()
         else:
-            svg = svg_to_blob(f'{assets}/svg/{name}.svg', ppem)
+            svg_path = f'{assets}/svg/{name}.svg'
+            if not os.path.exists(svg_path):
+                svg_path = f'twemoji-extra/{name}.svg'
+            svg = svg_to_blob(svg_path, ppem)
             if extract:
                 with open(f'{fontname}/{ppem}/{name}.png', 'wb') as fout:
                     fout.write(svg)

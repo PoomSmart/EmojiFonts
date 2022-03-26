@@ -17,6 +17,8 @@ stripttc
 facebook
 noto-emoji
 twemoji
+twemoji-extra/*.png
+twemoji-extra/*.svg
 
 # Python assets
 __pycache__
