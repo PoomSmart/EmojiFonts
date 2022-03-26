@@ -154,18 +154,12 @@ def base_norm_special(name, with_variant_selector = False):
         return '1f635_200d_1f4ab'
     if name == '1f9d1_1f384':
         return '1f9d1_200d_1f384'
-    for m in modifiers:
-        if name == f'1f9d1_{m}':
-            return f'1f9d1_200d_{m}{v}'
-    for g in [man, woman]:
+    for g in [man, woman, neutral]:
         for m in modifiers:
             if name == f'{g}_{m}':
                 return f'{g}_200d_{m}{v}'
     for p in professions:
-        if name == f'1f9d1_{p}':
-            return f'1f9d1_200d_{p}'
-    for p in professions:
-        for g in [man, woman]:
+        for g in [man, woman, neutral]:
             if name == f'{g}_{p}':
                 return f'{g}_200d_{p}'
     return name
