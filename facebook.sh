@@ -10,7 +10,6 @@ rm -rf $NAME
 mkdir -p $NAME
 mkdir -p $NAME-extra
 
-./getfonts $FONT_NAME.ttc
 python3 $NAME.py ${FONT_NAME}_00.ttf $ASSETS
 python3 $NAME.py ${FONT_NAME}_01.ttf $ASSETS
 

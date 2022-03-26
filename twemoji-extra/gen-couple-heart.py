@@ -1,8 +1,6 @@
 import xml.etree.ElementTree as ET
 from shared import *
 
-ET.register_namespace('', 'http://www.w3.org/2000/svg')
-
 # neutral
 for skin in skins.keys():
     name = f'{font}/1f491.svg' if skin == 'none' else f'{font}/1f491-{skin}.svg'

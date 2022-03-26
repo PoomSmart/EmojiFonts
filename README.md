@@ -1,6 +1,6 @@
 # EmojiFonts
 
-Python scripts to backport Apple Color Emoji font.
+Python scripts to backport and theme Apple Color Emoji font.
 
 # Prerequisites
 
@@ -42,11 +42,12 @@ EmojiFonts modifies two font tables; `hmtx` and `sbix`.
 
 # Theming
 
+0. Execute `prepare.sh` to create emoji TTF files necessary for theming. Run this once.
+
 ## Twemoji
 
 1. Clone [twemoji](https://github.com/twitter/twemoji) and place it alongside this project.
-2. Execute `generate-twemoji-png.sh` to convert their emoji SVGs into compatible PNGs.
-3. Execute `twemoji.sh` to create iOS-compatible Twemoji font, output at `twemoji/twemoji.ttc`.
+2. Execute `twemoji.sh` to create iOS-compatible Twemoji font, output at `twemoji/twemoji.ttc`.
 
 ## Noto Emoji
 

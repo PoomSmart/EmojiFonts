@@ -16,6 +16,9 @@ stripttc
 # Other emoji fonts
 facebook
 noto-emoji
+noto-emoji-extra/*.png
+noto-emoji-extra/*.svg
+!noto-emoji-extra/emoji_*.svg
 twemoji
 twemoji-extra/*.png
 twemoji-extra/*.svg

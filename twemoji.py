@@ -1,5 +1,3 @@
-# brew install freetype imagemagick
-# pip3 install Wand
 import os
 import sys
 import io
@@ -54,7 +52,7 @@ for ppem, strike in f['sbix'].strikes.items():
         if direct:
             path = f'{assets}/{name}.png'
             if not os.path.exists(path):
-                path = f'twemoji-extra/{name}.png'
+                path = f'{fontname}-extra/{name}.png'
             with PImage.open(path) as fin:
                 img = fin.resize((ppem, ppem), PImage.ANTIALIAS)
                 stream = io.BytesIO()
@@ -64,7 +62,7 @@ for ppem, strike in f['sbix'].strikes.items():
         else:
             svg_path = f'{assets}/svg/{name}.svg'
             if not os.path.exists(svg_path):
-                svg_path = f'twemoji-extra/{name}.svg'
+                svg_path = f'{fontname}-extra/{name}.svg'
             svg = svg_to_blob(svg_path, ppem)
             if extract:
                 with open(f'{fontname}/{ppem}/{name}.png', 'wb') as fout:

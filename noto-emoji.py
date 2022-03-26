@@ -1,3 +1,4 @@
+import os
 import sys
 import io
 from fontTools import ttLib
@@ -49,11 +50,11 @@ def norm_flag(name):
 def noto_name(name, with_prefix):
     tokens = name.split('_')
     n = []
-    for t in tokens[1:]:
+    for t in tokens:
         if t[0] == 'u':
             t = t[1:] # strip u prefix
         n.append(t)
-    result = tokens[0] + '_' + '_'.join(n) if len(n) > 1 else tokens[0]
+    result = '_'.join(n)
     return 'u' + result if with_prefix else result
 
 remove_strikes(f)
@@ -78,6 +79,9 @@ for ppem, strike in f['sbix'].strikes.items():
             name = base_norm_special(name)
         name = noto_name(name, not flag)
         path = f'{flag_assets}/{name}.png' if flag else f'{assets}/emoji_{name}.png'
+        if not os.path.exists(path):
+            name = name[1:] if name[0] == 'u' else name
+            path = f'{fontname}-extra/{name}.png'
         with Image.open(path) as fin:
             if flag:
                 # TODO: Vertically center the images?
