@@ -158,8 +158,7 @@ def base_norm_special(name, with_variant_selector = False):
         for m in modifiers:
             if name == f'{g}_{m}':
                 return f'{g}_200d_{m}{v}'
-    for p in professions:
-        for g in [man, woman, neutral]:
+        for p in professions:
             if name == f'{g}_{p}':
                 return f'{g}_200d_{p}'
     return name
