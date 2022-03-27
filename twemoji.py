@@ -24,6 +24,12 @@ def svg_to_blob(svg_file, size):
     with Image(filename=svg_file, background=Color('transparent'), width=size, height=size, format='svg') as image:
         return image.make_blob('png')
 
+def norm_name(name):
+    result = base_norm_name(name)
+    if '20e3' in result:
+        result = result[2:]
+    return result
+
 def norm_special(name):
     return base_norm_special(name, True)
 
@@ -69,4 +75,5 @@ for ppem, strike in f['sbix'].strikes.items():
                     fout.write(svg)
             glyph.imageData = svg
 
+print('Saving changes...')
 f.save(f'{fontname}/{ttf}')

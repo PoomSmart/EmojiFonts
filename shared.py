@@ -31,7 +31,7 @@ persons = {
 whitelists = ['00a9', '00ae', 'hiddenglyph']
 
 def base_is_whitelist(name):
-    return '20e3' in name or name in whitelists
+    return name in whitelists
 
 def m_print(str):
     if debug:
@@ -44,7 +44,7 @@ def remove_strikes(f):
     del f['sbix'].strikes[26]
     print('Removed strikes 160, 52 and 26')
 
-def norm_name(name):
+def base_norm_name(name):
     if len(name) == 13 and 'silhouette.' in name:
         return name
     tokens = name.replace('.u', '_').split('_')

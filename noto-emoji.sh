@@ -6,10 +6,12 @@ FONT_NAME=AppleColorEmoji@2x
 NAME=noto-emoji
 ASSETS=../$NAME/png/128
 FLAG_ASSETS=../$NAME/third_party/region-flags/png
+MAX_SIZE=96
 
 rm -rf $NAME
 mkdir -p $NAME
 
+echo "Converting SVGs into PNGs..."
 cd ${NAME}-extra
 rm -f *.png 1f*.svg silhouette*.svg
 python3 gen-couple-heart.py

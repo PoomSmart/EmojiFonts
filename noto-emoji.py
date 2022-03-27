@@ -64,7 +64,7 @@ for ppem, strike in f['sbix'].strikes.items():
     for name, glyph in strike.glyphs.items():
         if glyph.graphicType != 'png ':
             continue
-        name = norm_name(name)
+        name = base_norm_name(name)
         if base_is_whitelist(name):
             continue
         flag = is_flag(name)
@@ -93,4 +93,5 @@ for ppem, strike in f['sbix'].strikes.items():
             glyph.imageData = stream.getvalue()
             stream.close()
 
+print('Saving changes...')
 f.save(f'{fontname}/{ttf}')

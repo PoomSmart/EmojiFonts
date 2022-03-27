@@ -6,7 +6,28 @@ FONT_NAME=AppleColorEmoji@2x
 NAME=twemoji
 ASSETS=$NAME/images
 
-./generate-twemoji-png.sh
+MAX_SIZE=96
+rm -rf $ASSETS
+mkdir -p $ASSETS
+
+echo "Converting SVGs into PNGs..."
+for svg in $(find ../twemoji/assets/svg -type f -name '*.svg')
+do
+    name=$(basename $svg)
+    rsvg-convert -a -h $MAX_SIZE $svg > $ASSETS/${name/.svg/.png}
+done
+
+cd ${NAME}-extra
+rm -f *.svg *.png
+python3 gen-couple-heart.py
+python3 gen-couple-kiss.py
+python3 gen-couple-stand.py
+python3 gen-handshake.py
+for svg in $(find . -type f -name '*.svg')
+do
+    rsvg-convert -a -h $MAX_SIZE $svg > ${svg/.svg/.png}
+done
+cd ..
 
 python3 $NAME.py ${FONT_NAME}_00.ttf $ASSETS
 python3 $NAME.py ${FONT_NAME}_01.ttf $ASSETS

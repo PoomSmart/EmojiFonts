@@ -8,7 +8,7 @@ ASSETS=../emoji-data/img-facebook-96
 
 rm -rf $NAME
 mkdir -p $NAME
-mkdir -p $NAME-extra
+mkdir -p ${NAME}-extra
 
 python3 $NAME.py ${FONT_NAME}_00.ttf $ASSETS
 python3 $NAME.py ${FONT_NAME}_01.ttf $ASSETS

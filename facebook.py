@@ -59,6 +59,18 @@ with_variants = [
 ]
 
 specials = {
+    '23_20e3': '23-20e3',
+    '2a_20e3': '2a-20e3',
+    '30_20e3': '30-20e3',
+    '31_20e3': '31-20e3',
+    '32_20e3': '32-20e3',
+    '33_20e3': '33-20e3',
+    '34_20e3': '34-20e3',
+    '35_20e3': '35-20e3',
+    '36_20e3': '36-20e3',
+    '37_20e3': '37-20e3',
+    '38_20e3': '38-20e3',
+    '39_20e3': '39-20e3',
     '26f9.0.w': '26f9-200d-2640',
     '2764_1f525' : None,
     '2764_1fa79': None,
@@ -128,9 +140,15 @@ def is_missing_duo(name):
     return False
 
 def is_whitelist(name):
-    return name in hairs or base_is_whitelist(name)
+    return name in hairs or base_is_whitelist(name) or '.l' in name or '.r' in name or 'silhouette.' in name
 
-def norm_dingbat(name):
+def norm_name(name):
+    result = base_norm_name(name)
+    if '20e3' in result:
+        result = result[2:]
+    return result
+
+def norm_variant_selector(name):
     if name in with_variants:
         return f'{name}_fe0f'
     return name
@@ -165,7 +183,7 @@ for ppem, strike in f['sbix'].strikes.items():
                 continue
             name = base_norm_variants(name, True, True)
             name = base_norm_special(name, True)
-            name = norm_dingbat(name)
+            name = norm_variant_selector(name)
         name = facebook_name(name)
         with Image.open(f'./facebook-extra/{name}.png' if is_special else f'{assets}/{name}.png') as fin:
             fin = fin.resize((ppem, ppem), Image.ANTIALIAS)
@@ -174,4 +192,5 @@ for ppem, strike in f['sbix'].strikes.items():
             glyph.imageData = stream.getvalue()
             stream.close()
 
+print('Saving changes...')
 f.save(f'{fontname}/{ttf}')

@@ -3,6 +3,18 @@
 // Based on https://github.com/iamcal/emoji-data/blob/master/build/facebook/grab.php
 
 $codes = [
+    '23-20e3', // found
+    '2a-20e3', // found
+    '30-20e3', // found
+    '31-20e3', // found
+    '32-20e3', // found
+    '33-20e3', // found
+    '34-20e3', // found
+    '35-20e3', // found
+    '36-20e3', // found
+    '37-20e3', // found
+    '38-20e3', // found
+    '39-20e3', // found
     '26f9-200d-2640', // found
     '2764-200d-1f525',
     '2764-200d-1fa79',
