@@ -28,7 +28,7 @@ Python scripts to backport and theme Apple Color Emoji font.
 
 # Scripts
 
-EmojiFonts modifies two font tables; `hmtx` and `sbix`.
+EmojiFonts deals with two font tables; `hmtx` and `sbix`.
 
 `shift-multi.py` resizes and shifts the multi-skinned emojis that pair up as one, including couples and handshake, to have them displayed on iOS 13 and below correctly where there is no render logic to automatically place the pair close together.
 
@@ -44,18 +44,18 @@ EmojiFonts modifies two font tables; `hmtx` and `sbix`.
 
 0. Execute `prepare.sh` to create emoji TTF files necessary for theming. Run this once.
 
-## Twemoji
+## Twitter Twemoji
 
 1. Clone [twemoji](https://github.com/twitter/twemoji) and place it alongside this project.
-2. Execute `twemoji.sh` to create iOS-compatible Twemoji font, output at `twemoji/twemoji.ttc`.
+2. Execute `twemoji.sh` to create the themed font, output at `twemoji/twemoji.ttc`.
 
-## Noto Emoji
+## Google Noto Emoji
 
 1. Clone [noto-emoji](https://github.com/googlefonts/noto-emoji) and place it alongside this project.
-2. Execute `noto-emoji.sh` to create iOS-compatible Noto Color Emoji font, output at `noto-emoji/noto-emoji.ttc`.
+2. Execute `noto-emoji.sh` to create the themed font, output at `noto-emoji/noto-emoji.ttc`.
 
 ## Facebook Emoji
 
 1. Shallow clone [emoji-data](https://github.com/iamcal/emoji-data) and place it alongside this project.
-2. Run `php facebook-fetch.php` to get some missing emojis.
-3. Execute `facebook.sh` to create iOS-compatible Facebook Emoji font, output at `facebook/facebook.ttc`.
+2. Run `php facebook-fetch.php` to get few missing emojis.
+3. Execute `facebook.sh` to create them themed font, output at `facebook/facebook.ttc`.
