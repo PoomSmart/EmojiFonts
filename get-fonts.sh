@@ -8,7 +8,7 @@ echo "[0/${STEPS}] This is going to take a while. You should grab your drink, or
 
 rm -f *.ttx
 echo "[1/${STEPS}] Extracting tables from AppleColorEmoji font..."
-ttx -q -y 0 -s AppleColorEmoji@2x.ttc
+ttx -q -y 0 -s -x GDEF AppleColorEmoji@2x.ttc
 echo "[2/${STEPS}] Removing unneeded strikes..."
 python3 remove-strikes.py AppleColorEmoji@2x._s_b_i_x.ttx
 echo "[3/${STEPS}] Stripping image data..."
@@ -21,7 +21,7 @@ ttx -q -o AppleColorEmoji@2x.ttf -b AppleColorEmoji@2x.ttx
 
 rm -f *.ttx
 echo "[6/${STEPS}] Extracting tables from .AppleColorEmojiUI font..."
-ttx -q -y 1 -s AppleColorEmoji@2x.ttc
+ttx -q -y 1 -s -x GDEF AppleColorEmoji@2x.ttc
 echo "[7/${STEPS}] Removing strikes..."
 python3 remove-strikes.py AppleColorEmoji@2x._s_b_i_x.ttx
 echo "[8/${STEPS}] Stripping image data..."
