@@ -21,10 +21,10 @@ Python scripts to backport and theme Apple Color Emoji font.
 
 - Copy `Apple Color Emoji.ttc` from `/System/Library/Fonts` of your macOS instance to the root of this repository and rename it to `AppleColorEmoji@2x.ttc`.
 
-# Optimizing font for iOS 13-
+# Building Apple Color Emoji font
 
 1. Execute `get-fonts.sh`
-2. Once finished, you will get `AppleColorEmoji@2x-out.ttc` that's compatible with iOS 13 and below and `AppleColorEmoji@2x.ttf` that's compatible with iOS 9 and below.
+2. Once finished, you will get `AppleColorEmoji@2x-out.ttc` (for iOS 10 and above) and `AppleColorEmoji@2x.ttf` (for iOS 9 and below).
 
 # Scripts
 
