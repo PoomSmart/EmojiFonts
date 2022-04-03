@@ -1,16 +1,12 @@
 import os
 import sys
 import io
-import pathlib
 from fontTools import ttLib
-from wand.color import Color
-from wand.image import Image
 from PIL import Image as PImage
 from shared import *
 
 debug = False
 extract = False
-direct = True
 fontname = 'twemoji'
 
 # input: font ttf, assets folder
@@ -19,10 +15,6 @@ ttf = sys.argv[1]
 assets = sys.argv[2]
 
 f = ttLib.TTFont(ttf)
-
-def svg_to_blob(svg_file, size):
-    with Image(filename=svg_file, background=Color('transparent'), width=size, height=size, format='svg') as image:
-        return image.make_blob('png')
 
 def norm_name(name):
     result = base_norm_name(name)
@@ -38,8 +30,6 @@ def twitter_name(name):
 
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
-    if not direct:
-        pathlib.Path(f'{fontname}/{ppem}').mkdir(parents=True, exist_ok=True) 
     for name, glyph in strike.glyphs.items():
         if glyph.graphicType != 'png ':
             continue
@@ -53,25 +43,15 @@ for ppem, strike in f['sbix'].strikes.items():
         name = base_norm_variants(name, True, True)
         name = norm_special(name)
         name = twitter_name(name)
-        if direct:
-            path = f'{assets}/{name}.png'
-            if not os.path.exists(path):
-                path = f'{fontname}-extra/{name}.png'
-            with PImage.open(path) as fin:
-                img = fin.resize((ppem, ppem), PImage.ANTIALIAS)
-                stream = io.BytesIO()
-                img.save(stream, format='png')
-                glyph.imageData = stream.getvalue()
-                stream.close()
-        else:
-            svg_path = f'{assets}/svg/{name}.svg'
-            if not os.path.exists(svg_path):
-                svg_path = f'{fontname}-extra/{name}.svg'
-            svg = svg_to_blob(svg_path, ppem)
-            if extract:
-                with open(f'{fontname}/{ppem}/{name}.png', 'wb') as fout:
-                    fout.write(svg)
-            glyph.imageData = svg
+        path = f'{assets}/{name}.png'
+        if not os.path.exists(path):
+            path = f'{fontname}-extra/images/{name}.png'
+        with PImage.open(path) as fin:
+            img = fin.resize((ppem, ppem), PImage.ANTIALIAS)
+            stream = io.BytesIO()
+            img.save(stream, format='png')
+            glyph.imageData = stream.getvalue()
+            stream.close()
 
 print('Saving changes...')
 ttf = ttf.replace('common/', '')

@@ -27,9 +27,9 @@ for c in right:
         continue
     c.set('fill', silhouette_color)
 left_out = ET.ElementTree(left)
-left_out.write('silhouette-1f9d1-1f48b.l.svg', encoding='utf-8')
+left_out.write('svgs/silhouette-1f9d1-1f48b.l.svg', encoding='utf-8')
 right_out = ET.ElementTree(right)
-right_out.write('silhouette-1f9d1-1f48b.r.svg', encoding='utf-8')
+right_out.write('svgs/silhouette-1f9d1-1f48b.r.svg', encoding='utf-8')
 
 # woman, man silhouette
 for g in ['1f469', '1f468']:
@@ -45,9 +45,9 @@ for g in ['1f469', '1f468']:
     for c in right:
         c.set('fill', silhouette_color)
     left_out = ET.ElementTree(left)
-    left_out.write(f'silhouette-{g}-1f48b.l.svg', encoding='utf-8')
+    left_out.write(f'svgs/silhouette-{g}-1f48b.l.svg', encoding='utf-8')
     right_out = ET.ElementTree(right)
-    right_out.write(f'silhouette-{g}-1f48b.r.svg', encoding='utf-8')
+    right_out.write(f'svgs/silhouette-{g}-1f48b.r.svg', encoding='utf-8')
 
 # dual woman, dual man
 for g in ['1f469', '1f468']:

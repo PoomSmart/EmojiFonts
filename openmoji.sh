@@ -9,8 +9,7 @@ VERSION=13.1.0
 DOWNLOAD=0
 
 rm -rf $NAME
-mkdir -p $NAME/images
-mkdir -p $NAME/svgs
+mkdir -p $NAME/images $NAME/svgs
 if [ $DOWNLOAD ]
 then
     curl -OL https://github.com/hfg-gmuend/openmoji/releases/download/$VERSION/openmoji-svg-color.zip
@@ -21,8 +20,8 @@ fi
 echo "Converting SVGs into PNGs..."
 for svg in $(find $NAME/svgs -type f -name '*.svg')
 do
-    name=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg > $NAME/images/${name/.svg/.png}
+    fname=$(basename $svg)
+    rsvg-convert -a -h $MAX_SIZE $svg > $NAME/images/${fname/.svg/.png}
 done
 
 # cd ${NAME}-extra

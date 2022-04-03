@@ -13,14 +13,16 @@ mkdir -p $NAME
 
 echo "Converting SVGs into PNGs..."
 cd ${NAME}-extra
-rm -f *.png 1f*.svg silhouette*.svg
+rm -rf images svgs
+mkdir -p images svgs
 python3 gen-couple-heart.py
 python3 gen-couple-kiss.py
 python3 gen-couple-stand.py
 python3 gen-handshake.py
-for svg in $(find . -type f -name '*.svg')
+for svg in $(find ./svgs -type f -name '*.svg')
 do
-    rsvg-convert -a -h $MAX_SIZE $svg > ${svg/.svg/.png}
+    fname=$(basename $svg)
+    rsvg-convert -a -h $MAX_SIZE $svg > images/${fname/.svg/.png}
 done
 cd ..
 

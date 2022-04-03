@@ -44,6 +44,8 @@ EmojiFonts deals with three font tables; `GDEF`, `hmtx` and `sbix`.
 
 # Theming
 
+Theming scripts for all emojis vendors produce the font in TTC format. When used with EmojiFontManager tweak, it will still work across the board from iOS 6 to the latest.
+
 ## Twitter Twemoji
 
 1. Clone [twemoji](https://github.com/twitter/twemoji) and place it alongside this project.

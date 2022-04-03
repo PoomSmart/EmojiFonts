@@ -45,5 +45,5 @@ def write_dual(left, right, code_left, code_right, skin, joiner = None):
         right_name = f'{code_right}-{joiner}.r.svg' if skin == 'none' else f'{code_right}-{skin}-{joiner}.r.svg'
     left_out = ET.ElementTree(left)
     right_out = ET.ElementTree(right)
-    left_out.write(left_name, encoding='utf-8')
-    right_out.write(right_name, encoding='utf-8')
+    left_out.write(f'svgs/{left_name}', encoding='utf-8')
+    right_out.write(f'svgs/{right_name}', encoding='utf-8')

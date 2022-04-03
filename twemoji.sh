@@ -13,19 +13,21 @@ mkdir -p $ASSETS
 echo "Converting SVGs into PNGs..."
 for svg in $(find ../twemoji/assets/svg -type f -name '*.svg')
 do
-    name=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg > $ASSETS/${name/.svg/.png}
+    fname=$(basename $svg)
+    rsvg-convert -a -h $MAX_SIZE $svg > $ASSETS/${fname/.svg/.png}
 done
 
 cd ${NAME}-extra
-rm -f *.svg *.png
+rm -rf images svgs
+mkdir -p images svgs
 python3 gen-couple-heart.py
 python3 gen-couple-kiss.py
 python3 gen-couple-stand.py
 python3 gen-handshake.py
-for svg in $(find . -type f -name '*.svg')
+for svg in $(find ./svgs -type f -name '*.svg')
 do
-    rsvg-convert -a -h $MAX_SIZE $svg > ${svg/.svg/.png}
+    fname=$(basename $svg)
+    rsvg-convert -a -h $MAX_SIZE $svg > images/${fname/.svg/.png}
 done
 cd ..
 

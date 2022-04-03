@@ -13,16 +13,15 @@ getfonts
 getfontname
 stripttc
 
-# Other emoji fonts
+# Vendor emoji fonts
 facebook
 openmoji
 noto-emoji
-noto-emoji-extra/*.png
-noto-emoji-extra/*.svg
-!noto-emoji-extra/emoji_*.svg
+noto-emoji-extra/images
+noto-emoji-extra/svgs
 twemoji
-twemoji-extra/*.png
-twemoji-extra/*.svg
+twemoji-extra/images
+twemoji-extra/svgs
 
 # Python assets
 __pycache__

@@ -3,7 +3,6 @@ import xml.etree.ElementTree as ET
 
 data = ET.parse(sys.argv[1]).getroot()
 
-# For iOS 13 and below only!
 overrides = {
     "silhouette.u1F468.u1F48B.L": { "width": "400", "lsb": "0" },
     "silhouette.u1F468.u1F48B.R": { "width": "400", "lsb": "-400" },

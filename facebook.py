@@ -1,7 +1,7 @@
 import sys
 import io
 from fontTools import ttLib
-from PIL import Image
+from PIL import Image as PImage
 from shared import *
 
 fontname = 'facebook'
@@ -147,8 +147,8 @@ for ppem, strike in f['sbix'].strikes.items():
             name = base_norm_special(name, True)
             name = norm_variant_selector(name)
         name = facebook_name(name)
-        with Image.open(f'./{fontname}-extra/{name}.png' if is_special else f'{assets}/{name}.png') as fin:
-            fin = fin.resize((ppem, ppem), Image.ANTIALIAS)
+        with PImage.open(f'./{fontname}-extra/{name}.png' if is_special else f'{assets}/{name}.png') as fin:
+            fin = fin.resize((ppem, ppem), PImage.ANTIALIAS)
             stream = io.BytesIO()
             fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()

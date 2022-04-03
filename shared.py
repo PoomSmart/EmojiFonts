@@ -31,7 +31,16 @@ persons = {
     'g': girl,
     '': ''
 }
-whitelists = ['00a9', '00ae', 'hiddenglyph']
+
+flags = [
+    '1f1e6', '1f1e7', '1f1e8', '1f1e9', '1f1ea',
+    '1f1eb', '1f1ec', '1f1ed', '1f1ee', '1f1ef',
+    '1f1f0', '1f1f1', '1f1f2', '1f1f3', '1f1f4',
+    '1f1f5', '1f1f6', '1f1f7', '1f1f8', '1f1f9',
+    '1f1fa', '1f1fb', '1f1fc', '1f1fd', '1f1fe',
+    '1f1ff',
+    '1f3f4_e0067'
+]
 
 u14 = [
     '1f62e_1f4a8',
@@ -72,12 +81,20 @@ u14 = [
     '1fae7'
 ]
 
-def base_is_whitelist(name):
-    return name in whitelists
+whitelists = ['00a9', '00ae', 'hiddenglyph']
 
 def m_print(str):
     if debug:
         print(str)
+
+def is_flag(name):
+    for f in flags:
+        if f in name:
+            return True
+    return False
+
+def base_is_whitelist(name):
+    return name in whitelists
 
 def base_norm_name(name):
     if len(name) == 13 and 'silhouette.' in name:

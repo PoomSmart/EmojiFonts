@@ -20,7 +20,7 @@ for skin in skins.keys():
         remove(left, i)
     left_name = '1f468.l.svg' if skin == 'none' else f'1f468-{skin}.l.svg'
     left_out = ET.ElementTree(left)
-    left_out.write(left_name, encoding='utf-8')
+    left_out.write(f'svgs/{left_name}', encoding='utf-8')
 
 # right woman
 for skin in skins.keys():
@@ -30,7 +30,7 @@ for skin in skins.keys():
         remove(right, i)
     right_name = '1f469.r.svg' if skin == 'none' else f'1f469-{skin}.r.svg'
     right_out = ET.ElementTree(right)
-    right_out.write(right_name, encoding='utf-8')
+    right_out.write(f'svgs/{right_name}', encoding='utf-8')
 
 # silhouette woman
 name = f'{font}/1f46d.svg' 
@@ -45,9 +45,9 @@ for c in left:
 for c in right:
     c.set('fill', silhouette_color)
 left_out = ET.ElementTree(left)
-left_out.write('silhouette.wl.svg', encoding='utf-8')
+left_out.write('svgs/silhouette.wl.svg', encoding='utf-8')
 right_out = ET.ElementTree(right)
-right_out.write('silhouette.wr.svg', encoding='utf-8')
+right_out.write('svgs/silhouette.wr.svg', encoding='utf-8')
 
 # silhouette man
 name = f'{font}/1f46c.svg' 
@@ -62,6 +62,6 @@ for c in left:
 for c in right:
     c.set('fill', silhouette_color)
 left_out = ET.ElementTree(left)
-left_out.write('silhouette.ml.svg', encoding='utf-8')
+left_out.write('svgs/silhouette.ml.svg', encoding='utf-8')
 right_out = ET.ElementTree(right)
-right_out.write('silhouette.mr.svg', encoding='utf-8')
+right_out.write('svgs/silhouette.mr.svg', encoding='utf-8')

@@ -1,4 +1,4 @@
-import os
+# import os
 import sys
 import io
 from fontTools import ttLib
