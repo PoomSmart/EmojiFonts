@@ -7,11 +7,11 @@ Python scripts to backport and theme Apple Color Emoji font.
 - [Python 3.7 or later](http://www.python.org/download/)
 - [pip](https://pip.pypa.io/en/stable/)
 - [fonttools](https://github.com/fonttools/fonttools) (`pip3 install fonttools`)
-- (Optional) [Pillow](https://pillow.readthedocs.io/en/stable/) (`python3 -m pip install --upgrade Pillow`)
+- [Pillow](https://pillow.readthedocs.io/en/stable/) (`python3 -m pip install --upgrade Pillow`)
+- [getfonts](https://github.com/DavidBarts/getfonts) (for `getfonts`, `getfontname` and `stripttc`)
 
 # Prerequisites (Theming)
 
-- [getfonts](https://github.com/DavidBarts/getfonts) (for `getfonts`, `getfontname` and `stripttc`)
 - [ImageMagick](https://imagemagick.org/index.php) (`brew install freetype imagemagick`)
 - [Wand](https://pypi.org/project/Wand/) (`pip3 install Wand`)
 - [librsvg](https://wiki.gnome.org/Projects/LibRsvg) (`brew install librsvg`)
@@ -24,7 +24,7 @@ Python scripts to backport and theme Apple Color Emoji font.
 
 # Building Apple Color Emoji font
 
-- Execute `apple.sh`, you will get `AppleColorEmoji@2x.ttc` (for iOS 10 and above) and `AppleColorEmoji@2x.ttf` (for iOS 9 and below) are available under `common` directory.
+- Execute `apple.sh`, you will get `AppleColorEmoji@2x.ttc` (for iOS 10 and above) and `AppleColorEmoji@2x.ttf` (for iOS 9 and below) under `common` directory.
 
 # All Scripts
 

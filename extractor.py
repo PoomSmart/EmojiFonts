@@ -12,7 +12,7 @@ for strike in data.iter('strike'):
     for glyph in strike.findall('glyph'):
         if glyph.get('graphicType') == 'png ':
             name = glyph.get('name')
-            # print(f'Exporting {name} ({ppem}x{ppem})')
+            print(f'Exporting {name} ({ppem}x{ppem})')
             hexdata = glyph.find('hexdata').text.strip()
             with open(f'images/{ppem}/{name}.png', 'wb') as fout:
                 fout.write(binascii.unhexlify(''.join(hexdata.split())))
