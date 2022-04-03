@@ -57,8 +57,6 @@ def noto_name(name, with_prefix):
     result = '_'.join(n)
     return 'u' + result if with_prefix else result
 
-remove_strikes(f)
-
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():
@@ -94,4 +92,5 @@ for ppem, strike in f['sbix'].strikes.items():
             stream.close()
 
 print('Saving changes...')
+ttf = ttf.replace('common/', '')
 f.save(f'{fontname}/{ttf}')

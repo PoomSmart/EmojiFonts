@@ -79,55 +79,19 @@ specials = {
     '1f3f3_26a7': '1f3f3-200d-26a7',
     '1f441_1f5e8': '1f441-200d-1f5e8',
     '1f575.0.w': '1f575-200d-2640',
-    '1f62e_1f4a8': None,
-    '1f635_1f4ab': None,
-    '1f636_1f32b': None,
-    '1f6dd': None,
-    '1f6de': None,
-    '1f6df': None,
-    '1f7f0': None,
-    '1f979': None,
     '1f9b0': '1f9b0',
-    '1f9cc': None,
-    '1f9d4.0.w': None,
-    '1f9d4.1.w': None,
-    '1f9d4.2.w': None,
-    '1f9d4.3.w': None,
-    '1f9d4.4.w': None,
-    '1f9d4.5.w': None,
-    '1fa7b': None,
-    '1fa7c': None,
-    '1faa9': None,
-    '1faaa': None,
-    '1faab': None,
-    '1faac': None,
-    '1fab7': None,
-    '1fab8': None,
-    '1fab9': None,
-    '1faba': None,
-    '1fad7': None,
-    '1fad8': None,
-    '1fad9': None,
-    '1fae0': None,
-    '1fae1': None,
-    '1fae2': None,
-    '1fae3': None,
-    '1fae4': None,
-    '1fae5': None,
-    '1fae6': None,
-    '1fae7': None,
 }
 
 hairs = ['1f9b1', '1f9b2', '1f9b3']
 
-missing_skins = [
+missings_skins = [
     '1f9d1_1f9b2', '1f9d1_1f9b3',
     '1fac3', '1fac4', '1fac5', '1faf0', '1faf1',
     '1faf2', '1faf3', '1faf4', '1faf5', '1faf6'
 ]
 
 def is_missing_skinned(name):
-    for x in missing_skins:
+    for x in missings_skins:
         if x in name:
             return True
     return False
@@ -156,8 +120,6 @@ def norm_variant_selector(name):
 def facebook_name(name):
     return name.replace('_', '-')
 
-remove_strikes(f)
-
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():
@@ -173,7 +135,7 @@ for ppem, strike in f['sbix'].strikes.items():
             if name is None:
                 m_print(f'{o_name} is missing')
                 continue
-        elif is_missing_duo(name) or is_missing_skinned(name):
+        elif is_missing_duo(name) or is_missing_skinned(name) or name in u14:
             m_print(f'{name} is missing')
             continue
         else:
@@ -185,7 +147,7 @@ for ppem, strike in f['sbix'].strikes.items():
             name = base_norm_special(name, True)
             name = norm_variant_selector(name)
         name = facebook_name(name)
-        with Image.open(f'./facebook-extra/{name}.png' if is_special else f'{assets}/{name}.png') as fin:
+        with Image.open(f'./{fontname}-extra/{name}.png' if is_special else f'{assets}/{name}.png') as fin:
             fin = fin.resize((ppem, ppem), Image.ANTIALIAS)
             stream = io.BytesIO()
             fin.save(stream, format='png')
@@ -193,4 +155,5 @@ for ppem, strike in f['sbix'].strikes.items():
             stream.close()
 
 print('Saving changes...')
+ttf = ttf.replace('common/', '')
 f.save(f'{fontname}/{ttf}')

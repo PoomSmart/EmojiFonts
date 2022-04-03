@@ -1,3 +1,6 @@
+from wand.color import Color
+from wand.image import Image
+
 debug = False
 
 # and hairs
@@ -30,19 +33,51 @@ persons = {
 }
 whitelists = ['00a9', '00ae', 'hiddenglyph']
 
+u14 = [
+    '1f62e_1f4a8',
+    '1f635_1f4ab',
+    '1f636_1f32b',
+    '1f6dd',
+    '1f6de',
+    '1f6df',
+    '1f7f0',
+    '1f979',
+    '1f9cc',
+    '1f9d4.0.w',
+    '1f9d4.1.w',
+    '1f9d4.2.w',
+    '1f9d4.3.w',
+    '1f9d4.4.w',
+    '1f9d4.5.w',
+    '1fa7b',
+    '1fa7c',
+    '1faa9',
+    '1faaa',
+    '1faab',
+    '1faac',
+    '1fab7',
+    '1fab8',
+    '1fab9',
+    '1faba',
+    '1fad7',
+    '1fad8',
+    '1fad9',
+    '1fae0',
+    '1fae1',
+    '1fae2',
+    '1fae3',
+    '1fae4',
+    '1fae5',
+    '1fae6',
+    '1fae7'
+]
+
 def base_is_whitelist(name):
     return name in whitelists
 
 def m_print(str):
     if debug:
         print(str)
-
-def remove_strikes(f):
-    # remove some strikes to make font smaller
-    del f['sbix'].strikes[160]
-    del f['sbix'].strikes[52]
-    del f['sbix'].strikes[26]
-    print('Removed strikes 160, 52 and 26')
 
 def base_norm_name(name):
     if len(name) == 13 and 'silhouette.' in name:
@@ -162,3 +197,7 @@ def base_norm_special(name, with_variant_selector = False):
             if name == f'{g}_{p}':
                 return f'{g}_200d_{p}'
     return name
+
+def svg_to_blob(svg_file, size):
+    with Image(filename=svg_file, background=Color('transparent'), width=size, height=size, format='svg') as image:
+        return image.make_blob('png')

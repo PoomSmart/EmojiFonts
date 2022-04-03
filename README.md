@@ -19,14 +19,14 @@ Python scripts to backport and theme Apple Color Emoji font.
 
 # Before anything
 
-- Copy `Apple Color Emoji.ttc` from `/System/Library/Fonts` of your macOS instance to the root of this repository and rename it to `AppleColorEmoji@2x.ttc`.
+1. Copy `Apple Color Emoji.ttc` from `/System/Library/Fonts` of your macOS instance to the root of this repository and rename it to `AppleColorEmoji@2x.ttc`.
+2. Execute `prepare.sh` to create emoji TTF files and tables. Run this once.
 
 # Building Apple Color Emoji font
 
-1. Execute `get-fonts.sh`
-2. Once finished, you will get `AppleColorEmoji@2x-out.ttc` (for iOS 10 and above) and `AppleColorEmoji@2x.ttf` (for iOS 9 and below).
+- Execute `apple.sh`, you will get `AppleColorEmoji@2x.ttc` (for iOS 10 and above) and `AppleColorEmoji@2x.ttf` (for iOS 9 and below) are available under `common` directory.
 
-# Scripts
+# All Scripts
 
 EmojiFonts deals with three font tables; `GDEF`, `hmtx` and `sbix`.
 
@@ -42,11 +42,7 @@ EmojiFonts deals with three font tables; `GDEF`, `hmtx` and `sbix`.
 
 `otf2otc.py` combines TTF (True Type Font) fonts into a single TTC (True Type Collection) font. Fron iOS 10, Apple Color Emoji is built as TTC.
 
-`compat.sh` removes `GDEF` table and applies `shift-multi.py` logic. This is mainly for themed emoji fonts, described below.
-
 # Theming
-
-0. Execute `prepare.sh` to create emoji TTF files necessary for theming. Run this once.
 
 ## Twitter Twemoji
 

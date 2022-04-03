@@ -36,12 +36,10 @@ def norm_special(name):
 def twitter_name(name):
     return name.replace('_', '-')
 
-remove_strikes(f)
-
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     if not direct:
-        pathlib.Path(f'twemoji/{ppem}').mkdir(parents=True, exist_ok=True) 
+        pathlib.Path(f'{fontname}/{ppem}').mkdir(parents=True, exist_ok=True) 
     for name, glyph in strike.glyphs.items():
         if glyph.graphicType != 'png ':
             continue
@@ -76,4 +74,5 @@ for ppem, strike in f['sbix'].strikes.items():
             glyph.imageData = svg
 
 print('Saving changes...')
+ttf = ttf.replace('common/', '')
 f.save(f'{fontname}/{ttf}')
