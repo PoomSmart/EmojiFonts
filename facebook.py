@@ -1,5 +1,6 @@
 import sys
 import io
+import os
 from fontTools import ttLib
 from PIL import Image as PImage
 from shared import *
@@ -72,29 +73,23 @@ specials = {
     '38_20e3': '38-20e3',
     '39_20e3': '39-20e3',
     '26f9.0.w': '26f9-200d-2640',
-    '2764_1f525' : None,
-    '2764_1fa79': None,
+    '2764_1f525' : '2764-200d-1f525',
+    '2764_1fa79': '2764-200d-1fa79',
     '1f3cb.0.w': '1f3cb-200d-2640',
     '1f3cc.0.w': '1f3cc-200d-2640',
     '1f3f3_26a7': '1f3f3-200d-26a7',
     '1f441_1f5e8': '1f441-200d-1f5e8',
     '1f575.0.w': '1f575-200d-2640',
-    '1f9b0': '1f9b0',
+    '1f636_1f32b': '1f636-200d-1f32b',
+    '1f9d4.0.w': '1f9d4-200d-2640',
+    '1f9d4.1.w': '1f9d4-1f3fb-200d-2640',
+    '1f9d4.2.w': '1f9d4-1f3fc-200d-2640',
+    '1f9d4.3.w': '1f9d4-1f3fd-200d-2640',
+    '1f9d4.4.w': '1f9d4-1f3fe-200d-2640',
+    '1f9d4.5.w': '1f9d4-1f3ff-200d-2640'
 }
 
 hairs = ['1f9b1', '1f9b2', '1f9b3']
-
-missings_skins = [
-    '1f9d1_1f9b2', '1f9d1_1f9b3',
-    '1fac3', '1fac4', '1fac5', '1faf0', '1faf1',
-    '1faf2', '1faf3', '1faf4', '1faf5', '1faf6'
-]
-
-def is_missing_skinned(name):
-    for x in missings_skins:
-        if x in name:
-            return True
-    return False
 
 def is_missing_duo(name):
     if len(name) < 20:
@@ -135,7 +130,7 @@ for ppem, strike in f['sbix'].strikes.items():
             if name is None:
                 m_print(f'{o_name} is missing')
                 continue
-        elif is_missing_duo(name) or is_missing_skinned(name) or name in u14:
+        elif is_missing_duo(name):
             m_print(f'{name} is missing')
             continue
         else:
@@ -147,7 +142,10 @@ for ppem, strike in f['sbix'].strikes.items():
             name = base_norm_special(name, True)
             name = norm_variant_selector(name)
         name = facebook_name(name)
-        with PImage.open(f'./{fontname}-extra/{name}.png' if is_special else f'{assets}/{name}.png') as fin:
+        path = f'{assets}/{name}.png'
+        if not os.path.exists(path):
+            path = f'./{fontname}-extra/{name}.png'
+        with PImage.open(path) as fin:
             fin = fin.resize((ppem, ppem), PImage.ANTIALIAS)
             stream = io.BytesIO()
             fin.save(stream, format='png')

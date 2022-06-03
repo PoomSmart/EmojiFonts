@@ -2,6 +2,8 @@ from wand.color import Color
 from wand.image import Image
 
 debug = False
+global convert_skin
+convert_skin = True
 
 # and hairs
 professions = [
@@ -170,12 +172,13 @@ def base_norm_variants(name, with_variant_selector = False, with_condition = Fal
                 return name.replace(f'_{p}.{s}', f'_{skins[s]}_200d_{p}')
     if '.0' in name:
         name = name.replace('.0', '')
-    for s in range(1, 6):
-        if f'.{s}' in name:
-            if '1f9d1_1f384' in name:
-                return name.replace(f'_1f384.{s}', f'_{skins[s]}_200d_1f384')
-            else:
-                return name.replace(f'.{s}', f'_{skins[s]}')
+    if convert_skin:
+        for s in range(1, 6):
+            if f'.{s}' in name:
+                if '1f9d1_1f384' in name:
+                    return name.replace(f'_1f384.{s}', f'_{skins[s]}_200d_1f384')
+                else:
+                    return name.replace(f'.{s}', f'_{skins[s]}')
     return name
 
 def base_norm_special(name, with_variant_selector = False):

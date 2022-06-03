@@ -3,35 +3,35 @@
 // Based on https://github.com/iamcal/emoji-data/blob/master/build/facebook/grab.php
 
 $codes = [
-    '23-20e3', // found
-    '2a-20e3', // found
-    '30-20e3', // found
-    '31-20e3', // found
-    '32-20e3', // found
-    '33-20e3', // found
-    '34-20e3', // found
-    '35-20e3', // found
-    '36-20e3', // found
-    '37-20e3', // found
-    '38-20e3', // found
-    '39-20e3', // found
-    '26f9-200d-2640', // found
+    '23-20e3', 
+    '2a-20e3', 
+    '30-20e3', 
+    '31-20e3', 
+    '32-20e3', 
+    '33-20e3', 
+    '34-20e3', 
+    '35-20e3', 
+    '36-20e3', 
+    '37-20e3', 
+    '38-20e3', 
+    '39-20e3', 
+    '26f9-200d-2640', 
     '2764-200d-1f525',
     '2764-200d-1fa79',
-    '1f3cb-200d-2640', // found
-    '1f3cc-200d-2640', // found
-    '1f3f3-200d-26a7', // found
-    '1f441-200d-1f5e8', // found
-    '1f575-200d-2640', // found
+    '1f3cb-200d-2640', 
+    '1f3cc-200d-2640', 
+    '1f3f3-200d-26a7', 
+    '1f441-200d-1f5e8', 
+    '1f575-200d-2640', 
     '1f62e-200d-1f4a8',
     '1f635-200d-1f4ab',
-    '1f636-200d-1f32b-fe0f',
+    '1f636-200d-1f32b',
     '1f6dd',
     '1f6de',
     '1f6df',
     '1f7f0',
     '1f979',
-    '1f9b0', // found
+    '1f9b0', 
     '1f9cc',
     '1f9d1-200d-1f9b2',
     '1f9d1-1f3fb-200d-1f9b2',
@@ -39,12 +39,18 @@ $codes = [
     '1f9d1-1f3fd-200d-1f9b2',
     '1f9d1-1f3fe-200d-1f9b2',
     '1f9d1-1f3ff-200d-1f9b2',
+    '1f9d1-200d-1f9b3',
     '1f9d1-1f3fb-200d-1f9b3',
     '1f9d1-1f3fc-200d-1f9b3',
     '1f9d1-1f3fd-200d-1f9b3',
     '1f9d1-1f3fe-200d-1f9b3',
     '1f9d1-1f3ff-200d-1f9b3',
     '1f9d4-200d-2640',
+    '1f9d4-1f3fb-200d-2640',
+    '1f9d4-1f3fc-200d-2640',
+    '1f9d4-1f3fd-200d-2640',
+    '1f9d4-1f3fe-200d-2640',
+    '1f9d4-1f3ff-200d-2640',
     '1fa7b',
     '1fa7c',
     '1faa9',
@@ -61,11 +67,13 @@ $codes = [
     '1fac3-1f3fd',
     '1fac3-1f3fe',
     '1fac3-1f3ff',
+    '1fac4',
     '1fac4-1f3fb',
     '1fac4-1f3fc',
     '1fac4-1f3fd',
     '1fac4-1f3fe',
     '1fac4-1f3ff',
+    '1fac5',
     '1fac5-1f3fb',
     '1fac5-1f3fc',
     '1fac5-1f3fd',

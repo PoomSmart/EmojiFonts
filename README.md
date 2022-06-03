@@ -26,7 +26,7 @@ Python scripts to backport and theme Apple Color Emoji font.
 
 - Execute `apple.sh`, you will get `AppleColorEmoji@2x.ttc` (for iOS 10 and above) and `AppleColorEmoji@2x.ttf` (for iOS 9 and below) under `common` directory.
 
-# All Scripts
+# Scripts
 
 EmojiFonts deals with three font tables; `GDEF`, `hmtx` and `sbix`.
 
