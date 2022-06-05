@@ -28,7 +28,7 @@ Python scripts to backport and theme Apple Color Emoji font.
 
 # Scripts
 
-EmojiFonts deals with three font tables; `GDEF`, `hmtx` and `sbix`.
+EmojiFonts deals with two font tables; `GDEF` and `sbix`.
 
 `shift-multi.py` resizes and shifts the multi-skinned emojis that pair up as one, including couples and handshake, to have them displayed on iOS 13 and below correctly where there is no render logic to automatically place the pair close together.
 

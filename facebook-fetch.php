@@ -135,11 +135,11 @@ $codes = [
 ];
 
 foreach ($codes as $c) {
-    fetch($c);
+    fetch($c, 3);
 }
 
-function fetch($code){
-	fetch_single($code.'.png', null, 'EMOJI_3', 'facebook-extra', 32, 3);
+function fetch($code, $ratio){
+	fetch_single($code.'.png', null, 'EMOJI_3', 'facebook-extra/'.($ratio * 32), 32, $ratio);
 }
 
 function fetch_single($img, $alt_img, $type_key, $dir, $size, $ratio){
