@@ -67,9 +67,9 @@ for ppem, strike in f['sbix'].strikes.items():
         with PImage.open(path) as fin:
             if flag:
                 # TODO: Vertically center the images?
-                fin.thumbnail((ppem, ppem), PImage.ANTIALIAS)
+                fin.thumbnail((ppem, ppem), PImage.Resampling.BICUBIC)
             else:
-                fin = fin.resize((ppem, ppem), PImage.ANTIALIAS)
+                fin = fin.resize((ppem, ppem), PImage.Resampling.BICUBIC)
             stream = io.BytesIO()
             fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()

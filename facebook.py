@@ -150,7 +150,7 @@ for ppem, strike in f['sbix'].strikes.items():
             path = f'./{fontname}-extra/{size}/{name}.png'
         with PImage.open(path) as fin:
             if ppem != 96 and ppem != 64:
-                fin = fin.resize((ppem, ppem), PImage.BICUBIC)
+                fin = fin.resize((ppem, ppem), PImage.Resampling.BICUBIC)
             stream = io.BytesIO()
             fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()
