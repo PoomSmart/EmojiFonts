@@ -61,3 +61,8 @@ Theming scripts for all emojis vendors produce the font in TTC format. When used
 1. Shallow clone [emoji-data](https://github.com/iamcal/emoji-data) and place it alongside this project.
 2. Run `php facebook-fetch.php` to get few missing emojis.
 3. Execute `facebook.sh` to create them themed font, output at `facebook/facebook.ttc`.
+
+## JoyPixels Emoji
+
+1. Download JoyPixes 7.0 Free assets from JoyPixels [Download page](https://joypixels.com/download) and place the folder alongside this project.
+2. Execute `joypixels.sh` to create themed font, output at `joypixels/joypixels.ttc`.

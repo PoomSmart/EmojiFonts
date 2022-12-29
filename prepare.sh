@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 FONT_NAME=AppleColorEmoji@2x
 WORK_DIR=common

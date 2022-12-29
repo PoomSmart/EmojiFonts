@@ -4,6 +4,7 @@
 *.ttf
 
 # Project assets
+Fonts
 apple
 Packages
 .DS_Store
@@ -22,6 +23,8 @@ noto-emoji-extra/svgs
 twemoji
 twemoji-extra/images
 twemoji-extra/svgs
+fluentui
+joypixels
 
 # Python assets
 __pycache__
