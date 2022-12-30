@@ -73,7 +73,7 @@ Theming scripts for all emojis vendors produce the font in TTC format. When used
 1. Download JoyPixes 7.0 Free assets from JoyPixels [Download page](https://joypixels.com/download) and place the folder alongside this project.
 2. Execute `joypixels.sh` to create themed font, output at `joypixels/joypixels.ttc`.
 
-# FluentUI Emoji
+## FluentUI Emoji
 
 1. Clone [fluentui-emoji](https://github.com/microsoft/fluentui-emoji) and place it alongside this project.
 2. Execute `fluentui.sh STYLE` (where `STYLE` is one of this list: `Color, Flat, High Contrast`) to create themed font, output at `fluentui/fluentui-STYLE.ttc`.
