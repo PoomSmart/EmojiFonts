@@ -1,0 +1,15 @@
+{
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/apple": true,
+        "**/facebook-extra": true,
+        "**/fluentui/Color": true,
+        "**/noto-emoji-extra/images": true,
+        "**/noto-emoji-extra/svgs": true,
+        "**/openmoji/images": true,
+        "**/openmoji/svgs": true,
+        "**/twemoji/images": true,
+        "**/twemoji-extra/images": true,
+        "**/twemoji-extra/svgs": true,
+    }
+}

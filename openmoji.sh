@@ -21,7 +21,7 @@ echo "Converting SVGs into PNGs..."
 for svg in $(find $NAME/svgs -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg > $NAME/images/${fname/.svg/.png}
+    rsvg-convert -a -h $MAX_SIZE $svg -o $NAME/images/${fname/.svg/.png}
 done
 
 # cd ${NAME}-extra

@@ -11,10 +11,10 @@ rm -rf $ASSETS
 mkdir -p $ASSETS
 
 echo "Converting SVGs into PNGs..."
-for svg in $(find ../twemoji/assets/svg -type f -name '*.svg')
+for svg in $(find ../$NAME/assets/svg -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg > $ASSETS/${fname/.svg/.png}
+    rsvg-convert -a -h $MAX_SIZE $svg -o $ASSETS/${fname/.svg/.png}
 done
 
 cd ${NAME}-extra
@@ -27,7 +27,7 @@ python3 gen-handshake.py
 for svg in $(find ./svgs -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg > images/${fname/.svg/.png}
+    rsvg-convert -a -h $MAX_SIZE $svg -o images/${fname/.svg/.png}
 done
 cd ..
 
