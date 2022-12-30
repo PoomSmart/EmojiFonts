@@ -9,6 +9,7 @@ Python scripts to backport and theme Apple Color Emoji font.
 - [fonttools](https://github.com/fonttools/fonttools) (`pip3 install fonttools`)
 - [Pillow](https://pillow.readthedocs.io/en/stable/) (`python3 -m pip install --upgrade Pillow`)
 - [getfonts](https://github.com/DavidBarts/getfonts) (for `getfonts`, `getfontname` and `stripttc`)
+- [pngquant](https://pngquant.org) (`brew install pngquant`)
 
 # Prerequisites (Theming)
 
@@ -25,7 +26,11 @@ Python scripts to backport and theme Apple Color Emoji font.
 
 # Building Apple Color Emoji font
 
-- Execute `apple.sh`, you will get `AppleColorEmoji@2x.ttc` (for iOS 10 and above) and `AppleColorEmoji@2x.ttf` (for iOS 9 and below) under `common` directory.
+- Execute `apple.sh`, you will get `AppleColorEmoji@2x.ttc` (for iOS 10 and above) and `AppleColorEmoji@2x.ttf` (for iOS 9 and below) under `apple` directory.
+
+## Optimization
+
+The script `apple.sh` uses `pngquant` to optimize the images with little to none changes to the quality. The font sizes are reduced by nearly 50% using this method!
 
 # Scripts
 

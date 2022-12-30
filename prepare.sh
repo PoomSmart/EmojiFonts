@@ -29,4 +29,6 @@ ttx -q -o ${FONT_NAME}_00.ttf -b ${FONT_NAME}_00.ttx
 ttx -q -o ${FONT_NAME}_01.ttf -b ${FONT_NAME}_01.ttx
 cp ${FONT_NAME}_00.ttf ${FONT_NAME}.ttf
 
+python3 otf2otc.py ${FONT_NAME}_00.ttf ${FONT_NAME}_01.ttf -o $FONT_NAME.ttc
+
 cd ..
