@@ -5,12 +5,20 @@ set -e
 FONT_NAME=AppleColorEmoji@2x
 NAME=joypixels
 ASSETS=../$NAME-7/png/unicode/128
+MOD=$1
 
 rm -rf $NAME
 mkdir -p $NAME/96 $NAME/64 $NAME/48 $NAME/40 $NAME/32 $NAME/20
 
 echo "Copying and resizing PNGs..."
 cp -r $ASSETS/ $NAME/96
+
+if [ $MOD == 'DECAL' ]
+then
+    echo "Applying mod DECAL..."
+    mogrify -bordercolor none -border 5 -background white -alpha background -channel A -blur 0x2 -level 0,1% $NAME/96/*.png
+fi
+
 mogrify -resize 96x96 $NAME/96/*.png
 mogrify -resize 64x64 -path $NAME/64 $NAME/96/*.png
 mogrify -resize 48x48 -path $NAME/48 $NAME/64/*.png
@@ -24,6 +32,13 @@ pngquant -f --ext .png $NAME/*/*.png
 python3 $NAME.py common/${FONT_NAME}_00.ttf
 python3 $NAME.py common/${FONT_NAME}_01.ttf
 
-python3 otf2otc.py $NAME/${FONT_NAME}_00.ttf $NAME/${FONT_NAME}_01.ttf -o $NAME/$NAME.ttc
+if [ $MOD != '' ]
+then
+    OUT_FONT_NAME=$NAME-$MOD.ttc
+else
+    OUT_FONT_NAME=$NAME.ttc
+fi
 
-echo "Output file at $NAME/$NAME.ttc"
+python3 otf2otc.py $NAME/${FONT_NAME}_00.ttf $NAME/${FONT_NAME}_01.ttf -o $NAME/$OUT_FONT_NAME
+
+echo "Output file at $NAME/$OUT_FONT_NAME"
