@@ -13,9 +13,9 @@ mkdir -p $NAME/96 $NAME/64 $NAME/48 $NAME/40 $NAME/32 $NAME/20
 echo "Copying and resizing PNGs..."
 cp -r $ASSETS/ $NAME/96
 
-if [ $MOD == 'DECAL' ]
+if [ $MOD == 'Decal' ]
 then
-    echo "Applying mod DECAL..."
+    echo "Applying mod: Decal..."
     mogrify -bordercolor none -border 5 -background white -alpha background -channel A -blur 0x2 -level 0,1% $NAME/96/*.png
 fi
 
