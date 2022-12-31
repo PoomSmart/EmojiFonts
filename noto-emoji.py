@@ -7,11 +7,9 @@ from shared import *
 
 fontname = 'noto-emoji'
 
-# input: font ttf, emoji assets folder, flag assets folder
+# input: font ttf
 
 ttf = sys.argv[1]
-assets = sys.argv[2]
-flag_assets = sys.argv[3]
 
 f = ttLib.TTFont(ttf)
 
@@ -60,16 +58,11 @@ for ppem, strike in f['sbix'].strikes.items():
             name = base_norm_variants(name)
             name = base_norm_special(name)
         name = noto_name(name, not flag)
-        path = f'{flag_assets}/{name}.png' if flag else f'{assets}/emoji_{name}.png'
+        path = f'{fontname}/images/{ppem}/{name}.png' if flag else f'{fontname}/images/{ppem}/emoji_{name}.png'
         if not os.path.exists(path):
             name = name[1:] if name[0] == 'u' else name
-            path = f'{fontname}-extra/images/{name}.png'
+            path = f'{fontname}-extra/images/{ppem}/{name}.png'
         with PImage.open(path) as fin:
-            if flag:
-                # TODO: Vertically center the images?
-                fin.thumbnail((ppem, ppem), PImage.Resampling.BICUBIC)
-            else:
-                fin = fin.resize((ppem, ppem), PImage.Resampling.BICUBIC)
             stream = io.BytesIO()
             fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()

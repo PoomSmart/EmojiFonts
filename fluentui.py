@@ -6,10 +6,10 @@ from shared import *
 
 fontname = 'fluentui'
 
-# input: font ttf, emoji assets folder
+# input: font ttf, emoji style
 
 ttf = sys.argv[1]
-assets = sys.argv[2]
+style = sys.argv[2]
 
 f = ttLib.TTFont(ttf)
 
@@ -99,14 +99,13 @@ for ppem, strike in f['sbix'].strikes.items():
             m_print(f'{name} is missing')
             continue
         name = fluentui_name(name)
-        path = f'{assets}/{name}.png'
+        path = f'{fontname}/{style}/{ppem}/{name}.png'
         with PImage.open(path) as fin:
-            img = fin.resize((ppem, ppem), PImage.Resampling.BICUBIC)
             stream = io.BytesIO()
-            img.save(stream, format='png')
+            fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()
             stream.close()
 
 print('Saving changes...')
 ttf = ttf.replace('common/', '')
-f.save(f'{fontname}/{ttf}')
+f.save(f'{fontname}/{style}-{ttf}')

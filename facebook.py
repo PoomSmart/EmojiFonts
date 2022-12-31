@@ -7,11 +7,10 @@ from shared import *
 
 fontname = 'facebook'
 
-# input: font ttf, 96x96 assets folder, 64x64 assets folder
+# input: font ttf, assets folder
 
 ttf = sys.argv[1]
-assets_96 = sys.argv[2]
-assets_64 = sys.argv[3]
+assets = sys.argv[2]
 
 f = ttLib.TTFont(ttf)
 
@@ -93,14 +92,10 @@ for ppem, strike in f['sbix'].strikes.items():
             name = base_norm_special(name, True)
             name = norm_variant_selector(name)
         name = facebook_name(name)
-        assets = assets_96 if ppem >= 96 else assets_64
-        path = f'{assets}/{name}.png'
+        path = f'{assets}/{ppem}/{name}.png'
         if not os.path.exists(path):
-            size = 96 if ppem >= 96 else 64
-            path = f'./{fontname}-extra/{size}/{name}.png'
+            path = f'./{fontname}-extra/{ppem}/{name}.png'
         with PImage.open(path) as fin:
-            if ppem != 96 and ppem != 64:
-                fin = fin.resize((ppem, ppem), PImage.Resampling.BICUBIC)
             stream = io.BytesIO()
             fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()

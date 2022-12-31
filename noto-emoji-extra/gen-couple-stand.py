@@ -29,7 +29,7 @@ for skin in skins:
     right_out.write(f'svgs/{right_name}', encoding='utf-8')
 
 # silhouette woman
-name = f'{font}/emoji_u1f46d.svg' 
+name = f'{font}/emoji_u1f46d.svg'
 left = ET.parse(name).getroot()
 right = ET.parse(name).getroot()
 remove(left, 0)
@@ -42,7 +42,7 @@ right_out = ET.ElementTree(right)
 right_out.write('svgs/silhouette.wr.svg', encoding='utf-8')
 
 # silhouette man
-name = f'{font}/emoji_u1f46c.svg' 
+name = f'{font}/emoji_u1f46c.svg'
 left = ET.parse(name).getroot()
 right = ET.parse(name).getroot()
 remove(left, 0)

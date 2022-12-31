@@ -2,8 +2,10 @@
     "files.exclude": {
         "**/__pycache__": true,
         "**/apple/*": true,
-        "**/facebook-extra": true,
+        "**/facebook/*": true,
+        "**/facebook-extra/*/": true,
         "**/fluentui/*/*": true,
+        "**/joypixels/*/*/": true,
         "**/noto-emoji-extra/images": true,
         "**/noto-emoji-extra/svgs": true,
         "**/openmoji/images": true,

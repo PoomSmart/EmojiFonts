@@ -12,7 +12,7 @@ for skin in skins:
     write_dual(left, right, '1f9d1', '1f9d1', skin, '1f48b')
 
 # neutral silhouette
-name = f'{font}/emoji_u1f48f.svg' 
+name = f'{font}/emoji_u1f48f.svg'
 left = ET.parse(name).getroot()
 right = ET.parse(name).getroot()
 remove(left, 2)

@@ -46,7 +46,7 @@ EmojiFonts deals with two font tables; `GDEF` and `sbix`.
 
 `extractor.py` extracts PNG emoji images from the font - and opens up the possibility to theme the emoji font!
 
-`otf2otc.py` combines TTF (True Type Font) fonts into a single TTC (True Type Collection) font. Fron iOS 10, Apple Color Emoji is built as TTC.
+`otf2otc.py` combines TTF (True Type Font) fonts into a single TTC (True Type Collection) font. From iOS 10, Apple Color Emoji is built as TTC.
 
 # Theming
 
@@ -65,7 +65,6 @@ Theming scripts for all emojis vendors produce the font in TTC format. When used
 ## Facebook Emoji
 
 1. Shallow clone [emoji-data](https://github.com/iamcal/emoji-data) and place it alongside this project.
-2. Run `php facebook-fetch.php` to get few missing emojis.
 3. Execute `facebook.sh` to create them themed font, output at `facebook/facebook.ttc`.
 
 ## JoyPixels Emoji

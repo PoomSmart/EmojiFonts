@@ -9,10 +9,9 @@ debug = False
 extract = False
 fontname = 'twemoji'
 
-# input: font ttf, assets folder
+# input: font ttf
 
 ttf = sys.argv[1]
-assets = sys.argv[2]
 
 f = ttLib.TTFont(ttf)
 
@@ -43,13 +42,12 @@ for ppem, strike in f['sbix'].strikes.items():
         name = base_norm_variants(name, True, True)
         name = norm_special(name)
         name = twitter_name(name)
-        path = f'{assets}/{name}.png'
+        path = f'{fontname}/images/{ppem}/{name}.png'
         if not os.path.exists(path):
-            path = f'{fontname}-extra/images/{name}.png'
+            path = f'{fontname}-extra/images/{ppem}/{name}.png'
         with PImage.open(path) as fin:
-            img = fin.resize((ppem, ppem), PImage.Resampling.BICUBIC)
             stream = io.BytesIO()
-            img.save(stream, format='png')
+            fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()
             stream.close()
 

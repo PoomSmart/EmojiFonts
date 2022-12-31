@@ -6,10 +6,9 @@ from shared import *
 
 fontname = 'joypixels'
 
-# input: font ttf, emoji assets folder
+# input: font ttf
 
 ttf = sys.argv[1]
-assets = sys.argv[2]
 
 f = ttLib.TTFont(ttf)
 
@@ -41,11 +40,10 @@ for ppem, strike in f['sbix'].strikes.items():
         name = base_norm_variants(name, True, True)
         name = base_norm_special(name, True)
         name = joypixels_name(name)
-        path = f'{assets}/{name}.png'
+        path = f'{fontname}/{ppem}/{name}.png'
         with PImage.open(path) as fin:
-            img = fin.resize((ppem, ppem), PImage.Resampling.BICUBIC)
             stream = io.BytesIO()
-            img.save(stream, format='png')
+            fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()
             stream.close()
 

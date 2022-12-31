@@ -46,3 +46,4 @@ for g in ['1f469', '1f468', '1f9d1']:
             remove(left, 0)
             remove(right, 1)
         write_dual(left, right, g, g, skin, '2764')
+
