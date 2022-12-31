@@ -3,37 +3,55 @@ from shared import *
 
 # left woman, right man
 for skin in skins:
-    name = f'{font}/emoji_u1f46b.svg' if skin == 'none' else f'{font}/emoji_u1f46b_{skin}.svg'
+    name = f'{font}/1F46B.svg' if skin == 'none' else f'{font}/1F46B-{skin}.svg'
     left_woman = ET.parse(name).getroot()
     right_man = ET.parse(name).getroot()
-    remove(left_woman, 0)
-    remove(right_man, 1)
-    write_dual(left_woman, right_man, '1f469', '1f468', skin)
+    remove_child(left_woman, 1, 0)
+    remove_child(left_woman, 4, 4)
+    remove_child(left_woman, 4, 2)
+    remove_child(left_woman, 4, 0)
+    remove_child(right_man, 1, 1)
+    remove_child(right_man, 4, 5)
+    remove_child(right_man, 4, 3)
+    remove_child(right_man, 4, 1)
+    write_dual(left_woman, right_man, '1F469', '1F468', skin)
 
 # left man
 for skin in skins:
-    name = f'{font}/emoji_u1f46c.svg' if skin == 'none' else f'{font}/emoji_u1f46c_{skin}.svg'
+    name = f'{font}/1F46C.svg' if skin == 'none' else f'{font}/1F46C-{skin}.svg'
     left = ET.parse(name).getroot()
-    remove(left, 0)
-    left_name = '1f468.l.svg' if skin == 'none' else f'1f468_{skin}.l.svg'
+    remove_child(left, 1, 0)
+    remove_child(left, 4, 2)
+    remove_child(left, 4, 1)
+    remove_child(left, 4, 0)
+    left_name = '1F468.l.svg' if skin == 'none' else f'1F468-{skin}.l.svg'
     left_out = ET.ElementTree(left)
     left_out.write(left_name, encoding='utf-8')
 
 # right woman
 for skin in skins:
-    name = f'{font}/emoji_u1f46d.svg' if skin == 'none' else f'{font}/emoji_u1f46d_{skin}.svg'
+    name = f'{font}/1F46D.svg' if skin == 'none' else f'{font}/1F46D-{skin}.svg'
     right = ET.parse(name).getroot()
-    remove(right, 1)
-    right_name = '1f469.r.svg' if skin == 'none' else f'1f469_{skin}.r.svg'
+    remove_child(right, 1, 1)
+    remove_child(right, 4, 2)
+    remove_child(right, 4, 1)
+    remove_child(right, 4, 0)
+    right_name = '1F469.r.svg' if skin == 'none' else f'1F469-{skin}.r.svg'
     right_out = ET.ElementTree(right)
     right_out.write(right_name, encoding='utf-8')
 
 # silhouette woman
-name = f'{font}/emoji_u1f46d.svg' 
+name = f'{font}/1F46D.svg'
 left = ET.parse(name).getroot()
 right = ET.parse(name).getroot()
-remove(left, 0)
-remove(right, 1)
+remove_child(left, 1, 0)
+remove_child(left, 4, 5)
+remove_child(left, 4, 4)
+remove_child(left, 4, 3)
+remove_child(right, 1, 1)
+remove_child(right, 4, 2)
+remove_child(right, 4, 1)
+remove_child(right, 4, 0)
 find_set_color(left)
 find_set_color(right)
 left_out = ET.ElementTree(left)
@@ -42,11 +60,17 @@ right_out = ET.ElementTree(right)
 right_out.write('silhouette.wr.svg', encoding='utf-8')
 
 # silhouette man
-name = f'{font}/emoji_u1f46c.svg' 
+name = f'{font}/1F46C.svg'
 left = ET.parse(name).getroot()
 right = ET.parse(name).getroot()
-remove(left, 0)
-remove(right, 1)
+remove_child(left, 1, 0)
+remove_child(left, 4, 2)
+remove_child(left, 4, 1)
+remove_child(left, 4, 0)
+remove_child(right, 1, 1)
+remove_child(right, 4, 5)
+remove_child(right, 4, 4)
+remove_child(right, 4, 3)
 find_set_color(left)
 find_set_color(right)
 left_out = ET.ElementTree(left)

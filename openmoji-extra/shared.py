@@ -4,21 +4,25 @@ namespace = 'http://www.w3.org/2000/svg'
 
 ET.register_namespace('', namespace)
 
-font = '../../noto-emoji/svg'
+font = '../../openmoji/color/svg'
 
 silhouette_color = '#CCCCCC'
 
 skins = [
     'none',
-    '1f3fb',
-    '1f3fc',
-    '1f3fd',
-    '1f3fe',
-    '1f3ff'
+    '1F3FB',
+    '1F3FC',
+    '1F3FD',
+    '1F3FE',
+    '1F3FF'
 ]
 
 def remove(data, index):
     data.remove(data[index])
+
+def remove_child(data, index, child_index):
+    parent = data[index]
+    parent.remove(parent[child_index])
 
 def write_dual(left, right, code_left, code_right, skin, joiner = None):
     if joiner is None:
@@ -37,14 +41,6 @@ def find_set_color(data):
         if g.tag == f'{{{namespace}}}g':
             find_set_color(g)
         elif g.tag == f'{{{namespace}}}path':
-            style = g.attrib['style']
-            if style == 'fill:#F386AB;' or style == 'fill:#DA2E75;' or style == 'fill:#EF5592;':
-                continue
-            g.attrib.pop('style')
-            g.set('fill', silhouette_color)
-    to_remove = []
-    for g in data:
-        if g.tag == f'{{{namespace}}}linearGradient' or g.tag == f'{{{namespace}}}radialGradient' or g.tag == f'{{{namespace}}}ellipse' or g.tag == f'{{{namespace}}}polygon':
-            to_remove.append(g)
-    for g in to_remove:
-        data.remove(g)
+            fill = g.attrib['fill']
+            if fill == '#FCEA2B' or (fill == 'none' and g.attrib['stroke'] == '#000000'):
+                g.set('fill', silhouette_color)

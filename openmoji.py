@@ -5,31 +5,13 @@ from fontTools import ttLib
 from PIL import Image as PImage
 from shared import *
 
-debug = False
-extract = False
 fontname = 'openmoji'
 
-# input: font ttf, assets folder
+# input: font ttf
 
 ttf = sys.argv[1]
-assets = sys.argv[2]
 
 f = ttLib.TTFont(ttf)
-
-missings_skins = [
-    '1f91d',
-    '1fac3', '1fac4', '1fac5', '1faf0', '1faf1',
-    '1faf2', '1faf3', '1faf4', '1faf5', '1faf6'
-]
-
-def is_whitelist(name):
-    return name == '0023_fe0f_20e3' or base_is_whitelist(name)
-
-def is_missing_skinned(name):
-    for x in missings_skins:
-        if x in name:
-            return True
-    return False
 
 def norm_name(name):
     result = base_norm_name(name)
@@ -51,9 +33,9 @@ for ppem, strike in f['sbix'].strikes.items():
         if glyph.graphicType != 'png ':
             continue
         name = norm_name(name)
-        if is_whitelist(name):
+        if base_is_whitelist(name):
             continue
-        if name in u14 or is_missing_skinned(name) or '.l' in name or '.r' in name or 'silhouette' in name:
+        if '.l' in name or '.r' in name or 'silhouette' in name:
             m_print(f'{name} is missing')
             continue
         name = norm_fam(name)
@@ -63,7 +45,7 @@ for ppem, strike in f['sbix'].strikes.items():
         name = base_norm_variants(name, True, True)
         name = norm_special(name)
         name = openmoji_name(name)
-        path = f'{assets}/{name}.png'
+        path = f'{fontname}/images/{ppem}/{name}.png'
         # if not os.path.exists(path):
         #     path = f'{fontname}-extra/{name}.png'
         with PImage.open(path) as fin:

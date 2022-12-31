@@ -12,9 +12,9 @@ rm -rf $NAME
 mkdir -p $NAME/images/96 $NAME/images/64 $NAME/images/48 $NAME/images/40 $NAME/images/32 $NAME/images/20
 
 echo "Copying and resizing PNGs..."
-cp -r $ASSETS/ $NAME/images/96
-cp -r $FLAG_ASSETS/ $NAME/images/96
-mogrify -resize 96x96 $NAME/images/96/*.png
+cp -r $ASSETS/ $NAME/images/$MAX_SIZE
+cp -r $FLAG_ASSETS/ $NAME/images/$MAX_SIZE
+mogrify -resize 96x96 $NAME/images/$MAX_SIZE/*.png
 mogrify -resize 64x64 -path $NAME/images/64 $NAME/images/96/*.png
 mogrify -resize 48x48 -path $NAME/images/48 $NAME/images/64/*.png
 mogrify -resize 40x40 -path $NAME/images/40 $NAME/images/48/*.png
@@ -32,7 +32,7 @@ python3 gen-handshake.py
 for svg in $(find ./svgs -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o images/96/${fname/.svg/.png}
+    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
 done
 
 mogrify -resize 64x64 -path images/64 images/96/*.png
