@@ -26,7 +26,7 @@ pngquant $COLORS -f --ext .png $ASSETS/*/*.png
 
 if [ $MOD != '' ]
 then
-    OUT_FONT_NAME=$FONT_NAME-$MOD
+    OUT_FONT_NAME=AppleColorEmoji-$MOD
 else
     OUT_FONT_NAME=$FONT_NAME
 fi
