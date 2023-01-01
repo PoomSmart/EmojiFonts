@@ -30,7 +30,7 @@ Python scripts to backport and theme Apple Color Emoji font.
 
 ## Optimization
 
-The script `apple.sh` uses `pngquant` to optimize the images with little to none changes to the quality. The font sizes are reduced by nearly 50% using this method!
+The script `apple.sh` uses `pngquant` to optimize the images with little to none changes to the quality. The Apple emoji font sizes are reduced by nearly 50% using this method!
 
 # Scripts
 
@@ -69,7 +69,7 @@ Theming scripts for all emojis vendors produce the font in TTC format. When used
 
 ## JoyPixels Emoji
 
-1. Download JoyPixes 7.0 Free assets from JoyPixels [Download page](https://joypixels.com/download) and place the folder alongside this project.
+1. Download JoyPixels 7.0 Free assets from JoyPixels [Download page](https://joypixels.com/download) and place the folder alongside this project.
 2. Execute `joypixels.sh` to create themed font, output at `joypixels/joypixels.ttc`.
 
 ## FluentUI Emoji
