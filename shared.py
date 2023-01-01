@@ -19,6 +19,7 @@ professions = [
 heart = '2764'
 kiss = '1f48b'
 modifiers = ['2695', '2696', '2708']
+genders = ['2640', '2642']
 skins = {
     1: '1f3fb',
     2: '1f3fc',
@@ -178,11 +179,11 @@ def base_norm_variants(name, with_variant_selector = False, with_condition = Fal
             name = name.replace('.w', f'_200d_2640{v}')
     for s in range(1, 6):
         for m in modifiers:
-            if f'_{m}.{s}' in name:
+            if name.endswith(f'_{m}.{s}'):
                 name = name.replace(f'_{m}.{s}', f'_{skins[s]}_200d_{m}{v}')
     for p in professions:
         for s in range(1, 6):
-            if f'_{p}.{s}' in name:
+            if name.endswith(f'_{p}.{s}'):
                 return name.replace(f'_{p}.{s}', f'_{skins[s]}_200d_{p}')
     if '.0' in name:
         name = name.replace('.0', '')

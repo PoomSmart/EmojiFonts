@@ -16,7 +16,7 @@ cp -r $ASSETS/ $NAME/96
 if [ $MOD == 'Decal' ]
 then
     echo "Applying mod: Decal..."
-    mogrify -bordercolor none -border 5 -background white -alpha background -channel A -blur 0x2 -level 0,1% $NAME/96/*.png
+    mogrify -bordercolor none -border 5 -background white -alpha background -channel A -blur 0x3 -level 0,1% $NAME/96/*.png
 fi
 
 mogrify -resize 96x96 $NAME/96/*.png

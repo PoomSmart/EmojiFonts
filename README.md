@@ -6,7 +6,7 @@ Python scripts to backport and theme Apple Color Emoji font.
 
 - [Python 3.7 or later](http://www.python.org/download/)
 - [pip](https://pip.pypa.io/en/stable/)
-- [fonttools](https://github.com/fonttools/fonttools) (`pip3 install fonttools`)
+- [fonttools](https://github.com/fonttools/fonttools) (`pip3 install fonttools[repacker]`)
 - [Pillow](https://pillow.readthedocs.io/en/stable/) (`python3 -m pip install --upgrade Pillow`)
 - [getfonts](https://github.com/DavidBarts/getfonts) (for `getfonts`, `getfontname` and `stripttc`)
 - [pngquant](https://pngquant.org) (`brew install pngquant`)
@@ -54,17 +54,17 @@ Theming scripts for all emojis vendors produce the font in TTC format. When used
 
 ## Twitter Twemoji
 
-1. Clone [twemoji](https://github.com/twitter/twemoji) and place it alongside this project.
+1. Clone [twemoji](https://github.com/twitter/twemoji) and place its folder alongside this project.
 2. Execute `twemoji.sh` to create the themed font, output at `twemoji/twemoji.ttc`.
 
 ## Google Noto Emoji
 
-1. Clone [noto-emoji](https://github.com/googlefonts/noto-emoji) and place it alongside this project.
+1. Clone [noto-emoji](https://github.com/googlefonts/noto-emoji) and place its folder alongside this project.
 2. Execute `noto-emoji.sh` to create the themed font, output at `noto-emoji/noto-emoji.ttc`.
 
 ## Facebook Emoji
 
-1. Shallow clone [emoji-data](https://github.com/iamcal/emoji-data) and place it alongside this project.
+1. Shallow clone [emoji-data](https://github.com/iamcal/emoji-data) and place its folder alongside this project.
 3. Execute `facebook.sh` to create them themed font, output at `facebook/facebook.ttc`.
 
 ## JoyPixels Emoji
@@ -74,5 +74,10 @@ Theming scripts for all emojis vendors produce the font in TTC format. When used
 
 ## FluentUI Emoji
 
-1. Clone [fluentui-emoji](https://github.com/microsoft/fluentui-emoji) and place it alongside this project.
+1. Clone [fluentui-emoji](https://github.com/microsoft/fluentui-emoji) and place its folder alongside this project.
 2. Execute `fluentui.sh STYLE` (where `STYLE` is one of this list: `Color, Flat, High Contrast`) to create themed font, output at `fluentui/fluentui-STYLE.ttc`.
+
+## Blobmoji Emoji
+
+1. Clone [blobmoji](https://github.com/C1710/blobmoji) and place its folder alongside this project.
+2. Execute `blobmoji.sh` to create themed font, output at `blobmoji/blobmoji.ttc`.
