@@ -28,6 +28,10 @@ Missing emojis or limitations of each themed font will be listed here.
 
 - Not yet support: skinned handshake, some couple emojis.
 
+## OpenMoji Emoji
+
+- Not yet support: skinned handshake, some couple emojis.
+
 ## Notes
 
 _PNGs only_: They come in PNGs which means adding silhouettes and couple emojis are difficult. If they were in SVGs, we can simply write a script to remove parts that we do not need.

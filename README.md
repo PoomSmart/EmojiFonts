@@ -81,3 +81,8 @@ Theming scripts for all emojis vendors produce the font in TTC format. When used
 
 1. Clone [blobmoji](https://github.com/C1710/blobmoji) and place its folder alongside this project.
 2. Execute `blobmoji.sh` to create themed font, output at `blobmoji/blobmoji.ttc`.
+
+## OpenMoji Emoji
+
+1. Clone [openmoji](https://github.com/hfg-gmuend/openmoji) and place its folder alongside this project.
+2. Execute `openmoji.sh` to create themed font, output at `openmoji/openmoji.ttc`.

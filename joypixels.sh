@@ -32,7 +32,7 @@ pngquant -f --ext .png $NAME/*/*.png
 python3 $NAME.py common/${FONT_NAME}_00.ttf
 python3 $NAME.py common/${FONT_NAME}_01.ttf
 
-if [ $MOD != '' ]
+if [[ $MOD != '' ]]
 then
     OUT_FONT_NAME=$NAME-$MOD.ttc
 else

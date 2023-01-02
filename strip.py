@@ -11,9 +11,9 @@ for strike in data.iter('strike'):
     for glyph in strike.findall('glyph'):
         if glyph.get('graphicType') == 'png ':
             hexdata = glyph.find('hexdata')
-            hex = ''.join(hexdata.text.strip().split())
-            bytes = binascii.unhexlify(hex)
-            stream = io.BytesIO(bytes)
+            hexstr = ''.join(hexdata.text.strip().split())
+            hexbytes = binascii.unhexlify(hexstr)
+            stream = io.BytesIO(hexbytes)
             pil = Image.open(stream)
             stripped = Image.new(pil.mode, pil.size)
             stripped.putdata(pil.getdata())

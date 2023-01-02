@@ -5,12 +5,13 @@ from PIL import Image
 
 fontname = 'AppleColorEmoji@2x'
 
-# input: font ttf, assets folder
+# input: input font ttf, output font ttf, assets folder
 
-ttf = sys.argv[1]
-assets = sys.argv[2]
+ittf = sys.argv[1]
+ottf = sys.argv[2]
+assets = sys.argv[3]
 
-f = ttLib.TTFont(ttf)
+f = ttLib.TTFont(ittf)
 
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
@@ -25,4 +26,4 @@ for ppem, strike in f['sbix'].strikes.items():
             stream.close()
 
 print('Saving changes...')
-f.save(ttf)
+f.save(ottf)

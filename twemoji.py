@@ -5,8 +5,6 @@ from fontTools import ttLib
 from PIL import Image as PImage
 from shared import *
 
-debug = False
-extract = False
 fontname = 'twemoji'
 
 # input: font ttf
