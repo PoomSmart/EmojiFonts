@@ -8,6 +8,7 @@
         "**/joypixels/*/*/": true,
         "**/noto-emoji-extra/images": true,
         "**/noto-emoji-extra/svgs": true,
+        "**/oneui/*": true,
         "**/openmoji/images": true,
         "**/openmoji/svgs": true,
         "**/twemoji/images": true,
