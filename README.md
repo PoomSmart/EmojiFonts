@@ -86,3 +86,8 @@ Theming scripts for all emojis vendors produce the font in TTC format. When used
 
 1. Clone [openmoji](https://github.com/hfg-gmuend/openmoji) and place its folder alongside this project.
 2. Execute `openmoji.sh` to create themed font, output at `openmoji/openmoji.ttc`.
+
+## Samsung One UI Emoji
+
+1. Retrieve `NotoColorEmoji.ttf` with Samsung One UI 5.0 emojis somehow and place that in `oneui` folder.
+2. Execute `oneui.sh` to create themed font, output at `oneui/oneui.ttc`.

@@ -17,7 +17,7 @@ do
     rsvg-convert -a -h $MAX_SIZE $svg -o $NAME/images/$MAX_SIZE/${fname/.svg/.png}
 done
 
-cd ${NAME}-extra
+cd $NAME-extra
 rm -rf *.svgs
 mkdir -p images/96 images/64 images/48 images/40 images/32 images/20
 # python3 gen-couple-heart.py

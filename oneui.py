@@ -5,9 +5,9 @@ from fontTools import ttLib
 from PIL import Image as PImage
 from shared import *
 
-fontname = 'blobmoji'
+fontname = 'oneui'
 
-# input: apple font ttf, blobmoji font ttf, blobemoji GSUB ttx
+# input: apple font ttf, oneui font ttf, oneui GSUB ttx
 
 ttf = sys.argv[1]
 bttf = sys.argv[2]
@@ -27,6 +27,10 @@ name_map = {
     'u0038': 'eight',
     'u0039': 'nine',
 }
+
+missings = [
+    '1f441_1f5e8'
+]
 
 f = ttLib.TTFont(ttf)
 b = ttLib.TTFont(bttf)
@@ -95,6 +99,7 @@ def get_glyph_name(name):
 def is_whitelist(name):
     return base_is_whitelist(name) or '.l' in name or '.r' in name or 'silhouette.' in name
 
+print(f'missing emoji list: {missings}')
 for ppem, strike in f.get('sbix').strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():
@@ -102,6 +107,8 @@ for ppem, strike in f.get('sbix').strikes.items():
             continue
         name = base_norm_name(name)
         if is_whitelist(name):
+            continue
+        if name in missings:
             continue
         name = norm_fam(name)
         name = norm_dual(name)

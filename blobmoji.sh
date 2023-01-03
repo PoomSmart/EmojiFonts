@@ -24,6 +24,7 @@ mogrify -resize 48x48 -path $NAME/images/48 $NAME/images/64/*.png
 mogrify -resize 40x40 -path $NAME/images/40 $NAME/images/48/*.png
 mogrify -resize 32x32 -path $NAME/images/32 $NAME/images/40/*.png
 mogrify -resize 20x20 -path $NAME/images/20 $NAME/images/32/*.png
+rm -rf $NAME/bitmaps
 
 python3 $NAME.py common/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
 python3 $NAME.py common/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
