@@ -1,3 +1,4 @@
+import os
 import sys
 import io
 import xml.etree.ElementTree as ET
@@ -92,16 +93,13 @@ def get_glyph_name(name):
         return blig[name]
     return name
 
-def is_whitelist(name):
-    return base_is_whitelist(name) or '.l' in name or '.r' in name or 'silhouette.' in name
-
-for ppem, strike in f.get('sbix').strikes.items():
+for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():
         if glyph.graphicType != 'png ':
             continue
         name = base_norm_name(name)
-        if is_whitelist(name):
+        if base_is_whitelist(name):
             continue
         name = norm_fam(name)
         name = norm_dual(name)
@@ -112,6 +110,17 @@ for ppem, strike in f.get('sbix').strikes.items():
         name = norm_name(name)
         name = get_glyph_name(name)
         path = f'{fontname}/images/{ppem}/{name}.png'
+        if not os.path.exists(path):
+            if name[0] == 'u':
+                name = name[1:].lower()
+                tokens = name.split('_')
+                n = []
+                for t in tokens:
+                    if t[0] == 'u':
+                        t = t[1:]
+                    n.append(t)
+                name = '_'.join(n)
+            path = f'{fontname}-extra/images/{ppem}/{name}.png'
         with PImage.open(path) as fin:
             stream = io.BytesIO()
             fin.save(stream, format='png')

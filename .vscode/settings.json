@@ -2,6 +2,8 @@
     "files.exclude": {
         "**/__pycache__": true,
         "**/apple/*": true,
+        "**/blobmoji-extra/images": true,
+        "**/blobmoji-extra/svgs": true,
         "**/facebook/*": true,
         "**/facebook-extra/*/": true,
         "**/fluentui/*/*": true,

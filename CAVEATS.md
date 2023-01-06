@@ -4,11 +4,11 @@ Missing emojis or limitations of each themed font will be listed here.
 
 ## Twitter Twemoji
 
-- Nothing significant.
+- Nothing of significant.
 
 ## Google Noto Emoji
 
-- Nothing significant.
+- Nothing of significant.
 
 ## Facebook Emoji
 
@@ -26,7 +26,7 @@ Missing emojis or limitations of each themed font will be listed here.
 
 ## Blobmoji Emoji
 
-- Somewhat _PNGs only._
+- Nothing of significant.
 
 ## OpenMoji Emoji
 

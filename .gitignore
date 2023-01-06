@@ -15,8 +15,13 @@ getfontname
 stripttc
 
 # Vendor emoji fonts
+blobmoji
+blobmoji-extra/images
+blobmoji-extra/svgs
 facebook
 facebook-extra
+fluentui
+joypixels
 openmoji
 openmoji-extra
 noto-emoji
@@ -26,9 +31,6 @@ oneui
 twemoji
 twemoji-extra/images
 twemoji-extra/svgs
-fluentui
-joypixels
-blobmoji
 
 # Python assets
 __pycache__
