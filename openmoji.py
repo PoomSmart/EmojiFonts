@@ -1,4 +1,4 @@
-# import os
+import os
 import sys
 import io
 from fontTools import ttLib
@@ -35,9 +35,6 @@ for ppem, strike in f['sbix'].strikes.items():
         name = norm_name(name)
         if base_is_whitelist(name):
             continue
-        if '.l' in name or '.r' in name or 'silhouette' in name:
-            m_print(f'{name} is missing')
-            continue
         name = norm_fam(name)
         name = norm_dual(name)
         if name is None:
@@ -46,12 +43,14 @@ for ppem, strike in f['sbix'].strikes.items():
         name = norm_special(name)
         name = openmoji_name(name)
         path = f'{fontname}/images/{ppem}/{name}.png'
-        # if not os.path.exists(path):
-        #     path = f'{fontname}-extra/{name}.png'
+        if not os.path.exists(path):
+            if name.startswith('silhouette'):
+                name = name.lower()
+            name = name.replace('.L', '.l').replace('.R', '.r')
+            path = f'{fontname}-extra/images/{ppem}/{name}.png'
         with PImage.open(path) as fin:
-            img = fin.resize((ppem, ppem), PImage.Resampling.BICUBIC)
             stream = io.BytesIO()
-            img.save(stream, format='png')
+            fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()
             stream.close()
 

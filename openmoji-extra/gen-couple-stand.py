@@ -1,6 +1,8 @@
 import xml.etree.ElementTree as ET
 from shared import *
 
+# TODO: beautify remove_child?
+
 # left woman, right man
 for skin in skins:
     name = f'{font}/1F46B.svg' if skin == 'none' else f'{font}/1F46B-{skin}.svg'
@@ -26,7 +28,7 @@ for skin in skins:
     remove_child(left, 4, 0)
     left_name = '1F468.l.svg' if skin == 'none' else f'1F468-{skin}.l.svg'
     left_out = ET.ElementTree(left)
-    left_out.write(left_name, encoding='utf-8')
+    left_out.write(f'svgs/{left_name}', encoding='utf-8')
 
 # right woman
 for skin in skins:
@@ -38,7 +40,7 @@ for skin in skins:
     remove_child(right, 4, 0)
     right_name = '1F469.r.svg' if skin == 'none' else f'1F469-{skin}.r.svg'
     right_out = ET.ElementTree(right)
-    right_out.write(right_name, encoding='utf-8')
+    right_out.write(f'svgs/{right_name}', encoding='utf-8')
 
 # silhouette woman
 name = f'{font}/1F46D.svg'
@@ -52,12 +54,12 @@ remove_child(right, 1, 1)
 remove_child(right, 4, 2)
 remove_child(right, 4, 1)
 remove_child(right, 4, 0)
-find_set_color(left)
-find_set_color(right)
+apply_silhouette(left)
+apply_silhouette(right)
 left_out = ET.ElementTree(left)
-left_out.write('silhouette.wl.svg', encoding='utf-8')
+left_out.write('svgs/silhouette.wl.svg', encoding='utf-8')
 right_out = ET.ElementTree(right)
-right_out.write('silhouette.wr.svg', encoding='utf-8')
+right_out.write('svgs/silhouette.wr.svg', encoding='utf-8')
 
 # silhouette man
 name = f'{font}/1F46C.svg'
@@ -71,9 +73,9 @@ remove_child(right, 1, 1)
 remove_child(right, 4, 5)
 remove_child(right, 4, 4)
 remove_child(right, 4, 3)
-find_set_color(left)
-find_set_color(right)
+apply_silhouette(left)
+apply_silhouette(right)
 left_out = ET.ElementTree(left)
-left_out.write('silhouette.ml.svg', encoding='utf-8')
+left_out.write('svgs/silhouette.ml.svg', encoding='utf-8')
 right_out = ET.ElementTree(right)
-right_out.write('silhouette.mr.svg', encoding='utf-8')
+right_out.write('svgs/silhouette.mr.svg', encoding='utf-8')

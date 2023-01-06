@@ -30,7 +30,7 @@ Missing emojis or limitations of each themed font will be listed here.
 
 ## OpenMoji Emoji
 
-- Not yet support: skinned handshake, some couple emojis.
+- Couple emojis of different skins will not share the same hair color as it seems so in the original OpenMoji. In my opinion, this is better because why would two people of different races always share the same hair color?
 
 ## Samsung One UI Emoji
 
