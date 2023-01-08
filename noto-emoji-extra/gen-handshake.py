@@ -28,11 +28,11 @@ for skin in skins:
 
 left_gray = ET.parse(handshake).getroot()
 remove_right(left_gray[0])
-find_set_color(left_gray)
+apply_silhouette(left_gray)
 left_gray_out = ET.ElementTree(left_gray)
 left_gray_out.write('svgs/silhouette_1faf1.l.svg', encoding='utf-8')
 right_gray = ET.parse(handshake).getroot()
 remove_left(right_gray[0])
-find_set_color(right_gray)
+apply_silhouette(right_gray)
 right_gray_out = ET.ElementTree(right_gray)
 right_gray_out.write('svgs/silhouette_1faf2.r.svg', encoding='utf-8')

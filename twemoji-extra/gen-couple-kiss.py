@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 from shared import *
 
 # neutral
-for skin in skins.keys():
+for skin in skins:
     name = f'{font}/1f48f.svg' if skin == 'none' else f'{font}/1f48f-{skin}.svg'
     left = ET.parse(name).getroot()
     right = ET.parse(name).getroot()
@@ -51,7 +51,7 @@ for g in ['1f469', '1f468']:
 
 # dual woman, dual man
 for g in ['1f469', '1f468']:
-    for skin in skins.keys():
+    for skin in skins:
         if skin == 'none':
             name = f'{font}/{g}-200d-2764-fe0f-200d-1f48b-200d-{g}.svg'
         else:

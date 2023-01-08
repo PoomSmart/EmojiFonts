@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -39,7 +40,10 @@ def main():
         if sks is not None:
             i = 0
             for fldr in SK_FOLDERS:
-                svg_path = next((folder / fldr / opts.style).glob('*.svg'))
+                target_folder = folder / fldr / opts.style
+                if not os.path.exists(target_folder):
+                    target_folder = folder / fldr / 'Flat'
+                svg_path = next(target_folder.glob('*.svg'))
                 name = sks[i].replace(' ', '-')
                 name = f'{name}.svg'
                 dst = opts.output / opts.style / name

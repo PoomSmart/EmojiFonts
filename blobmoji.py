@@ -39,7 +39,7 @@ cmap = f.get('cmap').tables[0].cmap
 bicmap = b.get('cmap').buildReversed()
 bcmap = b.get('cmap').tables[1].cmap
 
-def get_apple_code(code):
+def get_apple_code(code: str):
     code = next(iter(bicmap[code]))
     if code == 0x200D:
         return 'u200D'
@@ -71,7 +71,7 @@ for lookup in bgsub.iter('Lookup'):
             real_glyph = lig.get('glyph')
             blig[name] = real_glyph
 
-def norm_name(name):
+def norm_name(name: str):
     name = name.upper()
     tokens = name.split('_')
     s = []
@@ -82,7 +82,7 @@ def norm_name(name):
         s[0] = name_map[s[0]]
     return '_'.join(s)
 
-def get_glyph_name(name):
+def get_glyph_name(name: str):
     if name in icmap:
         code = next(iter(icmap[name]))
         return bcmap[code]

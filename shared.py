@@ -1,5 +1,5 @@
 from wand.color import Color
-from wand.image import Image
+from wand.image import Image as Image
 
 debug = False
 global convert_skin
@@ -95,20 +95,20 @@ with_variants = [
 
 whitelists = ['00a9', '00ae', 'hiddenglyph']
 
-def m_print(str):
+def m_print(string: str):
     if debug:
-        print(str)
+        print(string)
 
-def is_flag(name):
+def is_flag(name: str):
     for f in flags:
         if f in name:
             return True
     return False
 
-def base_is_whitelist(name):
+def base_is_whitelist(name: str):
     return name in whitelists
 
-def base_norm_name(name):
+def base_norm_name(name: str):
     if len(name) == 13 and 'silhouette.' in name:
         return name
     tokens = name.replace('.u', '_').split('_')
@@ -119,7 +119,7 @@ def base_norm_name(name):
         n.append(t)
     return '_'.join(n).lower()
 
-def norm_fam(name):
+def norm_fam(name: str):
     if '1f46a.' not in name:
         return name
     for p1 in ['m', 'w', '']:
@@ -132,7 +132,7 @@ def norm_fam(name):
                         return '_200d_'.join(list(filter(len, seq)))
     return name
 
-def norm_dual(name):
+def norm_dual(name: str):
     for s in range(1, 6):
         if name == f'{man}_1f91d_{man}.{s}{s}':
             return f'1f46c_{skins[s]}'
@@ -151,7 +151,7 @@ def norm_dual(name):
         name = name.replace('.ra', '.r')
     return name
 
-def norm_variant_selector(name):
+def norm_variant_selector(name: str):
     if name in with_variants:
         return f'{name}_fe0f'
     return name
@@ -160,7 +160,7 @@ gender_with_selector = [
     '26f9', '1f3cb', '1f3cc', '1f3fb', '1f575'
 ]
 
-def base_norm_variants(name, with_variant_selector = False, with_condition = False):
+def base_norm_variants(name: str, with_variant_selector = False, with_condition = False):
     v = '_fe0f' if with_variant_selector else ''
     if '.m' in name:
         name = name.replace('.m', '')
@@ -196,7 +196,7 @@ def base_norm_variants(name, with_variant_selector = False, with_condition = Fal
                     return name.replace(f'.{s}', f'_{skins[s]}')
     return name
 
-def base_norm_special(name, with_variant_selector = False):
+def base_norm_special(name: str, with_variant_selector = False):
     v = '_fe0f' if with_variant_selector else ''
     if name == '2764_1f525':
         return f'2764{v}_200d_1f525'
@@ -233,6 +233,6 @@ def base_norm_special(name, with_variant_selector = False):
                 return f'{g}_200d_{p}'
     return name
 
-def svg_to_blob(svg_file, size):
+def svg_to_blob(svg_file: str, size: int):
     with Image(filename=svg_file, background=Color('transparent'), width=size, height=size, format='svg') as image:
         return image.make_blob('png')

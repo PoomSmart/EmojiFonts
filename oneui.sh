@@ -12,6 +12,7 @@ mkdir -p $NAME/images/96 $NAME/images/64 $NAME/images/48 $NAME/images/40 $NAME/i
 
 echo "Extracting font..."
 cd $NAME
+rm -f *.ttx
 ttx -q -s -z extfile $FONT_NAME.ttf
 cd ..
 
@@ -23,6 +24,18 @@ mogrify -resize 40x40 -path $NAME/images/40 $NAME/images/48/*.png
 mogrify -resize 32x32 -path $NAME/images/32 $NAME/images/40/*.png
 mogrify -resize 20x20 -path $NAME/images/20 $NAME/images/32/*.png
 rm -rf $NAME/bitmaps
+
+cp $NAME-extra/original/*.png $NAME-extra/images/96
+./get-assets.sh oneui
+
+echo "Optimizing PNGs using pngquant..."
+pngquant -f --ext .png $NAME/images/96/*.png
+pngquant -f --ext .png $NAME/images/64/*.png
+pngquant -f --ext .png $NAME/images/48/*.png
+pngquant -f --ext .png $NAME/images/40/*.png
+pngquant -f --ext .png $NAME/images/32/*.png
+pngquant -f --ext .png $NAME/images/20/*.png
+pngquant -f --ext .png $NAME-extra/images/*/*.png
 
 python3 $NAME.py common/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
 python3 $NAME.py common/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx

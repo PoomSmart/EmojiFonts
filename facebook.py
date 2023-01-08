@@ -7,10 +7,9 @@ from shared import *
 
 fontname = 'facebook'
 
-# input: font ttf, assets folder
+# input: font ttf
 
 ttf = sys.argv[1]
-assets = sys.argv[2]
 
 f = ttLib.TTFont(ttf)
 
@@ -46,23 +45,16 @@ specials = {
 
 hairs = ['1f9b1', '1f9b2', '1f9b3']
 
-def is_missing_duo(name):
-    if len(name) < 20:
-        return False
-    if name[:5] == neutral:
-        return name[:-2][0] != '5'
-    return False
+def is_whitelist(name: str):
+    return name in hairs or base_is_whitelist(name)
 
-def is_whitelist(name):
-    return name in hairs or base_is_whitelist(name) or '.l' in name or '.r' in name or 'silhouette.' in name
-
-def norm_name(name):
+def norm_name(name: str):
     result = base_norm_name(name)
     if '20e3' in result:
         result = result[2:]
     return result
 
-def facebook_name(name):
+def facebook_name(name: str):
     return name.replace('_', '-')
 
 for ppem, strike in f['sbix'].strikes.items():
@@ -73,16 +65,13 @@ for ppem, strike in f['sbix'].strikes.items():
         name = norm_name(name)
         if is_whitelist(name):
             continue
-        is_special = name in specials.keys()
+        is_special = name in specials
         if is_special:
             o_name = name
             name = specials[name]
             if name is None:
                 m_print(f'{o_name} is missing')
                 continue
-        elif is_missing_duo(name):
-            m_print(f'{name} is missing')
-            continue
         else:
             name = norm_fam(name)
             name = norm_dual(name)
@@ -92,9 +81,9 @@ for ppem, strike in f['sbix'].strikes.items():
             name = base_norm_special(name, True)
             name = norm_variant_selector(name)
         name = facebook_name(name)
-        path = f'{assets}/{ppem}/{name}.png'
+        path = f'{fontname}/images/{ppem}/{name}.png'
         if not os.path.exists(path):
-            path = f'./{fontname}-extra/{ppem}/{name}.png'
+            path = f'{fontname}-extra/images/{ppem}/{name}.png'
         with PImage.open(path) as fin:
             stream = io.BytesIO()
             fin.save(stream, format='png')

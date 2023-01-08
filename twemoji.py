@@ -13,16 +13,16 @@ ttf = sys.argv[1]
 
 f = ttLib.TTFont(ttf)
 
-def norm_name(name):
+def norm_name(name: str):
     result = base_norm_name(name)
     if '20e3' in result:
         result = result[2:]
     return result
 
-def norm_special(name):
+def norm_special(name: str):
     return base_norm_special(name, True)
 
-def twitter_name(name):
+def twitter_name(name: str):
     return name.replace('_', '-')
 
 for ppem, strike in f['sbix'].strikes.items():

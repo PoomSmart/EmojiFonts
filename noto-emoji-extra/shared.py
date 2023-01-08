@@ -32,10 +32,10 @@ def write_dual(left, right, code_left, code_right, skin, joiner = None):
     left_out.write(f'svgs/{left_name}', encoding='utf-8')
     right_out.write(f'svgs/{right_name}', encoding='utf-8')
 
-def find_set_color(data):
+def apply_silhouette(data):
     for g in data:
         if g.tag == f'{{{namespace}}}g':
-            find_set_color(g)
+            apply_silhouette(g)
         elif g.tag == f'{{{namespace}}}path':
             style = g.attrib['style']
             if style == 'fill:#F386AB;' or style == 'fill:#DA2E75;' or style == 'fill:#EF5592;':

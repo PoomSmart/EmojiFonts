@@ -19,18 +19,21 @@ blobmoji
 blobmoji-extra/images
 blobmoji-extra/svgs
 facebook
-facebook-extra
+facebook-extra/images
 fluentui
 joypixels
+joypixels-extra/images
 openmoji
 openmoji-extra
 noto-emoji
 noto-emoji-extra/images
 noto-emoji-extra/svgs
 oneui
+oneui-extra/images
 twemoji
 twemoji-extra/images
 twemoji-extra/svgs
+whatsapp
 
 # Python assets
 __pycache__

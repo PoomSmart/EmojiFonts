@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 from shared import *
 
 # left woman, right man
-for skin in skins.keys():
+for skin in skins:
     name = f'{font}/1f46b.svg' if skin == 'none' else f'{font}/1f46b-{skin}.svg'
     left_woman = ET.parse(name).getroot()
     right_man = ET.parse(name).getroot()
@@ -13,7 +13,7 @@ for skin in skins.keys():
     write_dual(left_woman, right_man, '1f469', '1f468', skin)
 
 # left man
-for skin in skins.keys():
+for skin in skins:
     name = f'{font}/1f46c.svg' if skin == 'none' else f'{font}/1f46c-{skin}.svg'
     left = ET.parse(name).getroot()
     for i in range(26, 12, -1):
@@ -23,7 +23,7 @@ for skin in skins.keys():
     left_out.write(f'svgs/{left_name}', encoding='utf-8')
 
 # right woman
-for skin in skins.keys():
+for skin in skins:
     name = f'{font}/1f46d.svg' if skin == 'none' else f'{font}/1f46d-{skin}.svg'
     right = ET.parse(name).getroot()
     for i in range(14, -1, -1):

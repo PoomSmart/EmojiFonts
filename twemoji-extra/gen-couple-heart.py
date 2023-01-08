@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 from shared import *
 
 # neutral
-for skin in skins.keys():
+for skin in skins:
     name = f'{font}/1f491.svg' if skin == 'none' else f'{font}/1f491-{skin}.svg'
     left = ET.parse(name).getroot()
     right = ET.parse(name).getroot()
@@ -37,7 +37,7 @@ for g in ['1f469', '1f468', '1f9d1']:
     left_out.write(f'svgs/silhouette-{g}-2764.l.svg', encoding='utf-8')
     right_out = ET.ElementTree(right)
     right_out.write(f'svgs/silhouette-{g}-2764.r.svg', encoding='utf-8')
-    for skin in skins.keys():
+    for skin in skins:
         if skin == 'none':
             name = f'{font}/1f491.svg' if g == '1f9d1' else f'{font}/{g}-200d-2764-fe0f-200d-{g}.svg'
         else:

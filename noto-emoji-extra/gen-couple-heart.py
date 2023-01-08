@@ -24,8 +24,8 @@ for g in ['1f469', '1f468', '1f9d1']:
         remove(left, 2)
         remove(left, 0)
         remove(right, 1)
-    find_set_color(left)
-    find_set_color(right)
+    apply_silhouette(left)
+    apply_silhouette(right)
     left_out = ET.ElementTree(left)
     left_out.write(f'svgs/silhouette_{g}_2764.l.svg', encoding='utf-8')
     right_out = ET.ElementTree(right)
@@ -46,4 +46,3 @@ for g in ['1f469', '1f468', '1f9d1']:
             remove(left, 0)
             remove(right, 1)
         write_dual(left, right, g, g, skin, '2764')
-

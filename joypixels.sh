@@ -10,15 +10,19 @@ MOD=$1
 rm -rf $NAME
 mkdir -p $NAME/96 $NAME/64 $NAME/48 $NAME/40 $NAME/32 $NAME/20
 
-echo "Copying and resizing PNGs..."
+echo "Copying PNGs..."
 cp -r $ASSETS/ $NAME/96
+
+./get-assets.sh joypixels
 
 if [[ $MOD == 'Decal' ]]
 then
     echo "Applying mod: Decal..."
     mogrify -bordercolor none -border 5 -background white -alpha background -channel A -blur 0x3 -level 0,1% $NAME/96/*.png
+    mogrify -bordercolor none -border 5 -background white -alpha background -channel A -blur 0x3 -level 0,1% $NAME-extra/images/96/*.png
 fi
 
+echo "Resizing PNGs..."
 mogrify -resize 96x96 $NAME/96/*.png
 mogrify -resize 64x64 -path $NAME/64 $NAME/96/*.png
 mogrify -resize 48x48 -path $NAME/48 $NAME/64/*.png

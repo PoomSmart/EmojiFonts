@@ -13,7 +13,7 @@ ttf = sys.argv[1]
 
 f = ttLib.TTFont(ttf)
 
-def norm_flag(name):
+def norm_flag(name: str):
     tokens = name.split('_')
     if tokens[0] == '1f3f4':
         tokens = tokens[1:]

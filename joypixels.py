@@ -1,5 +1,6 @@
 import sys
 import io
+import os
 from fontTools import ttLib
 from PIL import Image as PImage
 from shared import *
@@ -12,10 +13,7 @@ ttf = sys.argv[1]
 
 f = ttLib.TTFont(ttf)
 
-def is_whitelist(name):
-    return base_is_whitelist(name) or '.l' in name or '.r' in name or 'silhouette.' in name
-
-def joypixels_name(name,):
+def joypixels_name(name: str):
     tokens = name.split('_')
     n = []
     remove = ['fe0f', '200d']
@@ -31,7 +29,7 @@ for ppem, strike in f['sbix'].strikes.items():
         if glyph.graphicType != 'png ':
             continue
         name = base_norm_name(name)
-        if is_whitelist(name):
+        if base_is_whitelist(name):
             continue
         name = norm_fam(name)
         name = norm_dual(name)
@@ -41,6 +39,9 @@ for ppem, strike in f['sbix'].strikes.items():
         name = base_norm_special(name, True)
         name = joypixels_name(name)
         path = f'{fontname}/{ppem}/{name}.png'
+        if not os.path.exists(path):
+            name = name.replace('-', '_')
+            path = f'{fontname}-extra/images/{ppem}/{name}.png'
         with PImage.open(path) as fin:
             stream = io.BytesIO()
             fin.save(stream, format='png')

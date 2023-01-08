@@ -13,11 +13,10 @@ Missing emojis or limitations of each themed font will be listed here.
 ## Facebook Emoji
 
 - Rely on `emoji-data` repository which is outdated and I had to write additional code to fetch few more emojis.
-- _PNGs only._
 
 ## JoyPixels Emoji
 
-- _PNGs only._
+- Nothing of significant.
 
 ## FluentUI Emoji
 
@@ -34,9 +33,10 @@ Missing emojis or limitations of each themed font will be listed here.
 
 ## Samsung One UI Emoji
 
-- Eye in speech bubble emoji is not supported.
-- Somewhat _PNGs only._
+- Eye in speech emoji is from the older design of One UI. Samsung just didn't include it in One UI 5.0 officially.
 
 ## Notes
 
-_PNGs only_: They come in PNGs which means adding silhouettes, handshake and couple emojis are difficult. If they were in SVGs, we can simply write a script to remove parts that we do not need.
+<!-- _PNGs only_: They come in PNGs which means adding silhouettes, handshake and couple emojis are difficult. If they were in SVGs, we can simply write a script to remove parts that we do not need. -->
+
+Special thanks to [@Dayanch96](https://twitter.com/Dayanch96) for splitting PNG-only couple emojis from certain emoji vendors to the format that is suitable for Apple Color Emoji.

@@ -1,5 +1,6 @@
 import sys
 import io
+import os
 import xml.etree.ElementTree as ET
 from fontTools import ttLib
 from PIL import Image as PImage
@@ -28,10 +29,6 @@ name_map = {
     'u0039': 'nine',
 }
 
-missings = [
-    '1f441_1f5e8'
-]
-
 f = ttLib.TTFont(ttf)
 b = ttLib.TTFont(bttf)
 bgsub = ET.parse(bgsubttx).getroot()
@@ -42,7 +39,7 @@ cmap = f.get('cmap').tables[0].cmap
 bicmap = b.get('cmap').buildReversed()
 bcmap = b.get('cmap').tables[1].cmap
 
-def get_apple_code(code):
+def get_apple_code(code: str):
     code = next(iter(bicmap[code]))
     if code == 0x200D:
         return 'u200D'
@@ -74,7 +71,7 @@ for lookup in bgsub.iter('Lookup'):
             real_glyph = lig.get('glyph')
             blig[name] = real_glyph
 
-def norm_name(name):
+def norm_name(name: str):
     name = name.upper()
     tokens = name.split('_')
     s = []
@@ -85,7 +82,7 @@ def norm_name(name):
         s[0] = name_map[s[0]]
     return '_'.join(s)
 
-def get_glyph_name(name):
+def get_glyph_name(name: str):
     if name in icmap:
         code = next(iter(icmap[name]))
         return bcmap[code]
@@ -96,19 +93,13 @@ def get_glyph_name(name):
         return blig[name]
     return name
 
-def is_whitelist(name):
-    return base_is_whitelist(name) or '.l' in name or '.r' in name or 'silhouette.' in name
-
-print(f'missing emoji list: {missings}')
 for ppem, strike in f.get('sbix').strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():
         if glyph.graphicType != 'png ':
             continue
         name = base_norm_name(name)
-        if is_whitelist(name):
-            continue
-        if name in missings:
+        if base_is_whitelist(name):
             continue
         name = norm_fam(name)
         name = norm_dual(name)
@@ -119,6 +110,17 @@ for ppem, strike in f.get('sbix').strikes.items():
         name = norm_name(name)
         name = get_glyph_name(name)
         path = f'{fontname}/images/{ppem}/{name}.png'
+        if not os.path.exists(path):
+            if name[0] == 'u':
+                name = name[1:].lower()
+                tokens = name.split('_')
+                n = []
+                for t in tokens:
+                    if t[0] == 'u':
+                        t = t[1:]
+                    n.append(t)
+                name = '_'.join(n)
+            path = f'{fontname}-extra/images/{ppem}/{name}.png'
         with PImage.open(path) as fin:
             stream = io.BytesIO()
             fin.save(stream, format='png')

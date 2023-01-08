@@ -13,18 +13,18 @@ ttf = sys.argv[1]
 
 f = ttLib.TTFont(ttf)
 
-def norm_name(name):
+def norm_name(name: str):
     result = base_norm_name(name)
     if '20e3' in result:
         result = result.replace('_20e3', '_fe0f_20e3')
     return result
 
-def norm_special(name):
+def norm_special(name: str):
     if name == '1f441_1f5e8':
         return '1f441_fe0f_200d_1f5e8_fe0f'
     return base_norm_special(name, True)
 
-def openmoji_name(name):
+def openmoji_name(name: str):
     return name.replace('_', '-').upper()
 
 for ppem, strike in f['sbix'].strikes.items():

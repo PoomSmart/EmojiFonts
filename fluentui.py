@@ -57,15 +57,15 @@ missing = [
     '1f9d1_1f3ff_200d_1f4bb',
 ]
 
-def norm_special(name):
+def norm_special(name: str):
     if name == '1f441_1f5e8':
         return '1f441_fe0f_200d_1f5e8_fe0f'
     return base_norm_special(name, True)
 
-def is_whitelist(name):
+def is_whitelist(name: str):
     return base_is_whitelist(name) or '.l' in name or '.r' in name or 'silhouette.' in name
 
-def fluentui_name(name):
+def fluentui_name(name: str):
     if name.endswith('_20e3'):
         name = name.replace('_20e3', '_fe0f_20e3')
     return name.replace('_', '-')
