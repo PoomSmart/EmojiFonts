@@ -105,21 +105,13 @@ for ppem, strike in f['sbix'].strikes.items():
         name = norm_dual(name)
         if name is None:
             continue
-        name = base_norm_variants(name, False, False)
-        name = base_norm_special(name, False)
+        name = base_norm_variants(name)
+        name = base_norm_special(name)
         name = norm_name(name)
         name = get_glyph_name(name)
         path = f'{fontname}/images/{ppem}/{name}.png'
         if not os.path.exists(path):
-            if name[0] == 'u':
-                name = name[1:].lower()
-                tokens = name.split('_')
-                n = []
-                for t in tokens:
-                    if t[0] == 'u':
-                        t = t[1:]
-                    n.append(t)
-                name = '_'.join(n)
+            name = native_norm_name(name)
             path = f'{fontname}-extra/images/{ppem}/{name}.png'
         with PImage.open(path) as fin:
             stream = io.BytesIO()

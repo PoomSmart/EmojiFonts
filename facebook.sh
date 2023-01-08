@@ -11,6 +11,8 @@ rm -rf $NAME
 mkdir -p $NAME/images/96 $NAME/images/64 $NAME/images/48 $NAME/images/40 $NAME/images/32 $NAME/images/20
 
 echo "Fetching extra PNGs..."
+# rm -rf $NAME-extra/images
+mkdir -p $NAME-extra/images/96 $NAME-extra/images/64 $NAME-extra/images/48 $NAME-extra/images/40 $NAME-extra/images/32 $NAME-extra/images/20
 php facebook-fetch.php &> /dev/null
 
 echo "Copying PNGs..."

@@ -1,14 +1,14 @@
+import os
 import sys
 import io
-import os
 import xml.etree.ElementTree as ET
 from fontTools import ttLib
 from PIL import Image as PImage
 from shared import *
 
-fontname = 'oneui'
+fontname = 'EMOJI_FONT'
 
-# input: apple font ttf, oneui font ttf, oneui GSUB ttx
+# input: apple font ttf, EMOJI_FONT font ttf, blobemoji GSUB ttx
 
 ttf = sys.argv[1]
 bttf = sys.argv[2]
@@ -93,7 +93,7 @@ def get_glyph_name(name: str):
         return blig[name]
     return name
 
-for ppem, strike in f.get('sbix').strikes.items():
+for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():
         if glyph.graphicType != 'png ':

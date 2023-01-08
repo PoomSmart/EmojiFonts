@@ -115,9 +115,21 @@ def base_norm_name(name: str):
     n = []
     for t in tokens:
         if t[0] == 'u':
-            t = t[1:] # strip u prefix
+            t = t[1:]
         n.append(t)
     return '_'.join(n).lower()
+
+def native_norm_name(name: str):
+    if name[0] == 'u':
+        name = name[1:].lower()
+        tokens = name.split('_')
+        n = []
+        for t in tokens:
+            if t[0] == 'u':
+                t = t[1:]
+            n.append(t)
+        name = '_'.join(n)
+    return name
 
 def norm_fam(name: str):
     if '1f46a.' not in name:

@@ -145,7 +145,7 @@ function fetch($code, $ratio){
 function fetch_single($img, $alt_img, $type_key, $dir, $size, $ratio){
 	$path = "./{$dir}/{$img}";
 
-	// if (file_exists($path)) return;
+	if (file_exists($path)) return;
 
 	$types = array(
 		'FBEMOJI' => 'f',

@@ -10,7 +10,10 @@ fi
 
 FOLDER=$1-extra
 PNG_PATH=$FOLDER/original
+MAKE_1F491_1F48F=false
 MAX_SIZE=96
+
+[[ $1 == 'facebook' ]] && MAKE_1F491_1F48F=true
 
 mkdir -p $PNG_PATH
 
@@ -92,8 +95,9 @@ do
                         magick $PNG_PATH/$category/$left_name $PNG_PATH/$category/$right_name -compose over -composite $FOLDER/images/$MAX_SIZE/$out_name
                     done
                 done
-                convert $FOLDER/images/$MAX_SIZE/$base_image.l.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}l.png
-                convert $FOLDER/images/$MAX_SIZE/$base_image.r.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}r.png
+                oname=${gender_value}$skin$joiner.${direction::1}.png
+                convert $PNG_PATH/$category/left-d.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}l.png
+                convert $PNG_PATH/$category/right-d.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}r.png
             else
                 for png in $(find $PNG_PATH/$category -type f -name '*.png')
                 do
@@ -122,6 +126,27 @@ do
         done
     fi
 done
+
+if $MAKE_1F491_1F48F; then
+    echo "Making 1f491 and 1f48f set..."
+    declare -A codes
+    codes['heart-nogender']='1f491'
+    codes['kiss-nogender']='1f48f'
+    for category in "${!codes[@]}"
+    do
+        code=${codes[$category]}
+        for skin in "${!skins[@]}"
+        do
+            left_name=left-$skin.png
+            right_name=right-$skin.png
+            skin=${skins[$skin]}
+            [[ $skin != '' ]] && skin=-$skin
+            out_name=$code$skin.png
+            magick $PNG_PATH/$category/$left_name $PNG_PATH/$category/$right_name -compose over -composite $FOLDER/images/$MAX_SIZE/$out_name
+        done
+    done
+    unset codes
+fi
 
 echo "get-assets: Resizing PNGs..."
 mogrify -resize 64x64 -path $FOLDER/images/64 $FOLDER/images/96/*.png

@@ -20,6 +20,7 @@ then
     echo "Applying mod: Decal..."
     mogrify -bordercolor none -border 5 -background white -alpha background -channel A -blur 0x3 -level 0,1% $NAME/96/*.png
     mogrify -bordercolor none -border 5 -background white -alpha background -channel A -blur 0x3 -level 0,1% $NAME-extra/images/96/*.png
+    mogrify -resize 96x96 $NAME-extra/images/96/*.png
 fi
 
 echo "Resizing PNGs..."

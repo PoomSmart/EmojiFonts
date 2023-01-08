@@ -82,7 +82,7 @@ for ppem, strike in f['sbix'].strikes.items():
             name = norm_variant_selector(name)
         name = facebook_name(name)
         path = f'{fontname}/images/{ppem}/{name}.png'
-        if not os.path.exists(path):
+        if not os.path.exists(path) or name.startswith('1f491'):
             path = f'{fontname}-extra/images/{ppem}/{name}.png'
         with PImage.open(path) as fin:
             stream = io.BytesIO()
