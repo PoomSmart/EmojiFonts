@@ -52,35 +52,30 @@ EmojiFonts deals with two font tables; `GDEF` and `sbix`.
 
 Theming scripts for all emojis vendors produce the font in TTC format. When used with EmojiFontManager tweak, it will still work across the board from iOS 6 to the latest.
 
-## Twitter Twemoji
+## Blobmoji Emoji
 
-1. Clone [twemoji](https://github.com/twitter/twemoji) and place its folder alongside this project.
-2. Execute `twemoji.sh` to create the themed font, output at `twemoji/twemoji.ttc`.
-
-## Google Noto Emoji
-
-1. Clone [noto-emoji](https://github.com/googlefonts/noto-emoji) and place its folder alongside this project.
-2. Execute `noto-emoji.sh` to create the themed font, output at `noto-emoji/noto-emoji.ttc`.
+1. Clone [blobmoji](https://github.com/C1710/blobmoji) and place its folder alongside this project.
+2. Execute `blobmoji.sh` to create themed font, output at `blobmoji/blobmoji.ttc`.
 
 ## Facebook Emoji
 
 1. Shallow clone [emoji-data](https://github.com/iamcal/emoji-data) and place its folder alongside this project.
 3. Execute `facebook.sh` to create them themed font, output at `facebook/facebook.ttc`.
 
-## JoyPixels Emoji
-
-1. Download JoyPixels 7.0 Free assets from JoyPixels [Download page](https://joypixels.com/download) and place the folder alongside this project.
-2. Execute `joypixels.sh` to create themed font, output at `joypixels/joypixels.ttc`.
-
 ## FluentUI Emoji
 
 1. Clone [fluentui-emoji](https://github.com/microsoft/fluentui-emoji) and place its folder alongside this project.
 2. Execute `fluentui.sh STYLE` (where `STYLE` is one of this list: `Color, Flat, High Contrast`) to create themed font, output at `fluentui/fluentui-STYLE.ttc`.
 
-## Blobmoji Emoji
+## Google Noto Emoji
 
-1. Clone [blobmoji](https://github.com/C1710/blobmoji) and place its folder alongside this project.
-2. Execute `blobmoji.sh` to create themed font, output at `blobmoji/blobmoji.ttc`.
+1. Clone [noto-emoji](https://github.com/googlefonts/noto-emoji) and place its folder alongside this project.
+2. Execute `noto-emoji.sh` to create the themed font, output at `noto-emoji/noto-emoji.ttc`.
+
+## JoyPixels Emoji
+
+1. Download JoyPixels 7.0 Free assets from JoyPixels [Download page](https://joypixels.com/download) and place the folder alongside this project.
+2. Execute `joypixels.sh` to create themed font, output at `joypixels/joypixels.ttc`.
 
 ## OpenMoji Emoji
 
@@ -91,3 +86,13 @@ Theming scripts for all emojis vendors produce the font in TTC format. When used
 
 1. Retrieve `NotoColorEmoji.ttf` with Samsung One UI 5.0 emojis somehow and place that in `oneui` folder.
 2. Execute `oneui.sh` to create themed font, output at `oneui/oneui.ttc`.
+
+## Twitter Twemoji
+
+1. Clone [twemoji](https://github.com/twitter/twemoji) and place its folder alongside this project.
+2. Execute `twemoji.sh` to create the themed font, output at `twemoji/twemoji.ttc`.
+
+## WhatsApp Emoji
+
+1. Retrieve `NotoColorEmoji.ttf` with WhatsApp emojis somehow and place that in `whatsapp` folder.
+2. Execute `whatsapp.sh` to create themed font, output at `whatsapp/whatsapp.ttc`.

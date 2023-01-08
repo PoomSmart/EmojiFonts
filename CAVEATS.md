@@ -1,12 +1,8 @@
 # Caveats
 
-Missing emojis or limitations of each themed font will be listed here.
+Missing emojis or limitations of each non-Apple themed font will be listed here.
 
-## Twitter Twemoji
-
-- Nothing of significant.
-
-## Google Noto Emoji
+## Blobmoji Emoji
 
 - Nothing of significant.
 
@@ -14,16 +10,16 @@ Missing emojis or limitations of each themed font will be listed here.
 
 - Rely on `emoji-data` repository which is outdated and I had to write additional code to fetch few more emojis.
 
-## JoyPixels Emoji
-
-- Nothing of significant.
-
 ## FluentUI Emoji
 
 - Their `Color` style SVG files are weird that `rsvg-convert` would error out with no memory. I have to use a slower approach `inkscape` instead.
 - Upstream is missing family, couple, flag, skinned handshake, paperclip, technologist and some other emojis.
 
-## Blobmoji Emoji
+## Google Noto Emoji
+
+- Nothing of significant.
+
+## JoyPixels Emoji
 
 - Nothing of significant.
 
@@ -34,6 +30,14 @@ Missing emojis or limitations of each themed font will be listed here.
 ## Samsung One UI Emoji
 
 - Eye in speech emoji is from the older design of One UI. Samsung just didn't include it in One UI 5.0 officially.
+
+## Twitter Twemoji
+
+- Nothing of significant.
+
+## WhatsApp Emoji
+
+- Nothing of significant.
 
 ## Notes
 
