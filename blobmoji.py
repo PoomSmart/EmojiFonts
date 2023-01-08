@@ -113,6 +113,9 @@ for ppem, strike in f['sbix'].strikes.items():
         if not os.path.exists(path):
             name = native_norm_name(name)
             path = f'{fontname}-extra/images/{ppem}/{name}.png'
+            if not os.path.exists(path):
+                name = name.replace('_', '-')
+                path = f'{fontname}-extra/images/{ppem}/{name}.png'
         with PImage.open(path) as fin:
             stream = io.BytesIO()
             fin.save(stream, format='png')

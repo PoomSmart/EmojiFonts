@@ -1,20 +1,16 @@
 {
     "files.exclude": {
         "**/__pycache__": true,
+        "**/*-extra/images": true,
         "**/apple/*": true,
-        "**/blobmoji-extra/images": true,
         "**/blobmoji-extra/svgs": true,
         "**/facebook/*": true,
-        "**/facebook-extra/images/": true,
         "**/fluentui/*": true,
         "**/joypixels/*": true,
-        "**/noto-emoji-extra/images": true,
         "**/noto-emoji-extra/svgs": true,
         "**/oneui/*": true,
-        "**/openmoji/images": true,
         "**/openmoji/svgs": true,
         "**/twemoji/images": true,
-        "**/twemoji-extra/images": true,
         "**/twemoji-extra/svgs": true,
     }
 }

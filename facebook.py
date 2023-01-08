@@ -84,6 +84,9 @@ for ppem, strike in f['sbix'].strikes.items():
         path = f'{fontname}/images/{ppem}/{name}.png'
         if not os.path.exists(path) or name.startswith('1f491'):
             path = f'{fontname}-extra/images/{ppem}/{name}.png'
+            if not os.path.exists(path):
+                name = name.replace('-', '_')
+                path = f'{fontname}-extra/images/{ppem}/{name}.png'
         with PImage.open(path) as fin:
             stream = io.BytesIO()
             fin.save(stream, format='png')

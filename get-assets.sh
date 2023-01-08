@@ -12,6 +12,7 @@ FOLDER=$1-extra
 PNG_PATH=$FOLDER/original
 MAKE_1F491_1F48F=false
 MAX_SIZE=96
+SEP='_'
 
 [[ $1 == 'facebook' ]] && MAKE_1F491_1F48F=true
 
@@ -60,16 +61,16 @@ do
             direction=$(cut -d'-' -f1 <<< ${fname/.png/})
             direction=${direction::1}
             skin=${skins[$variant]}
-            [[ $skin != '' ]] && skin=-$skin
+            [[ $skin != '' ]] && skin=${SEP}$skin
             oname=${handshakes[$direction]}$skin.$direction.png
             cp $png $FOLDER/images/$MAX_SIZE/$oname
         done
-        convert $FOLDER/images/$MAX_SIZE/1faf1.l.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/silhouette-1faf1.l.png
-        convert $FOLDER/images/$MAX_SIZE/1faf2.r.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/silhouette-1faf2.r.png
+        convert $FOLDER/images/$MAX_SIZE/1faf1.l.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/silhouette${SEP}1faf1.l.png
+        convert $FOLDER/images/$MAX_SIZE/1faf2.r.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/silhouette${SEP}1faf2.r.png
     else
         joiner=''
         joiner_value=${kinds[$kind]}
-        [[ $joiner_value != '' ]] && joiner=-$joiner_value
+        [[ $joiner_value != '' ]] && joiner=${SEP}$joiner_value
         for gender in "${!genders[@]}"
         do
             category=$kind-$gender
@@ -79,19 +80,19 @@ do
             then
                 output_image=silhouette.${apple_genders[$gender]}
             else
-                output_image=silhouette-$gender_value$joiner.
+                output_image=silhouette${SEP}$gender_value$joiner.
             fi
             if [[ $category == 'couple-nogender' ]]
             then
                 for left_skin in "${!skins[@]}"
                 do
                     left_name=left-$left_skin.png
-                    [[ $left_skin != 'd' ]] && left_skin=-${skins[$left_skin]}
+                    [[ $left_skin != 'd' ]] && left_skin=${SEP}${skins[$left_skin]}
                     for right_skin in "${!skins[@]}"
                     do
                         right_name=right-$right_skin.png
-                        [[ $right_skin != 'd' ]] && right_skin=-${skins[$right_skin]}
-                        out_name=1f9d1$left_skin-200d-1f91d-200d-1f9d1$right_skin.png
+                        [[ $right_skin != 'd' ]] && right_skin=${SEP}${skins[$right_skin]}
+                        out_name=1f9d1$left_skin${SEP}200d${SEP}1f91d${SEP}200d${SEP}1f9d1$right_skin.png
                         magick $PNG_PATH/$category/$left_name $PNG_PATH/$category/$right_name -compose over -composite $FOLDER/images/$MAX_SIZE/$out_name
                     done
                 done
@@ -105,7 +106,7 @@ do
                     variant=$(cut -d'-' -f2 <<< ${fname/.png/})
                     direction=$(cut -d'-' -f1 <<< ${fname/.png/})
                     skin=${skins[$variant]}
-                    [[ $skin != '' ]] && skin=-$skin
+                    [[ $skin != '' ]] && skin=${SEP}$skin
                     oname=${gender_value}$skin$joiner.${direction::1}.png
                     cp $png $FOLDER/images/$MAX_SIZE/$oname
                 done
@@ -140,7 +141,7 @@ if $MAKE_1F491_1F48F; then
             left_name=left-$skin.png
             right_name=right-$skin.png
             skin=${skins[$skin]}
-            [[ $skin != '' ]] && skin=-$skin
+            [[ $skin != '' ]] && skin=${SEP}$skin
             out_name=$code$skin.png
             magick $PNG_PATH/$category/$left_name $PNG_PATH/$category/$right_name -compose over -composite $FOLDER/images/$MAX_SIZE/$out_name
         done

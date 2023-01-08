@@ -139,7 +139,7 @@ foreach ($codes as $c) {
 }
 
 function fetch($code, $ratio){
-	fetch_single($code.'.png', null, 'EMOJI_3', 'facebook-extra/images/'.($ratio * 32), 32, $ratio);
+	fetch_single(str_replace('-', '_', $code).'.png', null, 'EMOJI_3', 'facebook-extra/images/'.($ratio * 32), 32, $ratio);
 }
 
 function fetch_single($img, $alt_img, $type_key, $dir, $size, $ratio){
