@@ -82,7 +82,7 @@ for ppem, strike in f['sbix'].strikes.items():
             name = norm_variant_selector(name)
         name = facebook_name(name)
         path = f'{fontname}/images/{ppem}/{name}.png'
-        if not os.path.exists(path) or name.startswith('1f491'):
+        if not os.path.exists(path) or name.startswith('1f491') or name.startswith('1f48f'):
             path = f'{fontname}-extra/images/{ppem}/{name}.png'
             if not os.path.exists(path):
                 name = name.replace('-', '_')

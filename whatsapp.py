@@ -107,11 +107,12 @@ for ppem, strike in f['sbix'].strikes.items():
             continue
         name = base_norm_variants(name)
         name = base_norm_special(name)
+        o_name = name
         name = norm_name(name)
         name = get_glyph_name(name)
         path = f'{fontname}/images/{ppem}/{name}.png'
-        if not os.path.exists(path):
-            name = native_norm_name(name)
+        if not os.path.exists(path) or o_name.startswith('1f491') or o_name.startswith('1f48f'):
+            name = native_norm_name(o_name)
             path = f'{fontname}-extra/images/{ppem}/{name}.png'
             if not os.path.exists(path):
                 name = name.replace('_', '-')
