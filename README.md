@@ -1,6 +1,6 @@
 # EmojiFonts
 
-Python scripts to backport and theme Apple Color Emoji font.
+Python and shell scripts to backport and theme [Apple Color Emoji font](https://en.wikipedia.org/wiki/Apple_Color_Emoji).
 
 # Prerequisites
 
@@ -30,27 +30,25 @@ Python scripts to backport and theme Apple Color Emoji font.
 
 ## Optimization
 
-The script `apple.sh` uses `pngquant` to optimize the images with little to none changes to the quality. The Apple emoji font sizes are reduced by nearly 50% using this method!
+The script `apple.sh` uses `pngquant` to optimize the images with little to none changes to the quality. The Apple emoji font sizes are reduced by nearly 50% using this method.
 
 # Scripts
 
-EmojiFonts deals with two font tables; `GDEF` and `sbix`.
+EmojiFonts deals with certain font tables; mainly `GDEF` and `sbix`.
 
 `shift-multi.py` resizes and shifts the multi-skinned emojis that pair up as one, including couples and handshake, to have them displayed on iOS 13 and below correctly where there is no render logic to automatically place the pair close together.
 
 `GDEF` table which maps each of paired emojis to a certain class, is removed by the scripts. This is for the easiest backward-compatible solution for the emoji font. If the table is present, the text render engine on iOS 14+ will try to place the pair close together again even when we applied `shift-multi.py` to the font.
 
-`remove-strikes.py` removes supposedly least used strikes (image data) from `sbix` table. By default, emoji images come in certain dimensions from `20x20` to `160x160`. If images are uncompressed (macOS, for example), the total font size exceeds 100 MB which is not suitable for storing in GitHub repository.
+`remove-strikes.py` removes supposedly least used strikes (image data) from `sbix` table. By default, emoji images come in a variety of dimensions from `20x20` to `160x160`. If images are uncompressed (macOS, for example), the total font size exceeds 100 MB which is not suitable for storing in GitHub repository.
 
-`strip.py` strips PNG metadata out of emoji images using Python PIL Fork (Pillow). This is the case for older macOS emoji font where Apple simply did not optimize the PNGs and made the font size so big. You may comment out the execution of this script in `get-fonts.sh` if you are working on a recent emoji font.
-
-`extractor.py` extracts PNG emoji images from the font - and opens up the possibility to theme the emoji font!
+`extractor.py` extracts PNG emoji images from the font. This opens up the possibility to theme the emoji font.
 
 `otf2otc.py` combines TTF (True Type Font) fonts into a single TTC (True Type Collection) font. From iOS 10, Apple Color Emoji is built as TTC.
 
 # Theming
 
-Theming scripts for all emojis vendors produce the font in TTC format. When used with EmojiFontManager tweak, it will still work across the board from iOS 6 to the latest.
+Theming scripts for all emojis vendors produce the font in TTC format. The font may be used by EmojiFontManager iOS tweak, and is guaranteed to work on iOS 6 and higher. Ensure that you executed `apple.sh` before following instructions below.
 
 ## Blobmoji Emoji
 

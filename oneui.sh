@@ -25,6 +25,7 @@ mogrify -resize 32x32 -path $NAME/images/32 $NAME/images/40/*.png
 mogrify -resize 20x20 -path $NAME/images/20 $NAME/images/32/*.png
 rm -rf $NAME/bitmaps
 
+mkdir -p $NAME-extra/images/96
 cp $NAME-extra/original/*.png $NAME-extra/images/96
 ./get-assets.sh oneui
 
@@ -37,8 +38,8 @@ pngquant -f --ext .png $NAME/images/32/*.png
 pngquant -f --ext .png $NAME/images/20/*.png
 pngquant -f --ext .png $NAME-extra/images/*/*.png
 
-python3 $NAME.py common/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
-python3 $NAME.py common/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
+python3 $NAME.py apple/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
+python3 $NAME.py apple/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
 
 python3 otf2otc.py $NAME/${APPLE_FONT_NAME}_00.ttf $NAME/${APPLE_FONT_NAME}_01.ttf -o $NAME/$NAME.ttc
 

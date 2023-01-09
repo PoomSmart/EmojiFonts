@@ -64,8 +64,8 @@ pngquant -f --ext .png $NAME/images/32/*.png
 pngquant -f --ext .png $NAME/images/20/*.png
 pngquant -f --ext .png $NAME-extra/images/*/*.png
 
-python3 $NAME.py common/${FONT_NAME}_00.ttf
-python3 $NAME.py common/${FONT_NAME}_01.ttf
+python3 $NAME.py apple/${FONT_NAME}_00.ttf
+python3 $NAME.py apple/${FONT_NAME}_01.ttf
 
 python3 otf2otc.py $NAME/${FONT_NAME}_00.ttf $NAME/${FONT_NAME}_01.ttf -o $NAME/$NAME.ttc
 

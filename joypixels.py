@@ -7,9 +7,10 @@ from shared import *
 
 fontname = 'joypixels'
 
-# input: font ttf
+# input: font ttf, emoji style
 
 ttf = sys.argv[1]
+style = sys.argv[2]
 
 f = ttLib.TTFont(ttf)
 
@@ -49,5 +50,5 @@ for ppem, strike in f['sbix'].strikes.items():
             stream.close()
 
 print('Saving changes...')
-ttf = ttf.replace('common/', '')
-f.save(f'{fontname}/{ttf}')
+ttf = ttf.replace('apple/', '')
+f.save(f'{fontname}/{style}-{ttf}')

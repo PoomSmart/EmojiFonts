@@ -50,5 +50,5 @@ for ppem, strike in f['sbix'].strikes.items():
             stream.close()
 
 print('Saving changes...')
-ttf = ttf.replace('common/', '')
+ttf = ttf.replace('apple/', '')
 f.save(f'{fontname}/{ttf}')
