@@ -25,6 +25,7 @@ def norm_special(name: str):
 def twitter_name(name: str):
     return name.replace('_', '-')
 
+prepare_strikes(f)
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():

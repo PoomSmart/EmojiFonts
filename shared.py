@@ -1,5 +1,4 @@
-from wand.color import Color
-from wand.image import Image as Image
+from fontTools import ttLib
 
 debug = False
 global convert_skin
@@ -245,6 +244,6 @@ def base_norm_special(name: str, with_variant_selector = False):
                 return f'{g}_200d_{p}'
     return name
 
-def svg_to_blob(svg_file: str, size: int):
-    with Image(filename=svg_file, background=Color('transparent'), width=size, height=size, format='svg') as image:
-        return image.make_blob('png')
+def prepare_strikes(f: ttLib.TTFont):
+    # f['sbix'].strikes.pop(160)
+    pass

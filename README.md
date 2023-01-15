@@ -7,14 +7,13 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 - [Python 3.7 or later](http://www.python.org/download/)
 - [pip](https://pip.pypa.io/en/stable/)
 - [fonttools](https://github.com/fonttools/fonttools) (`pip3 install fonttools[repacker]`)
-- [Pillow](https://pillow.readthedocs.io/en/stable/) (`python3 -m pip install --upgrade Pillow`)
+- [Pillow](https://pillow.readthedocs.io/en/stable/) (`pip3 install --upgrade Pillow`)
 - [getfonts](https://github.com/DavidBarts/getfonts) (for `getfonts`, `getfontname` and `stripttc`)
 - [pngquant](https://pngquant.org) (`brew install pngquant`)
 
 # Prerequisites (Theming)
 
 - [ImageMagick](https://imagemagick.org/index.php) (`brew install freetype imagemagick`)
-- [Wand](https://pypi.org/project/Wand/) (`pip3 install Wand`)
 - [librsvg](https://wiki.gnome.org/Projects/LibRsvg) (`brew install librsvg`)
 - [inkscape](https://formulae.brew.sh/cask/inkscape) (`brew install inkscape`)
 - php (`brew install php`)

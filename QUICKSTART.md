@@ -6,7 +6,7 @@ macOS machine with homebrew and Python 3.7+ installed, assumed:
 
 ```
 python3 -m pip install --upgrade Pillow
-pip3 install fonttools[repacker] Wand
+pip3 install fonttools[repacker]
 brew install pngquant freetype imagemagick librsvg inkscape php
 ```
 

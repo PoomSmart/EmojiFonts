@@ -2,7 +2,6 @@
 
 - [ ] Batch convert SVGs into PNGs faster (something other than `rsvg-convert`)
 - [ ] Convert from SVGs into PNGs with sufficient memory (to replace the slow `inkscape`)
-- [ ] Intuitive setting of `HD` flag
 - [ ] Decouple from `emoji-data` repository
 - [ ] FluentUI Emoji HD
 - [ ] Facebook Emoji HD
