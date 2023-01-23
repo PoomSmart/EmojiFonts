@@ -11,11 +11,6 @@ update-deb.sh
 apple
 .DS_Store
 
-# Tools
-getfonts
-getfontname
-stripttc
-
 # Vendor emoji fonts
 blobmoji
 blobmoji-extra/svgs

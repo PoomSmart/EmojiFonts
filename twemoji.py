@@ -1,8 +1,6 @@
 import os
 import sys
-import io
 from fontTools import ttLib
-from PIL import Image as PImage
 from shared import *
 
 fontname = 'twemoji'
@@ -44,12 +42,8 @@ for ppem, strike in f['sbix'].strikes.items():
         path = f'{fontname}/images/{ppem}/{name}.png'
         if not os.path.exists(path):
             path = f'{fontname}-extra/images/{ppem}/{name}.png'
-        with PImage.open(path) as fin:
-            stream = io.BytesIO()
-            fin.save(stream, format='png')
-            glyph.imageData = stream.getvalue()
-            stream.close()
-            del stream
+        with open(path, 'rb') as fin:
+            glyph.imageData = fin.read()
 
 print('Saving changes...')
 ttf = ttf.replace('apple/', '')

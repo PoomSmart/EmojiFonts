@@ -33,7 +33,7 @@ def main():
         folder = jp.parent
         with open(jp, 'r') as jf:
             md = json.load(jf)
-        
+
         uc = md.get('unicode')
         sks = md.get('unicodeSkintones')
 

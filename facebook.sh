@@ -48,6 +48,6 @@ pngquant -f --ext .png $NAME-extra/images/*/*.png
 python3 $NAME.py apple/${FONT_NAME}_00.ttf
 python3 $NAME.py apple/${FONT_NAME}_01.ttf
 
-python3 otf2otc.py $NAME/${FONT_NAME}_00.ttf $NAME/${FONT_NAME}_01.ttf -o $NAME/$NAME.ttc
+otf2otc $NAME/${FONT_NAME}_00.ttf $NAME/${FONT_NAME}_01.ttf -o $NAME/$NAME.ttc
 
 echo "Output file at $NAME/$NAME.ttc"

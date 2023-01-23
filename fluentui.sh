@@ -50,6 +50,6 @@ pngquant -f --ext .png "$ASSETS"/40/*.png
 python3 $NAME.py apple/${FONT_NAME}_00.ttf "$STYLE"
 python3 $NAME.py apple/${FONT_NAME}_01.ttf "$STYLE"
 
-python3 otf2otc.py $NAME/"$STYLE"-${FONT_NAME}_00.ttf $NAME/"$STYLE"-${FONT_NAME}_01.ttf -o $NAME/$NAME-"$STYLE".ttc
+otf2otc $NAME/"$STYLE"-${FONT_NAME}_00.ttf $NAME/"$STYLE"-${FONT_NAME}_01.ttf -o $NAME/$NAME-"$STYLE".ttc
 
 echo "Output file at $NAME/$NAME-$STYLE.ttc"

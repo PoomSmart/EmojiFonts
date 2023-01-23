@@ -1,9 +1,7 @@
 import sys
-import io
 import os
 import xml.etree.ElementTree as ET
 from fontTools import ttLib
-from PIL import Image as PImage
 from shared import *
 
 fontname = 'oneui'
@@ -114,12 +112,8 @@ for ppem, strike in f.get('sbix').strikes.items():
         if not os.path.exists(path):
             name = native_norm_name(name)
             path = f'{fontname}-extra/images/{ppem}/{name}.png'
-        with PImage.open(path) as fin:
-            stream = io.BytesIO()
-            fin.save(stream, format='png')
-            glyph.imageData = stream.getvalue()
-            stream.close()
-            del stream
+        with open(path, 'rb') as fin:
+            glyph.imageData = fin.read()
 
 print('Saving changes...')
 ttf = ttf.replace('apple/', '')

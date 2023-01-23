@@ -54,6 +54,6 @@ else
     OUT_FONT_NAME=$NAME.ttc
 fi
 
-python3 otf2otc.py $NAME/${FONT_NAME}_00.ttf $NAME/${FONT_NAME}_01.ttf -o $NAME/$OUT_FONT_NAME
+otf2otc $NAME/${FONT_NAME}_00.ttf $NAME/${FONT_NAME}_01.ttf -o $NAME/$OUT_FONT_NAME
 
 echo "Output file at $NAME/$OUT_FONT_NAME"

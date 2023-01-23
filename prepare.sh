@@ -8,9 +8,9 @@ WORK_DIR=common
 mkdir -p $WORK_DIR
 
 echo "Extracting font..."
-./getfonts $IOS_FONT_NAME.ttc
-mv ${IOS_FONT_NAME}_00.ttf $WORK_DIR/
-mv ${IOS_FONT_NAME}_01.ttf $WORK_DIR/
+otc2otf $IOS_FONT_NAME.ttc
+mv AppleColorEmoji.ttf $WORK_DIR/${IOS_FONT_NAME}_00.ttf
+mv .AppleColorEmojiUI.ttf $WORK_DIR/${IOS_FONT_NAME}_01.ttf
 
 cd $WORK_DIR
 echo "Extracting tables..."

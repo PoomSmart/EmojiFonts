@@ -1,8 +1,6 @@
 import sys
-import io
 import os
 from fontTools import ttLib
-from PIL import Image as PImage
 from shared import *
 
 fontname = 'facebook'
@@ -88,12 +86,8 @@ for ppem, strike in f['sbix'].strikes.items():
             if not os.path.exists(path):
                 name = name.replace('-', '_')
                 path = f'{fontname}-extra/images/{ppem}/{name}.png'
-        with PImage.open(path) as fin:
-            stream = io.BytesIO()
-            fin.save(stream, format='png')
-            glyph.imageData = stream.getvalue()
-            stream.close()
-            del stream
+        with open(path, 'rb') as fin:
+            glyph.imageData = fin.read()
 
 print('Saving changes...')
 ttf = ttf.replace('apple/', '')
