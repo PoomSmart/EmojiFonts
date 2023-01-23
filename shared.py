@@ -245,5 +245,6 @@ def base_norm_special(name: str, with_variant_selector = False):
     return name
 
 def prepare_strikes(f: ttLib.TTFont):
-    # f['sbix'].strikes.pop(160)
-    pass
+    if 160 in f['sbix'].strikes:
+        f['sbix'].strikes.pop(160)
+    # pass
