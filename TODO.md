@@ -5,7 +5,6 @@
 - [ ] Decouple from `emoji-data` repository
 - [ ] FluentUI Emoji HD
 - [ ] Facebook Emoji HD
-- [ ] Handle iOS 16 special things if any
 - [ ] Group files by theme?
 - [ ] Rely more on GSUB/MORX tables of the font than manual name mapping
 - [ ] Streamline code for manipulating SVGs for couple emojis

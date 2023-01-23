@@ -4,7 +4,7 @@ ET.register_namespace('', 'http://www.w3.org/2000/svg')
 
 font = '../../twemoji/assets/svg'
 
-silhouette_color = '#CCCCCC'
+silhouette_color = '#7E7E7E'
 
 skins = {
     'none': {

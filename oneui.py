@@ -93,6 +93,7 @@ def get_glyph_name(name: str):
         return blig[name]
     return name
 
+prepare_strikes(f)
 for ppem, strike in f.get('sbix').strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():
@@ -118,6 +119,7 @@ for ppem, strike in f.get('sbix').strikes.items():
             fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()
             stream.close()
+            del stream
 
 print('Saving changes...')
 ttf = ttf.replace('apple/', '')

@@ -6,7 +6,7 @@ ET.register_namespace('', namespace)
 
 font = '../../noto-emoji/svg'
 
-silhouette_color = '#CCCCCC'
+silhouette_color = '#7E7E7E'
 
 skins = [
     'none',

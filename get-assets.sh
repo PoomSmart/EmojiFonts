@@ -151,10 +151,11 @@ fi
 
 echo "get-assets: Resizing PNGs..."
 mogrify -resize 64x64 -path $FOLDER/images/64 $FOLDER/images/96/*.png
-mogrify -resize 48x48 -path $FOLDER/images/48 $FOLDER/images/64/*.png
-mogrify -resize 40x40 -path $FOLDER/images/40 $FOLDER/images/48/*.png
-mogrify -resize 32x32 -path $FOLDER/images/32 $FOLDER/images/40/*.png
-mogrify -resize 20x20 -path $FOLDER/images/20 $FOLDER/images/32/*.png
+mogrify -resize 40x40 -path $FOLDER/images/40 $FOLDER/images/64/*.png
+# mogrify -resize 48x48 -path $FOLDER/images/48 $FOLDER/images/64/*.png
+# mogrify -resize 40x40 -path $FOLDER/images/40 $FOLDER/images/48/*.png
+# mogrify -resize 32x32 -path $FOLDER/images/32 $FOLDER/images/40/*.png
+# mogrify -resize 20x20 -path $FOLDER/images/20 $FOLDER/images/32/*.png
 
 unset skins
 unset genders

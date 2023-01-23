@@ -129,7 +129,6 @@ overrides = {
     "u1FAF2.5.R": { "width": "400", "lsb": "-400" }
 }
 
-sbix = data.find('hmtx')
 for mtx in data.iter('mtx'):
     name = mtx.attrib['name']
     if name in overrides:

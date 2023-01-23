@@ -6,7 +6,7 @@ FONT_NAME=AppleColorEmoji@2x
 NAME=twemoji
 ASSETS=../$NAME/assets/svg
 MAX_SIZE=96
-HD=false
+[[ $1 == 'HD' ]] && HD=true
 
 $HD && MAX_SIZE=160
 
@@ -35,38 +35,19 @@ done
 
 cd ..
 
-echo "Resizing PNGs..."
-if $HD; then
-    mogrify -resize 160x160 $NAME/images/160/*.png
-    mogrify -resize 96x96 -path $NAME/images/96 $NAME/images/160/*.png
-    mogrify -resize 160x160 $NAME-extra/images/160/*.png
-    mogrify -resize 96x96 -path $NAME-extra/images/96 $NAME-extra/images/160/*.png
-fi
-mogrify -resize 64x64 -path $NAME/images/64 $NAME/images/96/*.png
-mogrify -resize 48x48 -path $NAME/images/48 $NAME/images/64/*.png
-mogrify -resize 40x40 -path $NAME/images/40 $NAME/images/48/*.png
-mogrify -resize 32x32 -path $NAME/images/32 $NAME/images/40/*.png
-mogrify -resize 20x20 -path $NAME/images/20 $NAME/images/32/*.png
-
-mogrify -resize 64x64 -path $NAME-extra/images/64 $NAME-extra/images/96/*.png
-mogrify -resize 48x48 -path $NAME-extra/images/48 $NAME-extra/images/64/*.png
-mogrify -resize 40x40 -path $NAME-extra/images/40 $NAME-extra/images/48/*.png
-mogrify -resize 32x32 -path $NAME-extra/images/32 $NAME-extra/images/40/*.png
-mogrify -resize 20x20 -path $NAME-extra/images/20 $NAME-extra/images/32/*.png
-
-echo "Optimizing PNGs using pngquant..."
-$HD && pngquant -f --ext .png $NAME/images/160/*.png
-pngquant -f --ext .png $NAME/images/96/*.png
-pngquant -f --ext .png $NAME/images/64/*.png
-pngquant -f --ext .png $NAME/images/48/*.png
-pngquant -f --ext .png $NAME/images/40/*.png
-pngquant -f --ext .png $NAME/images/32/*.png
-pngquant -f --ext .png $NAME/images/20/*.png
-pngquant -f --ext .png $NAME-extra/images/*/*.png
+echo "Resizing and optimizing PNGs..."
+./resize.sh $NAME $HD false
+./resize.sh $NAME-extra $HD false
 
 python3 $NAME.py apple/${FONT_NAME}_00.ttf
 python3 $NAME.py apple/${FONT_NAME}_01.ttf
 
-python3 otf2otc.py $NAME/${FONT_NAME}_00.ttf $NAME/${FONT_NAME}_01.ttf -o $NAME/$NAME.ttc
+if $HD; then
+    OUT_FONT_NAME=$NAME-HD.ttc
+else
+    OUT_FONT_NAME=$NAME.ttc
+fi
 
-echo "Output file at $NAME/$NAME.ttc"
+python3 otf2otc.py $NAME/${FONT_NAME}_00.ttf $NAME/${FONT_NAME}_01.ttf -o $NAME/$OUT_FONT_NAME.ttc
+
+echo "Output file at $NAME/$OUT_FONT_NAME.ttc"

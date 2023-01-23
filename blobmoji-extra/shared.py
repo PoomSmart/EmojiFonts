@@ -6,7 +6,7 @@ ET.register_namespace('', namespace)
 
 font = '../../blobmoji/svg'
 
-silhouette_color = '#CCCCCC'
+silhouette_color = '#7e7e7e'
 default_skin_color = '#fcc21b'
 default_hair_color = '#6d4c41'
 default_skin_alternate_color = '#e48c15'

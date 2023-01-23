@@ -20,8 +20,10 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 
 # Before anything
 
-1. Copy `Apple Color Emoji.ttc` from `/System/Library/Fonts` of your macOS instance to the root of this repository and rename it to `AppleColorEmoji@2x.ttc`.
-2. Execute `prepare.sh` to create emoji TTF files and tables. Run this once.
+1. Copy `Apple Color Emoji.ttc` from `/System/Library/Fonts` of your macOS instance to the root of this repository and rename it to `AppleColorEmoji_macOS.ttc`.
+2. Copy AppleColorEmoji font from your iOS instance to the root of this repository and rename it to `AppleColorEmoji_iOS.ttc`. Read [here](https://poomsmart.github.io/emojiport) for the exact file path.
+3. Apply [this patch](https://github.com/fonttools/fonttools/pull/2963) to `sbixGlyph.py` of your `fonttools` library.
+4. Execute `prepare.sh` to create emoji TTF files and tables. Run this once.
 
 # Building Apple Color Emoji font
 
@@ -31,13 +33,13 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 
 The script `apple.sh` uses `pngquant` to optimize the images with little to none changes to the quality. The Apple emoji font sizes are reduced by nearly 50% using this method.
 
-# Scripts
+# Scripts (Python)
 
 EmojiFonts deals with certain font tables; mainly `GDEF` and `sbix`.
 
 `shift-multi.py` resizes and shifts the multi-skinned emojis that pair up as one, including couples and handshake, to have them displayed on iOS 13 and below correctly where there is no render logic to automatically place the pair close together.
 
-`GDEF` table which maps each of paired emojis to a certain class, is removed by the scripts. This is for the easiest backward-compatible solution for the emoji font. If the table is present, the text render engine on iOS 14+ will try to place the pair close together again even when we applied `shift-multi.py` to the font.
+`GDEF` table which maps each of paired emojis to a certain class, is modified by the scripts. This is for the easiest backward-compatible solution for the emoji font. In this table, emojis with class `1` and `3` represent `left` and `right`, respectively. With those present, the text render engine on iOS 14+ will try to place the pair close together again even when we applied `shift-multi.py` to the font. Another script `remove-class3.py` ensures that there are no class `1` and `3` emojis that will otherwise be visible to the users.
 
 `remove-strikes.py` removes supposedly least used strikes (image data) from `sbix` table. By default, emoji images come in a variety of dimensions from `20x20` to `160x160`. If images are uncompressed (macOS, for example), the total font size exceeds 100 MB which is not suitable for storing in GitHub repository.
 

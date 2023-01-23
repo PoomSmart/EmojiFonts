@@ -33,18 +33,19 @@ cd ../../..
 
 echo "Resizing PNGs..."
 mogrify -resize 64x64 -path "$ASSETS"/64 "$ASSETS"/96/*.png
-mogrify -resize 48x48 -path "$ASSETS"/48 "$ASSETS"/64/*.png
-mogrify -resize 40x40 -path "$ASSETS"/40 "$ASSETS"/48/*.png
-mogrify -resize 32x32 -path "$ASSETS"/32 "$ASSETS"/40/*.png
-mogrify -resize 20x20 -path "$ASSETS"/20 "$ASSETS"/32/*.png
+mogrify -resize 40x40 -path "$ASSETS"/40 "$ASSETS"/64/*.png
+# mogrify -resize 48x48 -path "$ASSETS"/48 "$ASSETS"/64/*.png
+# mogrify -resize 40x40 -path "$ASSETS"/40 "$ASSETS"/48/*.png
+# mogrify -resize 32x32 -path "$ASSETS"/32 "$ASSETS"/40/*.png
+# mogrify -resize 20x20 -path "$ASSETS"/20 "$ASSETS"/32/*.png
 
 echo "Optimizing PNGs using pngquant..."
 pngquant -f --ext .png "$ASSETS"/96/*.png
 pngquant -f --ext .png "$ASSETS"/64/*.png
-pngquant -f --ext .png "$ASSETS"/48/*.png
+# pngquant -f --ext .png "$ASSETS"/48/*.png
 pngquant -f --ext .png "$ASSETS"/40/*.png
-pngquant -f --ext .png "$ASSETS"/32/*.png
-pngquant -f --ext .png "$ASSETS"/20/*.png
+# pngquant -f --ext .png "$ASSETS"/32/*.png
+# pngquant -f --ext .png "$ASSETS"/20/*.png
 
 python3 $NAME.py apple/${FONT_NAME}_00.ttf "$STYLE"
 python3 $NAME.py apple/${FONT_NAME}_01.ttf "$STYLE"

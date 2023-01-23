@@ -3,35 +3,44 @@
 set -e
 
 NAME=apple
-FONT_NAME=AppleColorEmoji@2x
+IOS_FONT_NAME=AppleColorEmoji_iOS
+MAC_FONT_NAME=AppleColorEmoji_macOS
 ASSETS=$NAME
 MOD=$1
 COLORS=
 
 mkdir -p $ASSETS
 
-echo "Extracting PNGs from $FONT_NAME font..."
-python3 extractor.py $NAME common/${FONT_NAME}_00._s_b_i_x.ttx
+echo "Extracting sbix table from $MAC_FONT_NAME font..."
+ttx -q -s -f -y 0 -t sbix ${MAC_FONT_NAME}.ttc
+
+echo "Extracting PNGs from $MAC_FONT_NAME font..."
+python3 remove-strikes.py ${MAC_FONT_NAME}._s_b_i_x.ttx
+python3 extractor.py $NAME ${MAC_FONT_NAME}._s_b_i_x.ttx
 
 if [[ $MOD == 'LQ' ]]
 then
     COLORS=8
     echo "Applying mod: LQ..."
-    mogrify +dither -posterize 8 -normalize $ASSETS/*/*.png
+    mogrify +dither -posterize 8 -normalize $ASSETS/96/*.png
+    mogrify +dither -posterize 8 -normalize $ASSETS/64/*.png
+    mogrify +dither -posterize 8 -normalize $ASSETS/40/*.png
 fi
 
 echo "Optimizing PNGs using pngquant..."
-pngquant $COLORS -f --ext .png $ASSETS/*/*.png
+pngquant $COLORS -f --ext .png $ASSETS/96/*.png
+pngquant $COLORS -f --ext .png $ASSETS/64/*.png
+pngquant $COLORS -f --ext .png $ASSETS/40/*.png
 
 if [[ $MOD != '' ]]
 then
     OUT_FONT_NAME=AppleColorEmoji-$MOD
 else
-    OUT_FONT_NAME=$FONT_NAME
+    OUT_FONT_NAME=AppleColorEmoji@2x
 fi
 
-python3 $NAME.py common/${FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS
-python3 $NAME.py common/${FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS
+python3 $NAME.py common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS
+python3 $NAME.py common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS
 rm -f apple/$OUT_FONT_NAME.ttf
 ln apple/${OUT_FONT_NAME}_00.ttf apple/$OUT_FONT_NAME.ttf
 

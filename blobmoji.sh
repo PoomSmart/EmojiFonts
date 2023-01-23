@@ -19,13 +19,10 @@ cd $NAME
 ttx -q -s -z extfile $FONT_NAME.ttf
 cd ..
 
-echo "Copying and resizing PNGs..."
+echo "Copying, resizing and optimizing PNGs..."
 mogrify -resize 96x96 -path $NAME/images/96 $NAME/bitmaps/strike0/*.png
-mogrify -resize 64x64 -path $NAME/images/64 $NAME/images/96/*.png
-mogrify -resize 48x48 -path $NAME/images/48 $NAME/images/64/*.png
-mogrify -resize 40x40 -path $NAME/images/40 $NAME/images/48/*.png
-mogrify -resize 32x32 -path $NAME/images/32 $NAME/images/40/*.png
-mogrify -resize 20x20 -path $NAME/images/20 $NAME/images/32/*.png
+./resize.sh $NAME false false
+rm -rf $NAME/bitmaps
 
 cd $NAME-extra
 rm -rf svgs images
@@ -40,24 +37,9 @@ do
     rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
 done
 
-echo "Resizing PNGs..."
-mogrify -resize 64x64 -path images/64 images/96/*.png
-mogrify -resize 48x48 -path images/48 images/64/*.png
-mogrify -resize 40x40 -path images/40 images/48/*.png
-mogrify -resize 32x32 -path images/32 images/40/*.png
-mogrify -resize 20x20 -path images/20 images/32/*.png
-
+echo "Resizing and optimizing PNGs..."
 cd ..
-rm -rf $NAME/bitmaps
-
-echo "Optimizing PNGs using pngquant..."
-pngquant -f --ext .png $NAME/images/96/*.png
-pngquant -f --ext .png $NAME/images/64/*.png
-pngquant -f --ext .png $NAME/images/48/*.png
-pngquant -f --ext .png $NAME/images/40/*.png
-pngquant -f --ext .png $NAME/images/32/*.png
-pngquant -f --ext .png $NAME/images/20/*.png
-pngquant -f --ext .png $NAME-extra/images/*/*.png
+./resize.sh $NAME-extra false false
 
 python3 $NAME.py apple/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
 python3 $NAME.py apple/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx

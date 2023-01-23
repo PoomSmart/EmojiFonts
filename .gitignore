@@ -1,10 +1,13 @@
+# Internal resources
+Fonts
+update-deb.sh
+
 # Font assets
 *.ttx
 *.ttc
 *.ttf
 
 # Project assets
-Fonts
 apple
 .DS_Store
 

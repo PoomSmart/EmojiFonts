@@ -49,6 +49,7 @@ for ppem, strike in f['sbix'].strikes.items():
             fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()
             stream.close()
+            del stream
 
 print('Saving changes...')
 ttf = ttf.replace('apple/', '')

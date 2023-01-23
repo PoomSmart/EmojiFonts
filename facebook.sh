@@ -23,24 +23,26 @@ cp $NAME-extra/original/*.png $NAME-extra/images/96
 ./get-assets.sh facebook
 
 echo "Resizing PNGs..."
-mogrify -resize 48x48 -path $NAME/images/48 $NAME/images/64/*.png
-mogrify -resize 40x40 -path $NAME/images/40 $NAME/images/48/*.png
-mogrify -resize 32x32 -path $NAME/images/32 $NAME/images/40/*.png
-mogrify -resize 20x20 -path $NAME/images/20 $NAME/images/32/*.png
+mogrify -resize 40x40 -path $NAME/images/40 $NAME/images/64/*.png
+# mogrify -resize 48x48 -path $NAME/images/48 $NAME/images/64/*.png
+# mogrify -resize 40x40 -path $NAME/images/40 $NAME/images/48/*.png
+# mogrify -resize 32x32 -path $NAME/images/32 $NAME/images/40/*.png
+# mogrify -resize 20x20 -path $NAME/images/20 $NAME/images/32/*.png
 
 mogrify -resize 64x64 -path $NAME-extra/images/64 $NAME-extra/images/96/*.png
-mogrify -resize 48x48 -path $NAME-extra/images/48 $NAME-extra/images/64/*.png
-mogrify -resize 40x40 -path $NAME-extra/images/40 $NAME-extra/images/48/*.png
-mogrify -resize 32x32 -path $NAME-extra/images/32 $NAME-extra/images/40/*.png
-mogrify -resize 20x20 -path $NAME-extra/images/20 $NAME-extra/images/32/*.png
+mogrify -resize 40x40 -path $NAME-extra/images/40 $NAME-extra/images/64/*.png
+# mogrify -resize 48x48 -path $NAME-extra/images/48 $NAME-extra/images/64/*.png
+# mogrify -resize 40x40 -path $NAME-extra/images/40 $NAME-extra/images/48/*.png
+# mogrify -resize 32x32 -path $NAME-extra/images/32 $NAME-extra/images/40/*.png
+# mogrify -resize 20x20 -path $NAME-extra/images/20 $NAME-extra/images/32/*.png
 
 echo "Optimizing PNGs using pngquant..."
 pngquant -f --ext .png $NAME/images/96/*.png
 pngquant -f --ext .png $NAME/images/64/*.png
-pngquant -f --ext .png $NAME/images/48/*.png
+# pngquant -f --ext .png $NAME/images/48/*.png
 pngquant -f --ext .png $NAME/images/40/*.png
-pngquant -f --ext .png $NAME/images/32/*.png
-pngquant -f --ext .png $NAME/images/20/*.png
+# pngquant -f --ext .png $NAME/images/32/*.png
+# pngquant -f --ext .png $NAME/images/20/*.png
 pngquant -f --ext .png $NAME-extra/images/*/*.png
 
 python3 $NAME.py apple/${FONT_NAME}_00.ttf

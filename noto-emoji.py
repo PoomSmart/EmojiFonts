@@ -29,7 +29,7 @@ def norm_flag(name: str):
         n = f'{n[:2]}-{n[2:]}'
     return n
 
-def noto_name(name, with_prefix):
+def noto_name(name: str, with_prefix: bool):
     tokens = name.split('_')
     n = []
     for t in tokens:
@@ -68,6 +68,7 @@ for ppem, strike in f['sbix'].strikes.items():
             fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()
             stream.close()
+            del stream
 
 print('Saving changes...')
 ttf = ttf.replace('apple/', '')

@@ -57,6 +57,7 @@ def norm_name(name: str):
 def facebook_name(name: str):
     return name.replace('_', '-')
 
+prepare_strikes(f)
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():
@@ -92,6 +93,7 @@ for ppem, strike in f['sbix'].strikes.items():
             fin.save(stream, format='png')
             glyph.imageData = stream.getvalue()
             stream.close()
+            del stream
 
 print('Saving changes...')
 ttf = ttf.replace('apple/', '')
