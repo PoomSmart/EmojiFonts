@@ -5,7 +5,7 @@ set -e
 FONT_NAME=AppleColorEmoji@2x
 NAME=noto-emoji
 ASSETS=../$NAME/svg
-FLAG_ASSETS=../$NAME/third_party/region-flags/svg
+FLAG_ASSETS=../$NAME/third_party/region-flags/waved-svg
 MAX_SIZE=96
 [[ $1 == 'HD' ]] && HD=true
 
