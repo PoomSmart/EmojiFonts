@@ -22,9 +22,10 @@ if [[ $MOD == 'LQ' ]]
 then
     COLORS=8
     echo "Applying mod: LQ..."
-    mogrify +dither -posterize 8 -normalize $ASSETS/96/*.png
-    mogrify +dither -posterize 8 -normalize $ASSETS/64/*.png
-    mogrify +dither -posterize 8 -normalize $ASSETS/40/*.png
+    mogrify +dither -posterize 8 -normalize $ASSETS/96/*.png &
+    mogrify +dither -posterize 8 -normalize $ASSETS/64/*.png &
+    mogrify +dither -posterize 8 -normalize $ASSETS/40/*.png &
+    wait
 fi
 
 echo "Optimizing PNGs using pngquant..."

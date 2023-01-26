@@ -46,8 +46,9 @@ pngquant -f --ext .png $NAME/images/40/*.png &
 pngquant -f --ext .png $NAME-extra/images/*/*.png &
 wait
 
-python3 $NAME.py apple/${FONT_NAME}_00.ttf
-python3 $NAME.py apple/${FONT_NAME}_01.ttf
+python3 $NAME.py apple/${FONT_NAME}_00.ttf &
+python3 $NAME.py apple/${FONT_NAME}_01.ttf &
+wait
 
 otf2otc $NAME/${FONT_NAME}_00.ttf $NAME/${FONT_NAME}_01.ttf -o $NAME/$NAME.ttc
 

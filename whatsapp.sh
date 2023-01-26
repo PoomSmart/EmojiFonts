@@ -22,7 +22,6 @@ rm -rf $NAME/bitmaps
 
 ./get-assets.sh whatsapp
 
-echo "Optimizing PNGs using pngquant..."
 pngquant -f --ext .png $NAME-extra/images/*/*.png
 
 python3 $NAME.py apple/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx &
