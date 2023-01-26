@@ -25,8 +25,9 @@ else
     for svg in $(find . -type f -name '*.svg')
     do
         fname=$(basename $svg)
-        rsvg-convert -a -h $MAX_SIZE $svg -o ${fname/.svg/.png}
+        rsvg-convert -a -h $MAX_SIZE $svg -o ${fname/.svg/.png} &
     done
+    wait
 fi
 rm -f *.svg
 cd ../../..
@@ -40,15 +41,17 @@ mogrify -resize 40x40 -path "$ASSETS"/40 "$ASSETS"/64/*.png
 # mogrify -resize 20x20 -path "$ASSETS"/20 "$ASSETS"/32/*.png
 
 echo "Optimizing PNGs using pngquant..."
-pngquant -f --ext .png "$ASSETS"/96/*.png
-pngquant -f --ext .png "$ASSETS"/64/*.png
-# pngquant -f --ext .png "$ASSETS"/48/*.png
-pngquant -f --ext .png "$ASSETS"/40/*.png
-# pngquant -f --ext .png "$ASSETS"/32/*.png
-# pngquant -f --ext .png "$ASSETS"/20/*.png
+pngquant -f --ext .png "$ASSETS"/96/*.png &
+pngquant -f --ext .png "$ASSETS"/64/*.png &
+# pngquant -f --ext .png "$ASSETS"/48/*.png &
+pngquant -f --ext .png "$ASSETS"/40/*.png &
+# pngquant -f --ext .png "$ASSETS"/32/*.png &
+# pngquant -f --ext .png "$ASSETS"/20/*.png &
+wait
 
-python3 $NAME.py apple/${FONT_NAME}_00.ttf "$STYLE"
-python3 $NAME.py apple/${FONT_NAME}_01.ttf "$STYLE"
+python3 $NAME.py apple/${FONT_NAME}_00.ttf "$STYLE" &
+python3 $NAME.py apple/${FONT_NAME}_01.ttf "$STYLE" &
+wait
 
 otf2otc $NAME/"$STYLE"-${FONT_NAME}_00.ttf $NAME/"$STYLE"-${FONT_NAME}_01.ttf -o $NAME/$NAME-"$STYLE".ttc
 
