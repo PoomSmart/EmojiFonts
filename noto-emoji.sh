@@ -9,7 +9,7 @@ FLAG_ASSETS=../$NAME/third_party/region-flags/svg
 MAX_SIZE=96
 [[ $1 == 'HD' ]] && HD=true
 
-$HD && MAX_SIZE=160
+[[ $HD = true ]] && MAX_SIZE=160
 
 rm -rf $NAME
 mkdir -p $NAME/images/160 $NAME/images/96 $NAME/images/64 $NAME/images/48 $NAME/images/40 $NAME/images/32 $NAME/images/20
@@ -18,13 +18,15 @@ echo "Converting SVGs into PNGs..."
 for svg in $(find $ASSETS -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o $NAME/images/$MAX_SIZE/${fname/.svg/.png}
+    rsvg-convert -a -h $MAX_SIZE $svg -o $NAME/images/$MAX_SIZE/${fname/.svg/.png} &
 done
+wait
 for svg in $(find $FLAG_ASSETS -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o $NAME/images/$MAX_SIZE/${fname/.svg/.png}
+    rsvg-convert -a -h $MAX_SIZE $svg -o $NAME/images/$MAX_SIZE/${fname/.svg/.png} &
 done
+wait
 
 cd $NAME-extra
 rm -rf svgs images
@@ -36,8 +38,9 @@ python3 gen-handshake.py
 for svg in $(find ./svgs -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
+    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png} &
 done
+wait
 
 cd ..
 
@@ -45,10 +48,11 @@ echo "Resizing and optimizing PNGs..."
 ./resize.sh $NAME $HD false
 ./resize.sh $NAME-extra $HD false
 
-python3 $NAME.py apple/${FONT_NAME}_00.ttf
-python3 $NAME.py apple/${FONT_NAME}_01.ttf
+python3 $NAME.py apple/${FONT_NAME}_00.ttf &
+python3 $NAME.py apple/${FONT_NAME}_01.ttf &
+wait
 
-if $HD; then
+if [[ $HD = true ]]; then
     OUT_FONT_NAME=$NAME-HD.ttc
 else
     OUT_FONT_NAME=$NAME.ttc

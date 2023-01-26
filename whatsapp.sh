@@ -25,8 +25,9 @@ rm -rf $NAME/bitmaps
 echo "Optimizing PNGs using pngquant..."
 pngquant -f --ext .png $NAME-extra/images/*/*.png
 
-python3 $NAME.py apple/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
-python3 $NAME.py apple/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
+python3 $NAME.py apple/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx &
+python3 $NAME.py apple/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx &
+wait
 
 otf2otc $NAME/${APPLE_FONT_NAME}_00.ttf $NAME/${APPLE_FONT_NAME}_01.ttf -o $NAME/$NAME.ttc
 

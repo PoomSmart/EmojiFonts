@@ -37,13 +37,14 @@ mogrify -resize 40x40 -path $NAME-extra/images/40 $NAME-extra/images/64/*.png
 # mogrify -resize 20x20 -path $NAME-extra/images/20 $NAME-extra/images/32/*.png
 
 echo "Optimizing PNGs using pngquant..."
-pngquant -f --ext .png $NAME/images/96/*.png
-pngquant -f --ext .png $NAME/images/64/*.png
-# pngquant -f --ext .png $NAME/images/48/*.png
-pngquant -f --ext .png $NAME/images/40/*.png
-# pngquant -f --ext .png $NAME/images/32/*.png
-# pngquant -f --ext .png $NAME/images/20/*.png
-pngquant -f --ext .png $NAME-extra/images/*/*.png
+pngquant -f --ext .png $NAME/images/96/*.png &
+pngquant -f --ext .png $NAME/images/64/*.png &
+# pngquant -f --ext .png $NAME/images/48/*.png &
+pngquant -f --ext .png $NAME/images/40/*.png &
+# pngquant -f --ext .png $NAME/images/32/*.png &
+# pngquant -f --ext .png $NAME/images/20/*.png &
+pngquant -f --ext .png $NAME-extra/images/*/*.png &
+wait
 
 python3 $NAME.py apple/${FONT_NAME}_00.ttf
 python3 $NAME.py apple/${FONT_NAME}_01.ttf

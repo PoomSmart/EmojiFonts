@@ -34,15 +34,17 @@ python3 gen-handshake.py
 for svg in $(find ./svgs -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
+    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png} &
 done
+wait
 
 echo "Resizing and optimizing PNGs..."
 cd ..
 ./resize.sh $NAME-extra false false
 
-python3 $NAME.py apple/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
-python3 $NAME.py apple/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
+python3 $NAME.py apple/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx &
+python3 $NAME.py apple/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx &
+wait
 
 otf2otc $NAME/${APPLE_FONT_NAME}_00.ttf $NAME/${APPLE_FONT_NAME}_01.ttf -o $NAME/$NAME.ttc
 

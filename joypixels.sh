@@ -34,11 +34,13 @@ mogrify -resize 40x40 -path $ASSETS/40 $ASSETS/64/*.png
 # mogrify -resize 20x20 -path $ASSETS/20 $ASSETS/32/*.png
 
 echo "Optimizing PNGs using pngquant..."
-pngquant -f --ext .png $ASSETS/*/*.png
-pngquant -f --ext .png $NAME-extra/images/*/*.png
+pngquant -f --ext .png $ASSETS/*/*.png &
+pngquant -f --ext .png $NAME-extra/images/*/*.png &
+wait
 
-python3 $NAME.py apple/${FONT_NAME}_00.ttf $MOD
-python3 $NAME.py apple/${FONT_NAME}_01.ttf $MOD
+python3 $NAME.py apple/${FONT_NAME}_00.ttf $MOD &
+python3 $NAME.py apple/${FONT_NAME}_01.ttf $MOD &
+wait
 
 if [[ $MOD != '' ]]
 then

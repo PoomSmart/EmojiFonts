@@ -14,5 +14,5 @@ brew install pngquant freetype imagemagick librsvg inkscape php
 ```
 # Copy iOS AppleColorEmoji font to ./AppleColorEmoji_iOS.ttc
 cp /System/Library/Fonts/Apple\ Color\ Emoji.ttc ./AppleColorEmoji_macOS.ttc
-./prepare.sh && ./apple.sh
+./prepare.sh; ./apple.sh
 ```

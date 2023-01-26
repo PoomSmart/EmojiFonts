@@ -28,9 +28,10 @@ then
 fi
 
 echo "Optimizing PNGs using pngquant..."
-pngquant $COLORS -f --ext .png $ASSETS/96/*.png
-pngquant $COLORS -f --ext .png $ASSETS/64/*.png
-pngquant $COLORS -f --ext .png $ASSETS/40/*.png
+pngquant $COLORS -f --ext .png $ASSETS/96/*.png &
+pngquant $COLORS -f --ext .png $ASSETS/64/*.png &
+pngquant $COLORS -f --ext .png $ASSETS/40/*.png &
+wait
 
 if [[ $MOD != '' ]]
 then
@@ -39,8 +40,9 @@ else
     OUT_FONT_NAME=AppleColorEmoji@2x
 fi
 
-python3 $NAME.py common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS
-python3 $NAME.py common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS
+python3 $NAME.py common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS &
+python3 $NAME.py common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS &
+wait
 rm -f apple/$OUT_FONT_NAME.ttf
 ln apple/${OUT_FONT_NAME}_00.ttf apple/$OUT_FONT_NAME.ttf
 
