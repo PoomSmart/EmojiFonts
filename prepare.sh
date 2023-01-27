@@ -18,9 +18,7 @@ echo "Extracting tables..."
 UNSHARED_TABLES='-t head -t hhea -t meta -t name -t trak'
 SHARED_TABLES='-x GDEF -x DSIG -x cmap -x feat -x glyf -x hmtx -x loca -x maxp -x morx -x post -x sbix -x vhea -x vmtx -x GPOS -x GlyphOrder -x OS/2'
 ttx -q -s -f -x DSIG ${IOS_FONT_NAME}_00.ttf &
-echo "Extracted 00"
 ttx -q -s -f $SHARED_TABLES ${IOS_FONT_NAME}_01.ttf &
-echo "Extracted 01"
 wait
 
 echo "Removing unneeded strikes..."
@@ -39,9 +37,7 @@ sed 's/_00/_01/g' ${IOS_FONT_NAME}_00.ttx > ${IOS_FONT_NAME}_01.ttx
 
 echo "Building fonts..."
 ttx -q -o ${IOS_FONT_NAME}_00.ttf -b ${IOS_FONT_NAME}_00.ttx &
-echo "Built 00"
 ttx -q -o ${IOS_FONT_NAME}_01.ttf -b ${IOS_FONT_NAME}_01.ttx &
-echo "Built 01"
 wait
 
 cd ..
