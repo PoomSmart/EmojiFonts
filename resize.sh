@@ -34,6 +34,5 @@ else
 fi
 wait
 
-# echo "Optimizing PNGs using zopflipng (slow)..."
-# zopflipng --prefix $NAME/images/*/*.png &> /dev/null
-# rename -f 's/(zopfli_)(.*)\.png/$2\.png/' $NAME/images/*/*.png
+echo "Optimizing PNGs using oxipng..."
+oxipng -q $NAME/images/*/*.png

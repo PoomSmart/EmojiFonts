@@ -7,7 +7,6 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 - [Python 3.7 or later](http://www.python.org/download/)
 - [pip](https://pip.pypa.io/en/stable/)
 - [fonttools](https://github.com/fonttools/fonttools) (`pip3 install fonttools[repacker]`)
-- [Pillow](https://pillow.readthedocs.io/en/stable/) (`pip3 install --upgrade Pillow`)
 - [afdko](https://github.com/adobe-type-tools/afdko) (`pip3 install afdko`)
 - [pngquant](https://pngquant.org) (`brew install pngquant`)
 - [oxipng](https://github.com/shssoichiro/oxipng) (`brew install oxipng`)
