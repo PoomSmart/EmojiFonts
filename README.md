@@ -17,7 +17,6 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 - [ImageMagick](https://imagemagick.org/index.php) (`brew install freetype imagemagick`)
 - [librsvg](https://wiki.gnome.org/Projects/LibRsvg) (`brew install librsvg`)
 - [inkscape](https://formulae.brew.sh/cask/inkscape) (`brew install inkscape`)
-- php (`brew install php`)
 
 # Before anything
 
@@ -57,7 +56,7 @@ It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-
 
 ## Facebook Emoji
 
-1. Shallow clone [emoji-data](https://github.com/iamcal/emoji-data) and place its folder alongside this project.
+1. Clone [facebook-emojis](https://github.com/PoomSmart/facebook-emojis) and place its folder alongside this project.
 3. Execute `./facebook.sh` to create them themed font, output at `facebook/facebook.ttc`.
 
 ## FluentUI Emoji

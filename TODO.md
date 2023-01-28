@@ -1,9 +1,8 @@
 # TODOs
 
 - [ ] Convert from SVGs into PNGs with sufficient memory (to replace the slow `inkscape`)
-- [ ] Decouple from `emoji-data` repository
 - [ ] FluentUI Emoji HD
-- [ ] Facebook Emoji HD
+- [ ] Facebook Emoji HD (if they ever support it)
 - [ ] Group files by theme?
 - [ ] Rely more on GSUB/MORX tables of the font than manual name mapping
 - [ ] Streamline code for manipulating SVGs for couple emojis

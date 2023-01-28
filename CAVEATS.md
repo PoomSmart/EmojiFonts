@@ -8,7 +8,7 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## Facebook Emoji
 
-- Rely on `emoji-data` repository which is outdated and I had to write additional code to fetch few more emojis.
+- Nothing of significant.
 
 ## FluentUI Emoji
 

@@ -61,15 +61,14 @@ with_variants = [
     '2696', '2697', '2699', '26a0', '26a7',
     '26b0', '26b1', '26c8', '26cf', '26d1',
     '26d3', '26e9', '26f0', '26f1', '26f4',
-    '26f7', '26f8', '26f9', '27a1', '203c',
-    '260e', '262a', '262e', '262f', '263a',
-    '265f', '267b', '267e', '269b', '269c',
-    '2702', '2708', '2709', '270c', '270d',
-    '270f', '2712', '2714', '2716', '271d',
-    '2721', '2733', '2734', '2744', '2747',
-    '2763', '2764', '2934', '2935', '2b05',
-    '2b06', '2b07', '303d', '3030', '3297',
-    '3299',
+    '26f7', '26f8', '26f9', '27a1', '260e',
+    '262a', '262e', '262f', '263a', '265f',
+    '267b', '267e', '269b', '269c', '2702',
+    '2708', '2709', '270c', '270d', '270f',
+    '2712', '2714', '2716', '271d', '2721',
+    '2733', '2734', '2744', '2747', '2763',
+    '2764', '2934', '2935', '2b05', '2b06',
+    '2b07', '303d', '3030', '3297', '3299',
     '1f170', '1f171', '1f17e', '1f17f', '1f202',
     '1f237', '1f321', '1f324', '1f325', '1f326',
     '1f327', '1f328', '1f329', '1f32a', '1f32b',
@@ -168,7 +167,7 @@ def norm_variant_selector(name: str):
     return name
 
 gender_with_selector = [
-    '26f9', '1f3cb', '1f3cc', '1f3fb', '1f575'
+    '26f9', '1f3c3', '1f3c4', '1f3ca', '1f3cb', '1f3cc', '1f3fb', '1f575'
 ]
 
 def base_norm_variants(name: str, with_variant_selector = False, with_condition = False):
@@ -184,7 +183,7 @@ def base_norm_variants(name: str, with_variant_selector = False, with_condition 
             for x in gender_with_selector:
                 if x in name:
                     found = True
-                    name = name.replace('.w', f'_fe0f_200d_2640{v}')
+                    name = name.replace('.w', f'_200d_2640{v}')
                     break
         if not found:
             name = name.replace('.w', f'_200d_2640{v}')
