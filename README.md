@@ -28,9 +28,9 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 
 # Building Apple Color Emoji font
 
-Execute `apple.sh`, you will get `AppleColorEmoji@2x.ttc` (for iOS 10 and above) and `AppleColorEmoji@2x.ttf` (for iOS 9 and below) under `apple` directory.
+Execute `./apple.sh HD`, you will get `AppleColorEmoji@2x.ttc` (for iOS 10 and above) and `AppleColorEmoji@2x.ttf` (for iOS 9 and below) under `apple` directory.
 
-# Scripts (Python)
+# Python Scripts
 
 EmojiFonts deals with certain font tables; mainly `GDEF` and `sbix`.
 
@@ -43,11 +43,12 @@ EmojiFonts deals with certain font tables; mainly `GDEF` and `sbix`.
 `extractor.py` extracts PNG emoji images from the font. This opens up the possibility to theme the emoji font.
 
 # PNG Optimization
+
 `pngquant` and `oxipng` are used to optimize the images with little to none changes to the quality. The Apple emoji font sizes are reduced by nearly 50% using this method. The simpler the emoji images, the more size reduction is achieved.
 
 # Theming
 
-Theming scripts for all emojis vendors produce the font in TTC format. The font may be used by EmojiFontManager iOS tweak, and is guaranteed to work on iOS 6 and higher. Ensure that you executed `apple.sh` before following instructions below.
+Theming scripts for all emojis vendors produce the font in TTC format. The font may be used by EmojiFontManager iOS tweak, and is guaranteed to work on iOS 6 and higher. Ensure that you executed `./apple.sh HD` before following instructions below.
 
 It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-URL`) because the repository size is usually big.
 

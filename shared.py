@@ -249,5 +249,7 @@ def get_image_data(path: str):
         return fin.read()
 
 def prepare_strikes(f: ttLib.TTFont, hd = False):
+    if hd and 160 not in f['sbix'].strikes:
+        raise Exception('No 160 strike')
     if not hd and 160 in f['sbix'].strikes:
         f['sbix'].strikes.pop(160)

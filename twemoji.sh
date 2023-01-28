@@ -17,8 +17,9 @@ echo "Converting SVGs into PNGs..."
 for svg in $(find $ASSETS -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o $NAME/images/$MAX_SIZE/${fname/.svg/.png}
+    rsvg-convert -a -h $MAX_SIZE $svg -o $NAME/images/$MAX_SIZE/${fname/.svg/.png} &
 done
+wait
 
 cd $NAME-extra
 rm -rf svgs images
@@ -30,8 +31,9 @@ python3 gen-handshake.py
 for svg in $(find ./svgs -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
+    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png} &
 done
+wait
 
 cd ..
 
@@ -39,16 +41,18 @@ echo "Resizing and optimizing PNGs..."
 ./resize.sh $NAME $HD false false
 ./resize.sh $NAME-extra $HD false false
 
-python3 $NAME.py $HD apple/${FONT_NAME}_00.ttf &
-python3 $NAME.py $HD apple/${FONT_NAME}_01.ttf &
-wait
-
 if [[ $HD = true ]]; then
+    IN_FONT_NAME=AppleColorEmoji-HD
     OUT_FONT_NAME=$NAME-HD.ttc
 else
+    IN_FONT_NAME=$FONT_NAME
     OUT_FONT_NAME=$NAME.ttc
 fi
 
-otf2otc $NAME/${FONT_NAME}_00.ttf $NAME/${FONT_NAME}_01.ttf -o $NAME/$OUT_FONT_NAME
+python3 $NAME.py $HD apple/${IN_FONT_NAME}_00.ttf &
+python3 $NAME.py $HD apple/${IN_FONT_NAME}_01.ttf &
+wait
+
+otf2otc $NAME/${IN_FONT_NAME}_00.ttf $NAME/${IN_FONT_NAME}_01.ttf -o $NAME/$OUT_FONT_NAME
 
 echo "Output file at $NAME/$OUT_FONT_NAME"
