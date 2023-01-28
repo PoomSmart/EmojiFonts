@@ -4,6 +4,7 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 
 # Prerequisites
 
+- Bash version 5+ (`brew install bash`)
 - [Python 3.7 or later](http://www.python.org/download/)
 - [pip](https://pip.pypa.io/en/stable/)
 - [fonttools](https://github.com/fonttools/fonttools) (`pip3 install fonttools[repacker]`)
@@ -47,6 +48,8 @@ EmojiFonts deals with certain font tables; mainly `GDEF` and `sbix`.
 # Theming
 
 Theming scripts for all emojis vendors produce the font in TTC format. The font may be used by EmojiFontManager iOS tweak, and is guaranteed to work on iOS 6 and higher. Ensure that you executed `apple.sh` before following instructions below.
+
+It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-URL`) because the repository size is usually big.
 
 ## Blobmoji Emoji
 

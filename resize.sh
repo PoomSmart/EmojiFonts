@@ -5,9 +5,7 @@ set -e
 NAME=$1
 HD=$2
 FULL=$3
-COLORS=
-[[ $4 = true ]] && COLORS=256
-
+[[ $4 = true ]] && COLORS=256 || COLORS=
 
 if [[ $HD = true ]]; then
     mogrify -resize 160x160 $NAME/images/160/*.png
@@ -34,5 +32,4 @@ else
 fi
 wait
 
-echo "Optimizing PNGs using oxipng..."
 oxipng -q $NAME/images/*/*.png

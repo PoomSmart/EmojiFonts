@@ -33,9 +33,12 @@ mogrify -resize 40x40 -path $ASSETS/40 $ASSETS/64/*.png
 # mogrify -resize 32x32 -path $ASSETS/32 $ASSETS/40/*.png
 # mogrify -resize 20x20 -path $ASSETS/20 $ASSETS/32/*.png
 
-echo "Optimizing PNGs using pngquant..."
+echo "Optimizing PNGs..."
 pngquant -f --ext .png $ASSETS/*/*.png &
 pngquant -f --ext .png $NAME-extra/images/*/*.png &
+wait
+oxipng -q $ASSETS/*/*.png &
+oxipng -q $NAME-extra/images/*/*.png &
 wait
 
 python3 $NAME.py apple/${FONT_NAME}_00.ttf $MOD &

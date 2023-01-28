@@ -2,15 +2,16 @@ import sys
 from fontTools import ttLib
 from shared import get_image_data, prepare_strikes
 
-# input: input font ttf, output font ttf, assets folder
+# input: HD boolean, input font ttf, output font ttf, assets folder
 
-ittf = sys.argv[1]
-ottf = sys.argv[2]
-assets = sys.argv[3]
+hd = int(sys.argv[1]) == 1
+ittf = sys.argv[2]
+ottf = sys.argv[3]
+assets = sys.argv[4]
 
 f = ttLib.TTFont(ittf)
 
-prepare_strikes(f)
+prepare_strikes(f, hd)
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():

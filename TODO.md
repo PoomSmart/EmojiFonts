@@ -1,6 +1,5 @@
 # TODOs
 
-- [ ] Batch convert SVGs into PNGs faster (something other than `rsvg-convert`)
 - [ ] Convert from SVGs into PNGs with sufficient memory (to replace the slow `inkscape`)
 - [ ] Decouple from `emoji-data` repository
 - [ ] FluentUI Emoji HD

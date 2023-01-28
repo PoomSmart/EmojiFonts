@@ -8,6 +8,7 @@ MAC_FONT_NAME=AppleColorEmoji_macOS
 ASSETS=$NAME
 MOD=$1
 COLORS=
+[[ $MOD = 'HD' ]] && HD=1 || HD=0
 
 mkdir -p $ASSETS
 
@@ -28,15 +29,14 @@ then
     wait
 fi
 
-echo "Optimizing PNGs using pngquant..."
-[[ $MOD == 'HD' ]] && pngquant -f --ext .png $ASSETS/160/*.png &
+echo "Optimizing PNGs..."
+[[ $HD ]] && pngquant -f --ext .png $ASSETS/160/*.png &
 pngquant $COLORS -f --ext .png $ASSETS/96/*.png &
 pngquant $COLORS -f --ext .png $ASSETS/64/*.png &
 pngquant $COLORS -f --ext .png $ASSETS/40/*.png &
 wait
 
-echo "Optimizing PNGs using oxipng..."
-[[ $MOD == 'HD' ]] && oxipng -q $ASSETS/160/*.png &
+[[ $HD ]] && oxipng -q $ASSETS/160/*.png &
 oxipng -q $ASSETS/96/*.png &
 oxipng -q $ASSETS/64/*.png &
 oxipng -q $ASSETS/40/*.png &
@@ -49,8 +49,8 @@ else
     OUT_FONT_NAME=AppleColorEmoji@2x
 fi
 
-python3 $NAME.py common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS &
-python3 $NAME.py common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS &
+python3 $NAME.py $HD common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS &
+python3 $NAME.py $HD common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS &
 wait
 rm -f apple/$OUT_FONT_NAME.ttf
 ln apple/${OUT_FONT_NAME}_00.ttf apple/$OUT_FONT_NAME.ttf

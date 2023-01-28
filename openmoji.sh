@@ -6,11 +6,11 @@ FONT_NAME=AppleColorEmoji@2x
 NAME=openmoji
 ASSETS=../$NAME/color/svg
 MAX_SIZE=96
-[[ $1 == 'HD' ]] && HD=true
+[[ $1 == 'HD' ]] && HD=true || HD=false
 
 [[ $HD = true ]] && MAX_SIZE=160
 
-rm -rf $NAME
+rm -rf $NAME/images
 mkdir -p $NAME/images/160 $NAME/images/96 $NAME/images/64 $NAME/images/48 $NAME/images/40 $NAME/images/32 $NAME/images/20
 
 cd $NAME-extra
@@ -42,8 +42,8 @@ echo "Resizing and optimizing PNGs..."
 ./resize.sh $NAME $HD false false true
 ./resize.sh $NAME-extra $HD false false true
 
-python3 $NAME.py apple/${FONT_NAME}_00.ttf &
-python3 $NAME.py apple/${FONT_NAME}_01.ttf &
+python3 $NAME.py $HD apple/${FONT_NAME}_00.ttf &
+python3 $NAME.py $HD apple/${FONT_NAME}_01.ttf &
 wait
 
 if [[ $HD = true ]]; then

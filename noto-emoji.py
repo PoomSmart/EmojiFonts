@@ -5,9 +5,10 @@ from shared import *
 
 fontname = 'noto-emoji'
 
-# input: font ttf
+# input: HD boolean, font ttf
 
-ttf = sys.argv[1]
+hd = sys.argv[1] == 'true'
+ttf = sys.argv[2]
 
 f = ttLib.TTFont(ttf)
 
@@ -21,7 +22,7 @@ def noto_name(name: str):
     result = '_'.join(n)
     return 'u' + result
 
-prepare_strikes(f)
+prepare_strikes(f, hd)
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():

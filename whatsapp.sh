@@ -23,6 +23,7 @@ rm -rf $NAME/bitmaps
 ./get-assets.sh whatsapp
 
 pngquant -f --ext .png $NAME-extra/images/*/*.png
+oxipng -q $NAME-extra/images/*/*.png
 
 python3 $NAME.py apple/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx &
 python3 $NAME.py apple/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx &
