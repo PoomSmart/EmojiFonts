@@ -17,7 +17,7 @@ cd ..
 
 echo "Copying, resizing and optimizing PNGs..."
 mogrify -resize 96x96 -path $NAME/images/96 $NAME/bitmaps/strike0/*.png
-./resize.sh $NAME false false
+./resize.sh $NAME false false false
 rm -rf $NAME/bitmaps
 
 ./get-assets.sh whatsapp

@@ -6,6 +6,7 @@ macOS machine with homebrew and Python 3.7+ installed, assumed:
 
 ```
 bash -c "pip3 install afdko fonttools[repacker]"
+pip3 install --upgrade Pillow
 brew install pngquant freetype imagemagick librsvg inkscape php
 ```
 

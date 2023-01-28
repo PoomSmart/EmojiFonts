@@ -39,8 +39,8 @@ done
 wait
 
 echo "Resizing and optimizing PNGs..."
-./resize.sh $NAME $HD false
-./resize.sh $NAME-extra $HD false
+./resize.sh $NAME $HD false false true
+./resize.sh $NAME-extra $HD false false true
 
 python3 $NAME.py apple/${FONT_NAME}_00.ttf &
 python3 $NAME.py apple/${FONT_NAME}_01.ttf &

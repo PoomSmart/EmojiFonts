@@ -1,6 +1,6 @@
 import sys
 from fontTools import ttLib
-from shared import prepare_strikes
+from shared import get_image_data, prepare_strikes
 
 # input: input font ttf, output font ttf, assets folder
 
@@ -18,8 +18,7 @@ for ppem, strike in f['sbix'].strikes.items():
             continue
         glyph.graphicType = 'png '
         path = f'{assets}/{ppem}/{name}.png'
-        with open(path, 'rb') as fin:
-            glyph.imageData = fin.read()
+        glyph.imageData = get_image_data(path)
 
 print('Saving changes...')
 f.save(ottf)

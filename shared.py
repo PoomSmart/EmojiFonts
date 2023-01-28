@@ -1,4 +1,6 @@
+from io import BytesIO
 from fontTools import ttLib
+from PIL import Image as PImage
 
 debug = False
 global convert_skin
@@ -243,6 +245,14 @@ def base_norm_special(name: str, with_variant_selector = False):
             if name == f'{g}_{p}':
                 return f'{g}_200d_{p}'
     return name
+
+def get_image_data(path: str):
+    with PImage.open(path) as fin:
+        stream = BytesIO()
+        fin.save(stream, format='png')
+        data = stream.getvalue()
+        del stream
+    return data
 
 def prepare_strikes(f: ttLib.TTFont):
     if 160 in f['sbix'].strikes:

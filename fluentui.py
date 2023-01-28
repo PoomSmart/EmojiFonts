@@ -99,8 +99,7 @@ for ppem, strike in f['sbix'].strikes.items():
             continue
         name = fluentui_name(name)
         path = f'{fontname}/{style}/{ppem}/{name}.png'
-        with open(path, 'rb') as fin:
-            glyph.imageData = fin.read()
+        glyph.imageData = get_image_data(path)
 
 print('Saving changes...')
 ttf = ttf.replace('apple/', '')

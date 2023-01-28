@@ -21,7 +21,7 @@ cd ..
 
 echo "Copying, resizing and optimizing PNGs..."
 mogrify -resize 96x96 -path $NAME/images/96 $NAME/bitmaps/strike0/*.png
-./resize.sh $NAME false false
+./resize.sh $NAME false false false
 rm -rf $NAME/bitmaps
 
 cd $NAME-extra
@@ -40,7 +40,7 @@ wait
 
 echo "Resizing and optimizing PNGs..."
 cd ..
-./resize.sh $NAME-extra false false
+./resize.sh $NAME-extra false false false
 
 python3 $NAME.py apple/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx &
 python3 $NAME.py apple/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx &

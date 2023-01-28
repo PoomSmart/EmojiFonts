@@ -29,10 +29,18 @@ then
 fi
 
 echo "Optimizing PNGs using pngquant..."
+pngquant $COLORS -f --ext .png $ASSETS/160/*.png &
 pngquant $COLORS -f --ext .png $ASSETS/96/*.png &
 pngquant $COLORS -f --ext .png $ASSETS/64/*.png &
 pngquant $COLORS -f --ext .png $ASSETS/40/*.png &
 wait
+
+# echo "Optimizing PNGs using zopflipng (slow)..."
+# zopflipng --prefix $ASSETS/160/*.png &> /dev/null
+# zopflipng --prefix $ASSETS/96/*.png &> /dev/null
+# zopflipng --prefix $ASSETS/64/*.png &> /dev/null
+# zopflipng --prefix $ASSETS/40/*.png &> /dev/null
+# rename -f 's/(zopfli_)(.*)\.png/$2\.png/' $ASSETS/*/*.png
 
 if [[ $MOD != '' ]]
 then
