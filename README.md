@@ -10,7 +10,7 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 - [Pillow](https://pillow.readthedocs.io/en/stable/) (`pip3 install --upgrade Pillow`)
 - [afdko](https://github.com/adobe-type-tools/afdko) (`pip3 install afdko`)
 - [pngquant](https://pngquant.org) (`brew install pngquant`)
-- [zopfli](https://github.com/google/zopfli) (`brew install zopfli`)
+- [oxipng](https://github.com/shssoichiro/oxipng) (`brew install oxipng`)
 
 # Prerequisites (Theming)
 
@@ -43,7 +43,7 @@ EmojiFonts deals with certain font tables; mainly `GDEF` and `sbix`.
 `extractor.py` extracts PNG emoji images from the font. This opens up the possibility to theme the emoji font.
 
 # PNG Optimization
-`pngquant` and `zopfli` are used to optimize the images with little to none changes to the quality. The Apple emoji font sizes are reduced by nearly 50% using this method. The simpler the emoji images, the more size reduction is achieved.
+`pngquant` and `oxipng` are used to optimize the images with little to none changes to the quality. The Apple emoji font sizes are reduced by nearly 50% using this method. The simpler the emoji images, the more size reduction is achieved.
 
 # Theming
 
