@@ -8,7 +8,7 @@ MAC_FONT_NAME=AppleColorEmoji_macOS
 ASSETS=$NAME
 MOD=$1
 COLORS=
-[[ $MOD = 'HD' ]] && HD=1 || HD=0
+[[ $MOD = 'HD' ]] && HD=true || HD=false
 
 mkdir -p $ASSETS
 
@@ -30,13 +30,13 @@ then
 fi
 
 echo "Optimizing PNGs..."
-[[ $HD ]] && pngquant -f --ext .png $ASSETS/160/*.png &
-pngquant $COLORS -f --ext .png $ASSETS/96/*.png &
-pngquant $COLORS -f --ext .png $ASSETS/64/*.png &
-pngquant $COLORS -f --ext .png $ASSETS/40/*.png &
+[[ $HD == true ]] && pngquant --skip-if-larger -f --ext .png $ASSETS/160/*.png &
+pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/96/*.png &
+pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/64/*.png &
+pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/40/*.png &
 wait
 
-[[ $HD ]] && oxipng -q $ASSETS/160/*.png &
+[[ $HD == true ]] && oxipng -q $ASSETS/160/*.png &
 oxipng -q $ASSETS/96/*.png &
 oxipng -q $ASSETS/64/*.png &
 oxipng -q $ASSETS/40/*.png &

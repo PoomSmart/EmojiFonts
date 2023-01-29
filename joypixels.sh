@@ -34,8 +34,8 @@ mogrify -resize 40x40 -path $ASSETS/40 $ASSETS/64/*.png
 # mogrify -resize 20x20 -path $ASSETS/20 $ASSETS/32/*.png
 
 echo "Optimizing PNGs..."
-pngquant -f --ext .png $ASSETS/*/*.png &
-pngquant -f --ext .png $NAME-extra/images/*/*.png &
+pngquant --skip-if-larger -f --ext .png $ASSETS/*/*.png &
+pngquant --skip-if-larger -f --ext .png $NAME-extra/images/*/*.png &
 wait
 oxipng -q $ASSETS/*/*.png &
 oxipng -q $NAME-extra/images/*/*.png &

@@ -34,7 +34,7 @@ for ppem, strike in f['sbix'].strikes.items():
         if name is None:
             continue
         name = base_norm_variants(name, False, True)
-        name = base_norm_special(name, False)
+        name = base_norm_special(name)
         name = facebook_name(name)
         path = f'{fontname}/images/{ppem}/{name}.png'
         if not os.path.exists(path) or name.startswith('1f491') or name.startswith('1f48f'):

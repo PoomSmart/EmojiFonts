@@ -25,7 +25,7 @@ mkdir -p $NAME-extra/images/96
 cp $NAME-extra/original/*.png $NAME-extra/images/96
 ./get-assets.sh oneui
 
-pngquant -f --ext .png $NAME-extra/images/*/*.png
+pngquant --skip-if-larger -f --ext .png $NAME-extra/images/*/*.png
 oxipng -q $NAME-extra/images/*/*.png
 
 python3 $NAME.py apple/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx &
