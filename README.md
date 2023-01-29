@@ -16,7 +16,7 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 
 - [ImageMagick](https://imagemagick.org/index.php) (`brew install freetype imagemagick`)
 - [librsvg](https://wiki.gnome.org/Projects/LibRsvg) (`brew install librsvg`)
-- [inkscape](https://formulae.brew.sh/cask/inkscape) (`brew install inkscape`)
+- [svgo](https://github.com/svg/svgo) (`brew install svgo`)
 
 # Before anything
 

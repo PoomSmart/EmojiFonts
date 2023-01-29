@@ -16,19 +16,15 @@ python3 $NAME-prepare.py ../$NAME-emoji/assets $NAME "$STYLE"
 
 mv "$ASSETS"/*.svg "$ASSETS"/96
 cd "$ASSETS"/96
+
 echo "Converting SVGs into PNGs..."
-if [ "$STYLE" == 'Color' ]
-then
-    echo "This will take a while..."
-    inkscape --batch-process --export-type=png --export-height=$MAX_SIZE *.svg &> /dev/null
-else
-    for svg in $(find . -type f -name '*.svg')
-    do
-        fname=$(basename $svg)
-        rsvg-convert -a -h $MAX_SIZE $svg -o ${fname/.svg/.png} &
-    done
-    wait
-fi
+[[ "$STYLE" == 'Color' ]] && svgo -f . &> /dev/null
+for svg in $(find . -type f -name '*.svg')
+do
+    fname=$(basename $svg)
+    rsvg-convert -a -h $MAX_SIZE $svg -o ${fname/.svg/.png} &
+done
+wait
 rm -f *.svg
 cd ../../..
 

@@ -12,7 +12,6 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## FluentUI Emoji
 
-- Their `Color` style SVG files are weird that `rsvg-convert` would error out with no memory. I have to use a slower approach `inkscape` instead.
 - Upstream is missing family, couple, flag, skinned handshake, paperclip, technologist and some other emojis.
 
 ## Google Noto Emoji

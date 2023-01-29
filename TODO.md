@@ -1,6 +1,5 @@
 # TODOs
 
-- [ ] Convert from SVGs into PNGs with sufficient memory (to replace the slow `inkscape`)
 - [ ] FluentUI Emoji HD
 - [ ] Facebook Emoji HD (if they ever support it)
 - [ ] Group files by theme?

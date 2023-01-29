@@ -33,7 +33,7 @@ for ppem, strike in f['sbix'].strikes.items():
         name = norm_dual(name)
         if name is None:
             continue
-        name = base_norm_variants(name, False, True)
+        name = base_norm_variants(name, False, False)
         name = base_norm_special(name)
         name = facebook_name(name)
         path = f'{fontname}/images/{ppem}/{name}.png'

@@ -6,7 +6,7 @@ macOS machine with homebrew and Python 3.7+ installed, assumed:
 
 ```
 bash -c "pip3 install afdko fonttools[repacker]"
-brew install bash pngquant oxipng freetype imagemagick librsvg inkscape
+brew install bash pngquant oxipng freetype imagemagick librsvg svgo
 ```
 
 ## AppleColorEmoji font
