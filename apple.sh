@@ -11,6 +11,7 @@ COLORS=
 [[ $MOD = 'HD' ]] && HD=true || HD=false
 
 mkdir -p $ASSETS
+rm -rf $ASSETS/160 $ASSETS/96 $ASSETS/64 $ASSETS/52 $ASSETS/48 $ASSETS/40 $ASSETS/32 $ASSETS/26 $ASSETS/20
 
 echo "Extracting sbix table from $MAC_FONT_NAME font..."
 ttx -q -s -f -y 0 -t sbix ${MAC_FONT_NAME}.ttc
