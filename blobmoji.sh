@@ -16,7 +16,7 @@ mkdir -p $NAME/images/96 $NAME/images/64 $NAME/images/48 $NAME/images/40 $NAME/i
 echo "Extracting font..."
 cp $FONT_PATH $NAME
 cd $NAME
-ttx -q -s -z extfile $FONT_NAME.ttf
+ttx -q -f -z extfile $FONT_NAME.ttf
 cd ..
 
 echo "Copying, resizing and optimizing PNGs..."
