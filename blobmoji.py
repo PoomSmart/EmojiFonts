@@ -117,6 +117,7 @@ for ppem, strike in f['sbix'].strikes.items():
                 path = f'{fontname}-extra/images/{ppem}/{name}.png'
         glyph.imageData = get_image_data(path)
 
-print('Saving changes...')
-ttf = ttf.replace('apple/', '')
-f.save(f'{fontname}/{ttf}')
+if not os.path.exists('.test'):
+    print('Saving changes...')
+    ttf = ttf.replace('apple/', '')
+    f.save(f'{fontname}/{ttf}')

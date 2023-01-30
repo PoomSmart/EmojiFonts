@@ -48,6 +48,7 @@ flags = [
 ]
 
 with_variants = [
+    '00a9', '00ae',
     '203c', '2049', '2122', '2139', '2194',
     '2195', '2196', '2197', '2198', '2199',
     '21a9', '21aa', '2328', '23cf', '23ed',
@@ -91,7 +92,8 @@ with_variants = [
     '1f6f0', '1f6f3'
 ]
 
-whitelists = ['00a9', '00ae', 'hiddenglyph']
+whitelist = ['hiddenglyph']
+signs = ['00a9', '00ae']
 
 def m_print(string: str):
     if debug:
@@ -104,7 +106,7 @@ def is_flag(name: str):
     return False
 
 def base_is_whitelist(name: str):
-    return name in whitelists
+    return name in whitelist
 
 def base_norm_name(name: str):
     if len(name) == 13 and 'silhouette.' in name:

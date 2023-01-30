@@ -13,7 +13,7 @@ f = ttLib.TTFont(ttf)
 
 def norm_name(name: str):
     result = base_norm_name(name)
-    if '20e3' in result:
+    if '20e3' in result or name in signs:
         result = result[2:]
     return result
 
@@ -44,6 +44,7 @@ for ppem, strike in f['sbix'].strikes.items():
                 path = f'{fontname}-extra/images/{ppem}/{name}.png'
         glyph.imageData = get_image_data(path)
 
-print('Saving changes...')
-ttf = ttf.replace('apple/', '')
-f.save(f'{fontname}/{ttf}')
+if not os.path.exists('.test'):
+    print('Saving changes...')
+    ttf = ttf.replace('apple/', '')
+    f.save(f'{fontname}/{ttf}')

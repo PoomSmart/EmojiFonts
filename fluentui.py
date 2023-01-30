@@ -1,3 +1,4 @@
+import os
 import sys
 from fontTools import ttLib
 from shared import *
@@ -101,6 +102,7 @@ for ppem, strike in f['sbix'].strikes.items():
         path = f'{fontname}/{style}/{ppem}/{name}.png'
         glyph.imageData = get_image_data(path)
 
-print('Saving changes...')
-ttf = ttf.replace('apple/', '')
-f.save(f'{fontname}/{style}-{ttf}')
+if not os.path.exists('.test'):
+    print('Saving changes...')
+    ttf = ttf.replace('apple/', '')
+    f.save(f'{fontname}/{style}-{ttf}')
