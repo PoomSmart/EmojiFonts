@@ -17,6 +17,7 @@ echo "Extracting font..."
 cp $FONT_PATH $NAME
 cd $NAME
 ttx -q -f -z extfile $FONT_NAME.ttf
+ttx -q -f -s -t GSUB $FONT_NAME.ttf
 cd ..
 
 echo "Copying, resizing and optimizing PNGs..."
