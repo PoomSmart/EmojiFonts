@@ -1,16 +1,9 @@
 {
     "files.exclude": {
         "**/__pycache__": true,
-        "**/*-extra/images": true,
+        "**/*/images": true,
         "**/apple/*": true,
-        "**/blobmoji-extra/svgs": true,
-        "**/facebook/*": true,
-        "**/fluentui/*": true,
-        "**/joypixels/*": true,
-        "**/noto-emoji-extra/svgs": true,
-        "**/oneui/*": true,
-        "**/openmoji/svgs": true,
-        "**/twemoji/images": true,
-        "**/twemoji-extra/svgs": true,
+        "**/extra/images": true,
+        "**/extra/svgs": true,
     }
 }
