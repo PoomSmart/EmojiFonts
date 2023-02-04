@@ -14,7 +14,7 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 - Upstream is missing family, couple, flag, skinned handshake, paperclip, technologist and some other emojis.
 
-## Google Noto Emoji
+## Google Noto Color Emoji
 
 - Nothing of significant.
 

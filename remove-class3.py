@@ -1,6 +1,7 @@
 import sys
 import xml.etree.ElementTree as ET
 
+# input: apple GSUB ttx
 data = ET.parse(sys.argv[1]).getroot()
 
 to_remove = []

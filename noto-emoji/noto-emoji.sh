@@ -3,25 +3,32 @@
 set -e
 
 FONT_NAME=AppleColorEmoji@2x
-NAME=twemoji
-ASSETS=../$NAME/assets/svg
+NAME=noto-emoji
+ASSETS=../../$NAME/svg
+FLAG_ASSETS=../../$NAME/third_party/region-flags/waved-svg
 MAX_SIZE=96
 [[ $1 == 'HD' ]] && HD=true || HD=false
 
 [[ $HD = true ]] && MAX_SIZE=160
 
-rm -rf $NAME/images
-mkdir -p $NAME/images/160 $NAME/images/96 $NAME/images/64 $NAME/images/48 $NAME/images/40 $NAME/images/32 $NAME/images/20
+rm -rf images
+mkdir -p images/160 images/96 images/64 images/48 images/40 images/32 images/20
 
 echo "Converting SVGs into PNGs..."
 for svg in $(find $ASSETS -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o $NAME/images/$MAX_SIZE/${fname/.svg/.png} &
+    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png} &
+done
+wait
+for svg in $(find $FLAG_ASSETS -type f -name '*.svg')
+do
+    fname=$(basename $svg)
+    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png} &
 done
 wait
 
-cd $NAME-extra
+cd extra
 rm -rf svgs images
 mkdir -p svgs images/160 images/96 images/64 images/48 images/40 images/32 images/20
 python3 gen-couple-heart.py
@@ -34,12 +41,11 @@ do
     rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png} &
 done
 wait
-
+../../resize.sh $HD false false
 cd ..
 
 echo "Resizing and optimizing PNGs..."
-./resize.sh $NAME $HD false false
-./resize.sh $NAME-extra $HD false false
+../resize.sh $HD false false
 
 if [[ $HD = true ]]; then
     IN_FONT_NAME=AppleColorEmoji-HD
@@ -49,10 +55,10 @@ else
     OUT_FONT_NAME=$NAME.ttc
 fi
 
-python3 $NAME.py $HD apple/${IN_FONT_NAME}_00.ttf &
-python3 $NAME.py $HD apple/${IN_FONT_NAME}_01.ttf &
+python3 $NAME.py $HD ../apple/${IN_FONT_NAME}_00.ttf &
+python3 $NAME.py $HD ../apple/${IN_FONT_NAME}_01.ttf &
 wait
 
-otf2otc $NAME/${IN_FONT_NAME}_00.ttf $NAME/${IN_FONT_NAME}_01.ttf -o $NAME/$OUT_FONT_NAME
+otf2otc ${IN_FONT_NAME}_00.ttf ${IN_FONT_NAME}_01.ttf -o $OUT_FONT_NAME
 
 echo "Output file at $NAME/$OUT_FONT_NAME"

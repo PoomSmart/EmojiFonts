@@ -8,7 +8,7 @@ then
     exit 1
 fi
 
-FOLDER=$1-extra
+FOLDER=extra
 PNG_PATH=$FOLDER/original
 MAKE_1F491_1F48F=false
 MAX_SIZE=96
@@ -156,6 +156,10 @@ mogrify -resize 40x40 -path $FOLDER/images/40 $FOLDER/images/64/*.png
 # mogrify -resize 40x40 -path $FOLDER/images/40 $FOLDER/images/48/*.png
 # mogrify -resize 32x32 -path $FOLDER/images/32 $FOLDER/images/40/*.png
 # mogrify -resize 20x20 -path $FOLDER/images/20 $FOLDER/images/32/*.png
+
+echo "get-assets: Optimizing PNGs..."
+pngquant --skip-if-larger -f --ext .png $FOLDER/images/*/*.png || true
+oxipng -q $FOLDER/images/*/*.png
 
 unset skins
 unset genders

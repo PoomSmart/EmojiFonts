@@ -1,9 +1,9 @@
 import os
 import sys
 from fontTools import ttLib
-from shared import *
 
-fontname = 'openmoji'
+sys.path.append('..')
+from shared import *
 
 # input: HD boolean, font ttf
 
@@ -42,15 +42,15 @@ for ppem, strike in f['sbix'].strikes.items():
         name = base_norm_variants(name, True, True)
         name = norm_special(name)
         name = openmoji_name(name)
-        path = f'{fontname}/images/{ppem}/{name}.png'
+        path = f'images/{ppem}/{name}.png'
         if not os.path.exists(path):
             if name.startswith('silhouette'):
                 name = name.lower()
             name = name.replace('.L', '.l').replace('.R', '.r')
-            path = f'{fontname}-extra/images/{ppem}/{name}.png'
+            path = f'extra/images/{ppem}/{name}.png'
         glyph.imageData = get_image_data(path)
 
-if not os.path.exists('.test'):
+if not os.path.exists('../.test'):
     print('Saving changes...')
-    ttf = ttf.replace('apple/', '')
-    f.save(f'{fontname}/{ttf}')
+    ttf = ttf.replace('../apple/', '')
+    f.save(ttf)

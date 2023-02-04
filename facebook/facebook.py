@@ -1,9 +1,9 @@
 import sys
 import os
 from fontTools import ttLib
-from shared import *
 
-fontname = 'facebook'
+sys.path.append('..')
+from shared import *
 
 # input: font ttf
 
@@ -12,10 +12,10 @@ ttf = sys.argv[1]
 f = ttLib.TTFont(ttf)
 
 def norm_name(name: str):
-    result = base_norm_name(name)
-    if '20e3' in result or name in signs:
-        result = result[2:]
-    return result
+    name = base_norm_name(name)
+    if '20e3' in name or name in signs:
+        name = name[2:]
+    return name
 
 def facebook_name(name: str):
     return name.replace('_', '-')
@@ -36,15 +36,15 @@ for ppem, strike in f['sbix'].strikes.items():
         name = base_norm_variants(name)
         name = base_norm_special(name)
         name = facebook_name(name)
-        path = f'{fontname}/images/{ppem}/{name}.png'
+        path = f'images/{ppem}/{name}.png'
         if not os.path.exists(path) or name.startswith('1f491') or name.startswith('1f48f'):
-            path = f'{fontname}-extra/images/{ppem}/{name}.png'
+            path = f'extra/images/{ppem}/{name}.png'
             if not os.path.exists(path):
                 name = name.replace('-', '_')
-                path = f'{fontname}-extra/images/{ppem}/{name}.png'
+                path = f'extra/images/{ppem}/{name}.png'
         glyph.imageData = get_image_data(path)
 
-if not os.path.exists('.test'):
+if not os.path.exists('../.test'):
     print('Saving changes...')
-    ttf = ttf.replace('apple/', '')
-    f.save(f'{fontname}/{ttf}')
+    ttf = ttf.replace('../apple/', '')
+    f.save(ttf)

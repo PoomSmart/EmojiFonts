@@ -1,9 +1,9 @@
 import os
 import sys
 from fontTools import ttLib
-from shared import *
 
-fontname = 'fluentui'
+sys.path.append('..')
+from shared import *
 
 # input: font ttf, emoji style
 
@@ -99,10 +99,10 @@ for ppem, strike in f['sbix'].strikes.items():
             m_print(f'{name} is missing')
             continue
         name = fluentui_name(name)
-        path = f'{fontname}/{style}/{ppem}/{name}.png'
+        path = f'{style}/{ppem}/{name}.png'
         glyph.imageData = get_image_data(path)
 
-if not os.path.exists('.test'):
+if not os.path.exists('../.test'):
     print('Saving changes...')
-    ttf = ttf.replace('apple/', '')
-    f.save(f'{fontname}/{style}-{ttf}')
+    ttf = ttf.replace('../apple/', '')
+    f.save(f'{style}-{ttf}')

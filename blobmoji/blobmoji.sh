@@ -4,26 +4,24 @@ set -e
 
 APPLE_FONT_NAME=AppleColorEmoji@2x
 NAME=blobmoji
-ASSETS=../$NAME/svg
-FONT_ASSETS=../$NAME/fonts
+ASSETS=../../$NAME/svg
+FONT_ASSETS=../../$NAME/fonts
 FONT_NAME=Blobmoji
 FONT_PATH=$FONT_ASSETS/$FONT_NAME.ttf
 MAX_SIZE=96
 
-rm -rf $NAME
-mkdir -p $NAME/images/96 $NAME/images/64 $NAME/images/48 $NAME/images/40 $NAME/images/32 $NAME/images/20
+rm -rf images
+mkdir -p images/96 images/64 images/48 images/40 images/32 images/20
 
 echo "Extracting font..."
-cp $FONT_PATH $NAME
-cd $NAME
+cp $FONT_PATH .
 ttx -q -f -z extfile $FONT_NAME.ttf
 ttx -q -f -s -t GSUB $FONT_NAME.ttf
-cd ..
 
 echo "Copying, resizing and optimizing PNGs..."
-mogrify -resize 96x96 -path $NAME/images/96 $NAME/bitmaps/strike0/*.png
-./resize.sh $NAME false false false
-rm -rf $NAME/bitmaps
+mogrify -resize 96x96 -path images/96 bitmaps/strike0/*.png
+../resize.sh false false false
+rm -rf bitmaps
 
 cd $NAME-extra
 rm -rf svgs images
@@ -38,15 +36,13 @@ do
     rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png} &
 done
 wait
-
-echo "Resizing and optimizing PNGs..."
+../../resize.sh false false false
 cd ..
-./resize.sh $NAME-extra false false false
 
-python3 $NAME.py apple/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx &
-python3 $NAME.py apple/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx &
+python3 $NAME.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx &
+python3 $NAME.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx &
 wait
 
-otf2otc $NAME/${APPLE_FONT_NAME}_00.ttf $NAME/${APPLE_FONT_NAME}_01.ttf -o $NAME/$NAME.ttc
+otf2otc ${APPLE_FONT_NAME}_00.ttf ${APPLE_FONT_NAME}_01.ttf -o $NAME.ttc
 
 echo "Output file at $NAME/$NAME.ttc"

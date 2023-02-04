@@ -2,9 +2,9 @@ import os
 import sys
 import xml.etree.ElementTree as ET
 from fontTools import ttLib
-from shared import *
 
-fontname = 'EMOJI_FONT'
+sys.path.append('..')
+from shared import *
 
 # input: apple font ttf, EMOJI_FONT font ttf, blobemoji GSUB ttx
 
@@ -107,16 +107,16 @@ for ppem, strike in f['sbix'].strikes.items():
         name = base_norm_special(name)
         name = norm_name(name)
         name = get_glyph_name(name)
-        path = f'{fontname}/images/{ppem}/{name}.png'
+        path = f'images/{ppem}/{name}.png'
         if not os.path.exists(path):
             name = native_norm_name(name)
-            path = f'{fontname}-extra/images/{ppem}/{name}.png'
+            path = f'extra/images/{ppem}/{name}.png'
             if not os.path.exists(path):
                 name = name.replace('_', '-')
-                path = f'{fontname}-extra/images/{ppem}/{name}.png'
+                path = f'extra/images/{ppem}/{name}.png'
         glyph.imageData = get_image_data(path)
 
-if not os.path.exists('.test'):
+if not os.path.exists('../.test'):
     print('Saving changes...')
-    ttf = ttf.replace('apple/', '')
-    f.save(f'{fontname}/{ttf}')
+    ttf = ttf.replace('../apple/', '')
+    f.save(ttf)

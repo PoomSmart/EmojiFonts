@@ -25,8 +25,8 @@ mogrify -resize 20x20 -path $NAME/images/20 $NAME/images/32/*.png
 rm -rf $NAME/bitmaps
 
 echo "Optimizing PNGs..."
-./resize.sh $NAME false false false
-# ./resize.sh $NAME-extra false false false
+../resize.sh false false false
+# ../resize.sh false false false
 
 python3 $NAME.py common/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
 python3 $NAME.py common/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx

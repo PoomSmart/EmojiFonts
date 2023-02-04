@@ -2,6 +2,7 @@
 Fonts
 release
 update-deb.sh
+emjc.py
 
 # Font assets
 *.ttx
@@ -9,24 +10,16 @@ update-deb.sh
 *.ttf
 
 # Project assets
+**/images/*/*.png
+fluentui/*/*/*.png
 apple
 .DS_Store
+.test
 
 # Vendor emoji fonts
-blobmoji
-blobmoji-extra/svgs
-facebook
-fluentui
-joypixels
-openmoji
-openmoji-extra
-noto-emoji
-noto-emoji-extra/svgs
-oneui
-twemoji
-twemoji-extra/svgs
-whatsapp
-*-extra/images
+**/extra/images
+**/extra/svgs
+**/bitmaps
 
 # Python assets
 __pycache__

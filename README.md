@@ -9,6 +9,8 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 - [pip](https://pip.pypa.io/en/stable/)
 - [fonttools](https://github.com/fonttools/fonttools) (`pip3 install fonttools[repacker]`)
 - [afdko](https://github.com/adobe-type-tools/afdko) (`pip3 install afdko`)
+- [libpylzfse](https://github.com/ydkhatri/pyliblzfse) (`pip3 install libpylzfse`)
+- [Pillow](https://github.com/python-pillow/Pillow) (`pip3 install Pillow`)
 - [pngquant](https://pngquant.org) (`brew install pngquant`)
 - [oxipng](https://github.com/shssoichiro/oxipng) (`brew install oxipng`)
 
@@ -52,44 +54,44 @@ It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-
 ## Blobmoji Emoji
 
 1. Clone [blobmoji](https://github.com/C1710/blobmoji) and place its folder alongside this project.
-2. Execute `./blobmoji.sh` to create themed font, output at `blobmoji/blobmoji.ttc`.
+2. Execute `cd blobmoji && ./blobmoji.sh` to create themed font, output at `blobmoji/blobmoji.ttc`.
 
 ## Facebook Emoji
 
 1. Clone [facebook-emojis](https://github.com/PoomSmart/facebook-emojis) and place its folder alongside this project.
-3. Execute `./facebook.sh` to create them themed font, output at `facebook/facebook.ttc`.
+3. Execute `cd facebook && ./facebook.sh` to create them themed font, output at `facebook/facebook.ttc`.
 
 ## FluentUI Emoji
 
 1. Clone [fluentui-emoji](https://github.com/microsoft/fluentui-emoji) and place its folder alongside this project.
-2. Execute `./fluentui.sh STYLE` (where `STYLE` is one of this list: `Color, Flat, High Contrast`) to create themed font, output at `fluentui/fluentui-STYLE.ttc`.
+2. Execute `cd fluentui && ./fluentui.sh STYLE` (where `STYLE` is one of this list: `Color, Flat, High Contrast`) to create themed font, output at `fluentui/fluentui-STYLE.ttc`.
 
 ## Google Noto Color Emoji
 
 1. Clone [noto-emoji](https://github.com/googlefonts/noto-emoji) and place its folder alongside this project.
-2. Execute `./noto-emoji.sh` or `./noto-emoji.sh HD` to create the themed font, output at `noto-emoji/noto-emoji.ttc`.
+2. Execute `cd noto-emoji && ./noto-emoji.sh` or `./noto-emoji.sh HD` to create the themed font, output at `noto-emoji/noto-emoji.ttc`.
 
 ## JoyPixels Emoji
 
 1. Download JoyPixels 7 Free assets from JoyPixels [Download page](https://joypixels.com/download) and place the folder alongside this project.
-2. Execute `./joypixels.sh` to create themed font, output at `joypixels/joypixels.ttc`.
+2. Execute `cd joypixels && ./joypixels.sh` to create themed font, output at `joypixels/joypixels.ttc`.
 
 ## OpenMoji Emoji
 
 1. Clone [openmoji](https://github.com/hfg-gmuend/openmoji) and place its folder alongside this project.
-2. Execute `./openmoji.sh` or `./openmoji.sh HD` to create themed font, output at `openmoji/openmoji.ttc`.
+2. Execute `cd openmoji && ./openmoji.sh` or `cd openmoji && ./openmoji.sh HD` to create themed font, output at `openmoji/openmoji.ttc`.
 
 ## Samsung One UI Emoji
 
 1. Retrieve `NotoColorEmoji.ttf` with Samsung One UI 5.0 emojis somehow and place that in `oneui` folder.
-2. Execute `./oneui.sh` to create themed font, output at `oneui/oneui.ttc`.
+2. Execute `cd oneui && ./oneui.sh` to create themed font, output at `oneui/oneui.ttc`.
 
 ## Twitter Twemoji
 
 1. Clone [twemoji](https://github.com/twitter/twemoji) and place its folder alongside this project.
-2. Execute `./twemoji.sh` or `./twemoji.sh HD` to create the themed font, output at `twemoji/twemoji.ttc`.
+2. Execute `cd twemoji && ./twemoji.sh` or `cd twemoji && ./twemoji.sh HD` to create the themed font, output at `twemoji/twemoji.ttc`.
 
 ## WhatsApp Emoji
 
 1. Retrieve `NotoColorEmoji.ttf` with WhatsApp emojis somehow and place that in `whatsapp` folder.
-2. Execute `./whatsapp.sh` to create themed font, output at `whatsapp/whatsapp.ttc`.
+2. Execute `cd whatsapp && ./whatsapp.sh` to create themed font, output at `whatsapp/whatsapp.ttc`.

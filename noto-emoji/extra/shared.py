@@ -4,7 +4,7 @@ namespace = 'http://www.w3.org/2000/svg'
 
 ET.register_namespace('', namespace)
 
-font = '../../noto-emoji/svg'
+font = '../../../noto-emoji/svg'
 
 silhouette_color = '#7E7E7E'
 
