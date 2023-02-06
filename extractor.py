@@ -1,20 +1,31 @@
-import sys
 import binascii
 import pathlib
+import sys
 import xml.etree.ElementTree as ET
+from emjc import decode_emjc
+from PIL import Image
 
 # python3 extractor.py apple common/AppleColorEmoji@2x_00._s_b_i_x.ttx
 
 # input: output folder, font sbix ttx
 data = ET.parse(sys.argv[2]).getroot()
 
+supported_types = ['png ', 'emjc']
 for strike in data.iter('strike'):
-    ppem = strike.find('ppem').attrib['value']
+    ppem = int(strike.find('ppem').attrib['value'])
     pathlib.Path(f'{sys.argv[1]}/{ppem}').mkdir(parents=True, exist_ok=True)
     for glyph in strike.findall('glyph'):
-        if glyph.get('graphicType') == 'png ':
+        type = glyph.get('graphicType')
+        if type in supported_types:
             name = glyph.get('name')
             # print(f'Exporting {name} ({ppem}x{ppem})')
             hexdata = glyph.find('hexdata').text.strip()
-            with open(f'{sys.argv[1]}/{ppem}/{name}.png', 'wb') as fout:
-                fout.write(binascii.unhexlify(''.join(hexdata.split())))
+            data = binascii.unhexlify(''.join(hexdata.split()))
+            out_path = f'{sys.argv[1]}/{ppem}/{name}.png'
+            if type == 'emjc':
+                decoded = decode_emjc(data)
+                img = Image.frombuffer('RGBA', (ppem, ppem), decoded, 'raw', 'BGRA', 0, 1)
+                img.save(out_path)
+            else:
+                with open(out_path, 'wb') as fout:
+                    fout.write(data)

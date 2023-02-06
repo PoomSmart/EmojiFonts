@@ -5,7 +5,7 @@ macOS machine with homebrew and Python 3.7+ installed, assumed:
 ## Dependencies
 
 ```
-bash -c "pip3 install afdko fonttools[repacker]"
+bash -c "pip3 install afdko fonttools[repacker] pyliblzfse"
 brew install bash pngquant oxipng freetype imagemagick librsvg svgo
 ```
 
