@@ -228,6 +228,8 @@ def base_norm_special(name: str, with_variant_selector = False):
         return '1f408_200d_2b1b'
     if name == '1f415_1f9ba':
         return '1f415_200d_1f9ba'
+    if name == '1f426_2b1b':
+        return '1f426_200d_2b1b'
     if name == '1f441_1f5e8':
         return '1f441_200d_1f5e8'
     if name == '1f62e_1f4a8':

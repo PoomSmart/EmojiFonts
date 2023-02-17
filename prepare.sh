@@ -6,6 +6,7 @@ IOS_FONT_NAME=AppleColorEmoji_iOS
 WORK_DIR=common
 
 mkdir -p $WORK_DIR
+rm -f *.ttx
 
 echo "Extracting font..."
 otc2otf $IOS_FONT_NAME.ttc

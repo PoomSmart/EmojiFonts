@@ -121,9 +121,9 @@ def decode_emjc(emjc_data: bytes):
                 g = base + (q + 1) // 2
                 b = base - p // 2 - q // 2
 
-            dst_buffer[i * 4 + 0] = (b % 257) + 257 if b < 0 else (b % 257)
-            dst_buffer[i * 4 + 1] = (g % 257) + 257 if g < 0 else (g % 257)
-            dst_buffer[i * 4 + 2] = (r % 257) + 257 if r < 0 else (r % 257)
+            dst_buffer[i * 4 + 0] = (b % 257) + 257 if b < 0 else b % 257
+            dst_buffer[i * 4 + 1] = (g % 257) + 257 if g < 0 else g % 257
+            dst_buffer[i * 4 + 2] = (r % 257) + 257 if r < 0 else r % 257
             dst_buffer[i * 4 + 3] = alpha[i]
             i += 1
 

@@ -7,7 +7,6 @@ FULL=$2
 [[ $3 = true ]] && COLORS=256 || COLORS=
 
 if [[ $HD = true ]]; then
-    mogrify -resize 160x160 images/160/*.png
     pngquant --skip-if-larger $COLORS -f --ext .png images/160/*.png &
     mogrify -resize 96x96 -path images/96 images/160/*.png
     pngquant --skip-if-larger $COLORS -f --ext .png images/96/*.png &

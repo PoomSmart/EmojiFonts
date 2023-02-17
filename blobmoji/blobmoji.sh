@@ -23,7 +23,7 @@ mogrify -resize 96x96 -path images/96 bitmaps/strike0/*.png
 ../resize.sh false false false
 rm -rf bitmaps
 
-cd $NAME-extra
+cd extra
 rm -rf svgs images
 mkdir -p svgs images/96 images/64 images/48 images/40 images/32 images/20
 python3 gen-couple-heart.py
@@ -33,9 +33,8 @@ python3 gen-handshake.py
 for svg in $(find ./svgs -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png} &
+    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
 done
-wait
 ../../resize.sh false false false
 cd ..
 
