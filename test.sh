@@ -13,6 +13,7 @@ cd joypixels && python3 joypixels.py ../apple/${FONT_NAME}_00.ttf Default && cd 
 cd noto-emoji && python3 noto-emoji.py ../apple/${FONT_NAME}_00.ttf && cd ..
 cd oneui && python3 oneui.py ../apple/${FONT_NAME}_00.ttf NotoColorEmoji.ttf NotoColorEmoji.G_S_U_B_.ttx && cd ..
 cd openmoji && python3 openmoji.py ../apple/${FONT_NAME}_00.ttf && cd ..
+cd tossface && python3 tossface.py ../apple/${FONT_NAME}_00.ttf TossFaceFontMac.ttf TossFaceFontMac.G_S_U_B_.ttx && cd ..
 cd twemoji && python3 twemoji.py ../apple/${FONT_NAME}_00.ttf && cd ..
 cd whatsapp && python3 whatsapp.py ../apple/${FONT_NAME}_00.ttf NotoColorEmoji.ttf NotoColorEmoji.G_S_U_B_.ttx && cd ..
 

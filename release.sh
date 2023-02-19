@@ -16,5 +16,6 @@ ln joypixels/joypixels-Decal.ttc release/joypixels-Decal.ttc
 ln noto-emoji/noto-emoji.ttc release/noto-emoji.ttc
 ln oneui/oneui.ttc release/oneui.ttc
 ln openmoji/openmoji.ttc release/openmoji.ttc
+ln tossface/tossface.ttc release/tossface.ttc
 ln twemoji/twemoji.ttc release/twemoji.ttc
 ln whatsapp/whatsapp.ttc release/whatsapp.ttc

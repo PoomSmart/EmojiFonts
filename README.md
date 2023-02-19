@@ -86,6 +86,11 @@ It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-
 1. Retrieve `NotoColorEmoji.ttf` with Samsung One UI 5.0 emojis somehow and place that in `oneui` folder.
 2. Execute `cd oneui && ./oneui.sh` to create themed font, output at `oneui/oneui.ttc`.
 
+## Toss Face Emoji
+
+1. Download `TossFaceFontMac.ttf` from [tossface website](https://toss.im/tossface) and place that in `tossface` folder.
+2. Execute `cd tossface && ./tossface.sh` to create themed font, output at `tossface/tossface.ttc`.
+
 ## Twitter Twemoji
 
 1. Clone [twemoji](https://github.com/twitter/twemoji) and place its folder alongside this project.

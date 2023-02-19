@@ -30,31 +30,7 @@ missing = [
     '1f91d_1f3fb', '1f91d_1f3fc', '1f91d_1f3fd', '1f91d_1f3fe', '1f91d_1f3ff',
     '1f9d1_200d_1f4bb',
     '1f9d1_1f3fb_200d_1f4bb', '1f9d1_1f3fc_200d_1f4bb', '1f9d1_1f3fd_200d_1f4bb', '1f9d1_1f3fe_200d_1f4bb', '1f9d1_1f3ff_200d_1f4bb',
-] + [
-    '1f426_200d_2b1b',
-    '1f6dc',
-    '1fa75',
-    '1fa76',
-    '1fa77',
-    '1fa87',
-    '1fa88',
-    '1faad',
-    '1faae',
-    '1faaf',
-    '1fabb',
-    '1fabc',
-    '1fabd',
-    '1fabf',
-    '1face',
-    '1facf',
-    '1fada',
-    '1fadb',
-    '1fae8',
-    '1faf7',
-    '1faf7_1f3fb', '1faf7_1f3fc', '1faf7_1f3fd', '1faf7_1f3fe', '1faf7_1f3ff',
-    '1faf8',
-    '1faf8_1f3fb', '1faf8_1f3fc', '1faf8_1f3fd', '1faf8_1f3fe', '1faf8_1f3ff',
-]
+] + u15
 
 def norm_special(name: str):
     if name == '1f441_1f5e8':

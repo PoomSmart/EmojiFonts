@@ -35,6 +35,9 @@ for ppem, strike in f['sbix'].strikes.items():
             continue
         name = base_norm_variants(name, True, True)
         name = base_norm_special(name, True)
+        if name in u15:
+            print(f'{name} is missing')
+            continue
         name = twitter_name(name)
         path = f'images/{ppem}/{name}.png'
         if not os.path.exists(path):
