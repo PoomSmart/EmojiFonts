@@ -5,10 +5,9 @@ from fontTools import ttLib
 sys.path.append('..')
 from shared import *
 
-# input: HD boolean, font ttf
+# input: font ttf
 
-hd = sys.argv[1] == 'true'
-ttf = sys.argv[2]
+ttf = sys.argv[1]
 
 f = ttLib.TTFont(ttf)
 
@@ -26,7 +25,7 @@ def norm_special(name: str):
 def openmoji_name(name: str):
     return name.replace('_', '-').upper()
 
-prepare_strikes(f, hd)
+prepare_strikes(f, True)
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():

@@ -69,7 +69,7 @@ It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-
 ## Google Noto Color Emoji
 
 1. Clone [noto-emoji](https://github.com/googlefonts/noto-emoji) and place its folder alongside this project.
-2. Execute `cd noto-emoji && ./noto-emoji.sh` or `./noto-emoji.sh HD` to create the themed font, output at `noto-emoji/noto-emoji.ttc`.
+2. Execute `cd noto-emoji && ./noto-emoji.sh` to create the themed font, output at `noto-emoji/noto-emoji.ttc`.
 
 ## JoyPixels Emoji
 
@@ -79,7 +79,7 @@ It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-
 ## OpenMoji Emoji
 
 1. Clone [openmoji](https://github.com/hfg-gmuend/openmoji) and place its folder alongside this project.
-2. Execute `cd openmoji && ./openmoji.sh` or `cd openmoji && ./openmoji.sh HD` to create themed font, output at `openmoji/openmoji.ttc`.
+2. Execute `cd openmoji && ./openmoji.sh` to create themed font, output at `openmoji/openmoji.ttc`.
 
 ## Samsung One UI Emoji
 
@@ -89,7 +89,7 @@ It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-
 ## Twitter Twemoji
 
 1. Clone [twemoji](https://github.com/twitter/twemoji) and place its folder alongside this project.
-2. Execute `cd twemoji && ./twemoji.sh` or `cd twemoji && ./twemoji.sh HD` to create the themed font, output at `twemoji/twemoji.ttc`.
+2. Execute `cd twemoji && ./twemoji.sh` to create the themed font, output at `twemoji/twemoji.ttc`.
 
 ## WhatsApp Emoji
 
