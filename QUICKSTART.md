@@ -1,11 +1,11 @@
 # Quickstart
 
-macOS machine with homebrew and Python 3.7+ installed, assumed:
+Assuming a macOS machine with homebrew and Python 3.7+ installed:
 
 ## Dependencies
 
 ```
-bash -c "pip3 install afdko fonttools[repacker] pyliblzfse"
+bash -c "pip3 install --upgrade afdko fonttools[repacker] pyliblzfse Pillow"
 brew install bash pngquant oxipng freetype imagemagick librsvg svgo
 ```
 
@@ -14,5 +14,5 @@ brew install bash pngquant oxipng freetype imagemagick librsvg svgo
 ```
 # Copy iOS AppleColorEmoji font to ./AppleColorEmoji_iOS.ttc
 cp /System/Library/Fonts/Apple\ Color\ Emoji.ttc ./AppleColorEmoji_macOS.ttc
-./prepare.sh; ./apple.sh
+./prepare.sh; ./apple.sh HD
 ```
