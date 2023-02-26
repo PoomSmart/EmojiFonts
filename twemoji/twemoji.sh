@@ -7,8 +7,7 @@ NAME=twemoji
 ASSETS=../../$NAME/assets/svg
 MAX_SIZE=160
 
-rm -rf images
-mkdir -p images/160 images/96 images/64 images/48 images/40 images/32 images/20
+../image-sizes.sh true
 
 echo "Converting SVGs into PNGs..."
 for svg in $(find $ASSETS -type f -name '*.svg')
@@ -18,8 +17,9 @@ do
 done
 
 cd extra
-rm -rf svgs images
-mkdir -p svgs images/160 images/96 images/64 images/48 images/40 images/32 images/20
+rm -rf svgs
+mkdir -p svgs
+../../image-sizes.sh true
 python3 gen-couple-heart.py
 python3 gen-couple-kiss.py
 python3 gen-couple-stand.py
@@ -29,7 +29,7 @@ do
     fname=$(basename $svg)
     rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png} &
 done
-wait
+wait -n
 ../../resize.sh true false false
 cd ..
 
@@ -41,7 +41,7 @@ OUT_FONT_NAME=$NAME.ttc
 
 python3 $NAME.py ../apple/${IN_FONT_NAME}_00.ttf &
 python3 $NAME.py ../apple/${IN_FONT_NAME}_01.ttf &
-wait
+wait -n
 
 otf2otc ${IN_FONT_NAME}_00.ttf ${IN_FONT_NAME}_01.ttf -o $OUT_FONT_NAME
 

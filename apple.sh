@@ -27,7 +27,7 @@ then
     mogrify +dither -posterize 8 -normalize $ASSETS/96/*.png &
     mogrify +dither -posterize 8 -normalize $ASSETS/64/*.png &
     mogrify +dither -posterize 8 -normalize $ASSETS/40/*.png &
-    wait
+    wait -n
 fi
 
 echo "Optimizing PNGs..."
@@ -40,7 +40,7 @@ pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/40/*.png || true
 oxipng -q $ASSETS/96/*.png &
 oxipng -q $ASSETS/64/*.png &
 oxipng -q $ASSETS/40/*.png &
-wait
+wait -n
 
 if [[ $MOD != '' ]]
 then
@@ -51,7 +51,8 @@ fi
 
 python3 $NAME.py $HD common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS &
 python3 $NAME.py $HD common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS &
-wait
+wait -n
+
 rm -f apple/$OUT_FONT_NAME.ttf
 ln apple/${OUT_FONT_NAME}_00.ttf apple/$OUT_FONT_NAME.ttf
 

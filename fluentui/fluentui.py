@@ -1,6 +1,5 @@
 import os
 import sys
-from fontTools import ttLib
 
 sys.path.append('..')
 from shared import *
@@ -75,7 +74,7 @@ for ppem, strike in f['sbix'].strikes.items():
             m_print(f'{name} is missing')
             continue
         name = fluentui_name(name)
-        path = f'{style}/{ppem}/{name}.png'
+        path = f'{style}/images/{ppem}/{name}.png'
         glyph.imageData = get_image_data(path)
 
 if not os.path.exists('../.test'):

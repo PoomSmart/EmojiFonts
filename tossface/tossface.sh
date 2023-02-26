@@ -9,8 +9,7 @@ ASSETS=images
 ORIGINAL_SIZE=112
 MAX_SIZE=96
 
-rm -rf $ASSETS/96 $ASSETS/64 $ASSETS/40
-mkdir -p $ASSETS/96 $ASSETS/64 $ASSETS/40
+../image-sizes.sh false
 
 echo "Extracting font..."
 ttx -q -s -f -t sbix -t GSUB $FONT_NAME.ttf
@@ -23,7 +22,7 @@ rm -rf $ASSETS/$ORIGINAL_SIZE
 
 python3 tossface.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx &
 python3 tossface.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx &
-wait
+wait -n
 
 otf2otc ${APPLE_FONT_NAME}_00.ttf ${APPLE_FONT_NAME}_01.ttf -o $NAME.ttc
 

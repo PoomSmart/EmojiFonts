@@ -1,8 +1,6 @@
 from fontTools import ttLib
 
 debug = False
-global convert_skin
-convert_skin = True
 
 hairs = [
     '1f9b0', '1f9b1', '1f9b2', '1f9b3'
@@ -225,13 +223,12 @@ def base_norm_variants(name: str, with_variant_selector = False, gender_need_sel
                 return name.replace(f'_{p}.{s}', f'_{skins[s]}_200d_{p}')
     if '.0' in name:
         name = name.replace('.0', '')
-    if convert_skin:
-        for s in range(1, 6):
-            if f'.{s}' in name:
-                if '1f9d1_1f384' in name:
-                    return name.replace(f'_1f384.{s}', f'_{skins[s]}_200d_1f384')
-                else:
-                    return name.replace(f'.{s}', f'_{skins[s]}')
+    for s in range(1, 6):
+        if f'.{s}' in name:
+            if '1f9d1_1f384' in name:
+                return name.replace(f'_1f384.{s}', f'_{skins[s]}_200d_1f384')
+            else:
+                return name.replace(f'.{s}', f'_{skins[s]}')
     return name
 
 def base_norm_special(name: str, with_variant_selector = False):

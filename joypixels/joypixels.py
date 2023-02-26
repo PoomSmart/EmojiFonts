@@ -1,6 +1,5 @@
 import sys
 import os
-from fontTools import ttLib
 
 sys.path.append('..')
 from shared import *

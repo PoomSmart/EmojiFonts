@@ -20,7 +20,7 @@ UNSHARED_TABLES='-t head -t hhea -t meta -t name -t trak'
 SHARED_TABLES='-x GDEF -x DSIG -x cmap -x feat -x glyf -x hmtx -x loca -x maxp -x morx -x post -x sbix -x vhea -x vmtx -x GPOS -x GlyphOrder -x OS/2'
 ttx -q -s -f -x DSIG ${IOS_FONT_NAME}_00.ttf &
 ttx -q -s -f $SHARED_TABLES ${IOS_FONT_NAME}_01.ttf &
-wait
+wait -n
 
 echo "Removing unneeded strikes..."
 python3 ../remove-strikes.py ${IOS_FONT_NAME}_00._s_b_i_x.ttx
@@ -39,6 +39,6 @@ sed 's/_00/_01/g' ${IOS_FONT_NAME}_00.ttx > ${IOS_FONT_NAME}_01.ttx
 echo "Building fonts..."
 ttx -q -o ${IOS_FONT_NAME}_00.ttf -b ${IOS_FONT_NAME}_00.ttx &
 ttx -q -o ${IOS_FONT_NAME}_01.ttf -b ${IOS_FONT_NAME}_01.ttx &
-wait
+wait -n
 
 cd ..
