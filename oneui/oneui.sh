@@ -5,7 +5,6 @@ set -e
 APPLE_FONT_NAME=AppleColorEmoji@2x
 NAME=oneui
 FONT_NAME=NotoColorEmoji
-FONT_PATH=$FONT_NAME.ttf
 
 ../image-sizes.sh false
 
