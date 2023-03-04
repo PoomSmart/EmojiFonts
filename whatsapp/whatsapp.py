@@ -5,7 +5,7 @@ sys.path.append('..')
 from shared import *
 from shared_lig import *
 
-# input: apple font ttf, whatsapp font ttf, blobemoji GSUB ttx
+# input: apple font ttf, whatsapp font ttf, whatsapp GSUB ttx
 
 ttf = sys.argv[1]
 bttf = sys.argv[2]

@@ -50,5 +50,6 @@ python3 $NAME.py ../apple/${IN_FONT_NAME}_01.ttf &
 wait -n
 
 otf2otc ${IN_FONT_NAME}_00.ttf ${IN_FONT_NAME}_01.ttf -o $OUT_FONT_NAME
+rm -f *_00.ttf *_01.ttf
 
 echo "Output file at $NAME/$OUT_FONT_NAME"

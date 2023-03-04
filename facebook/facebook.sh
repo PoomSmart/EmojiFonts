@@ -27,5 +27,6 @@ python3 $NAME.py ../apple/${FONT_NAME}_01.ttf &
 wait -n
 
 otf2otc ${FONT_NAME}_00.ttf ${FONT_NAME}_01.ttf -o $NAME.ttc
+rm -f *_00.ttf *_01.ttf
 
 echo "Output file at $NAME/$NAME.ttc"

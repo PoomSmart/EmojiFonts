@@ -44,6 +44,7 @@ PREFIX=$MOD-
 OUT_FONT_NAME=$NAME-$MOD.ttc
 
 otf2otc $PREFIX${FONT_NAME}_00.ttf $PREFIX${FONT_NAME}_01.ttf -o $OUT_FONT_NAME
+rm -f *_00.ttf *_01.ttf
 
 if [ $OUT_FONT_NAME = "$NAME-Default.ttc" ]; then
     mv $OUT_FONT_NAME $NAME.ttc

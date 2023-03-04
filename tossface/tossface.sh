@@ -25,5 +25,6 @@ python3 tossface.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME
 wait -n
 
 otf2otc ${APPLE_FONT_NAME}_00.ttf ${APPLE_FONT_NAME}_01.ttf -o $NAME.ttc
+rm -f *_00.ttf *_01.ttf
 
 echo "Output file at $NAME/$NAME.ttc"

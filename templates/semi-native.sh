@@ -5,31 +5,24 @@ set -e
 APPLE_FONT_NAME=AppleColorEmoji@2x
 NAME=EMOJI_FONT
 FONT_NAME=NotoColorEmoji
-FONT_PATH=$NAME/$FONT_NAME.ttf
+FONT_PATH=$FONT_NAME.ttf
 
-rm -rf $NAME/images
-mkdir -p $NAME/images/96 $NAME/images/64 $NAME/images/48 $NAME/images/40 $NAME/images/32 $NAME/images/20
+../image-sizes.sh false
 
 echo "Extracting font..."
-cd $NAME
 ttx -q -f -z extfile $FONT_NAME.ttf
-cd ..
+ttx -q -f -s -t GSUB $FONT_NAME.ttf
 
-echo "Copying and resizing PNGs..."
-mogrify -resize 96x96 -path $NAME/images/96 $NAME/bitmaps/strike0/*.png
-mogrify -resize 64x64 -path $NAME/images/64 $NAME/images/96/*.png
-mogrify -resize 48x48 -path $NAME/images/48 $NAME/images/64/*.png
-mogrify -resize 40x40 -path $NAME/images/40 $NAME/images/48/*.png
-mogrify -resize 32x32 -path $NAME/images/32 $NAME/images/40/*.png
-mogrify -resize 20x20 -path $NAME/images/20 $NAME/images/32/*.png
-rm -rf $NAME/bitmaps
-
-echo "Optimizing PNGs..."
+echo "Resizing and optimizing PNGs..."
+mogrify -resize 96x96 -path images/96 bitmaps/strike0/*.png
 ../resize.sh false false false
+rm -rf bitmaps
 
-python3 $NAME.py common/${APPLE_FONT_NAME}_00.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
-python3 $NAME.py common/${APPLE_FONT_NAME}_01.ttf $NAME/$FONT_NAME.ttf $NAME/$FONT_NAME.G_S_U_B_.ttx
+python3 $NAME.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx &
+python3 $NAME.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx &
+wait -n
 
-otf2otc $NAME/${APPLE_FONT_NAME}_00.ttf $NAME/${APPLE_FONT_NAME}_01.ttf -o $NAME/$NAME.ttc
+otf2otc ${APPLE_FONT_NAME}_00.ttf ${APPLE_FONT_NAME}_01.ttf -o $NAME.ttc
+rm -f *_00.ttf *_01.ttf
 
 echo "Output file at $NAME/$NAME.ttc"
