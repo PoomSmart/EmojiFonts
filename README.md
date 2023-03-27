@@ -5,9 +5,9 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 # Prerequisites
 
 - Bash version 5+ (`brew install bash`)
-- [Python 3.7 or later](http://www.python.org/download/)
+- [Python 3.7+](http://www.python.org/download/)
 - [pip](https://pip.pypa.io/en/stable/)
-- [fonttools](https://github.com/fonttools/fonttools) (`pip3 install fonttools[repacker]`)
+- [fonttools 4.39.1+](https://github.com/fonttools/fonttools) (`pip3 install fonttools[repacker]>=4.39.1`)
 - [afdko](https://github.com/adobe-type-tools/afdko) (`pip3 install afdko`)
 - [libpylzfse](https://github.com/ydkhatri/pyliblzfse) (`pip3 install libpylzfse`)
 - [Pillow](https://github.com/python-pillow/Pillow) (`pip3 install Pillow`)
@@ -24,8 +24,7 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 
 1. Copy `Apple Color Emoji.ttc` from `/System/Library/Fonts` of your macOS instance to the root of this repository and rename it to `AppleColorEmoji_macOS.ttc`.
 2. Copy AppleColorEmoji font from your iOS instance to the root of this repository and rename it to `AppleColorEmoji_iOS.ttc`. Read [here](https://poomsmart.github.io/emojiport) for the exact file path.
-3. Apply [this patch](https://github.com/fonttools/fonttools/pull/2963) and [this patch](https://github.com/fonttools/fonttools/pull/2984) to `sbixGlyph.py` of your `fonttools` library.
-4. Execute `prepare.sh` to create emoji TTF files and tables. Run this once.
+3. Execute `prepare.sh` to create emoji TTF files and tables. Run this once.
 
 # Building Apple Color Emoji font
 

@@ -5,7 +5,7 @@ Assuming a macOS machine with homebrew and Python 3.7+ installed:
 ## Dependencies
 
 ```
-bash -c "pip3 install --upgrade afdko fonttools[repacker] pyliblzfse Pillow"
+bash -c "pip3 install --upgrade afdko fonttools[repacker]>=4.39.1 pyliblzfse Pillow"
 brew install bash pngquant oxipng freetype imagemagick librsvg svgo
 ```
 
