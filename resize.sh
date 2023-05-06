@@ -5,6 +5,7 @@ set -e
 HD=$1
 FULL=$2
 [[ $3 = true ]] && COLORS=256 || COLORS=
+[[ $4 = true ]] && RESIZE_96=true || RESIZE_96=false
 
 if [[ $HD = true ]]; then
     pngquant --skip-if-larger $COLORS -f --ext .png images/160/*.png || true
@@ -24,6 +25,7 @@ if $FULL; then
     mogrify -resize 20x20 -path images/20 images/32/*.png
     pngquant --skip-if-larger $COLORS -f --ext .png images/20/*.png || true
 else
+    [[ $RESIZE_96 = true ]] && mogrify -resize 96x96 images/96/*.png
     pngquant --skip-if-larger $COLORS -f --ext .png images/96/*.png || true
     mogrify -resize 64x64 -path images/64 images/96/*.png
     pngquant --skip-if-larger $COLORS -f --ext .png images/64/*.png || true

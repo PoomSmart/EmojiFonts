@@ -196,10 +196,9 @@ gender_with_selector = [
     '26f9', '1f3cb', '1f3cc', '1f3fb', '1f575'
 ]
 
-def base_norm_variants(name: str, with_variant_selector = False, gender_need_selector = False):
+def base_norm_variants(name: str, with_variant_selector = False, gender_need_selector = False, remove_male = False):
     v = '_fe0f' if with_variant_selector else ''
-    if '.m' in name:
-        name = name.replace('.m', '')
+    name = name.replace('.m', '' if remove_male and '.m' in name else f'_2642{v}')
     for s in range(1, 6):
         if f'.{s}.w' in name:
             name = name.replace(f'.{s}.w', f'_{skins[s]}_200d_2640{v}')

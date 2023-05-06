@@ -14,6 +14,7 @@ NAME=joypixels
 EMOJI_ASSETS=../../$NAME-7/png/unicode/128
 ASSETS=$MOD
 
+mkdir -p $ASSETS
 cd $ASSETS
 ../../image-sizes.sh false
 cd ..
@@ -27,14 +28,13 @@ then
     echo "Applying mod: Decal..."
     mogrify -bordercolor none -border 5 -background white -alpha background -channel A -blur 0x3 -level 0,1% $ASSETS/images/96/*.png
     mogrify -bordercolor none -border 5 -background white -alpha background -channel A -blur 0x3 -level 0,1% extra/images/96/*.png
-    mogrify -resize 96x96 extra/images/96/*.png
 fi
 
 echo "Resizing and optimizing PNGs..."
 cd $ASSETS
-../../resize.sh false false false
+../../resize.sh false false false true
 cd ../extra
-../../resize.sh false false false
+../../resize.sh false false false true
 cd ..
 
 python3 $NAME.py ../apple/${FONT_NAME}_00.ttf $MOD
