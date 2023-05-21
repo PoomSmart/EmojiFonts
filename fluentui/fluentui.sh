@@ -42,9 +42,8 @@ echo "Resizing and optimizing PNGs..."
 ../../resize.sh false false false
 cd ..
 
-python3 $NAME.py ../apple/${FONT_NAME}_00.ttf "$STYLE" &
-python3 $NAME.py ../apple/${FONT_NAME}_01.ttf "$STYLE" &
-wait -n
+python3 $NAME.py ../apple/${FONT_NAME}_00.ttf "$STYLE"
+python3 $NAME.py ../apple/${FONT_NAME}_01.ttf "$STYLE"
 
 otf2otc "$STYLE"-${FONT_NAME}_00.ttf "$STYLE"-${FONT_NAME}_01.ttf -o $NAME-"$STYLE".ttc
 rm -f *_00.ttf *_01.ttf

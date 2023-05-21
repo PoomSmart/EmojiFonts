@@ -39,9 +39,8 @@ echo "Resizing and optimizing PNGs..."
 IN_FONT_NAME=AppleColorEmoji-HD
 OUT_FONT_NAME=$NAME.ttc
 
-python3 $NAME.py ../apple/${IN_FONT_NAME}_00.ttf &
-python3 $NAME.py ../apple/${IN_FONT_NAME}_01.ttf &
-wait -n
+python3 $NAME.py ../apple/${IN_FONT_NAME}_00.ttf
+python3 $NAME.py ../apple/${IN_FONT_NAME}_01.ttf
 
 otf2otc ${IN_FONT_NAME}_00.ttf ${IN_FONT_NAME}_01.ttf -o $OUT_FONT_NAME
 rm -f *_00.ttf *_01.ttf

@@ -20,9 +20,8 @@ mogrify -resize 96x96 -path $ASSETS/96 $ASSETS/$ORIGINAL_SIZE/*.png
 rm -rf $ASSETS/$ORIGINAL_SIZE
 ../resize.sh false false false
 
-python3 tossface.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx &
-python3 tossface.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx &
-wait -n
+python3 $NAME.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
+python3 $NAME.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
 
 otf2otc ${APPLE_FONT_NAME}_00.ttf ${APPLE_FONT_NAME}_01.ttf -o $NAME.ttc
 rm -f *_00.ttf *_01.ttf

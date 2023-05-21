@@ -49,9 +49,8 @@ else
     OUT_FONT_NAME=AppleColorEmoji@2x
 fi
 
-python3 $NAME.py $HD common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS &
-python3 $NAME.py $HD common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS &
-wait -n
+python3 $NAME.py $HD common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS
+python3 $NAME.py $HD common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS
 
 rm -f apple/$OUT_FONT_NAME.ttf
 ln apple/${OUT_FONT_NAME}_00.ttf apple/$OUT_FONT_NAME.ttf

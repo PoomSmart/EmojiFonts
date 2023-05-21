@@ -22,9 +22,8 @@ cd extra
 ../../resize.sh false false false
 cd ..
 
-python3 $NAME.py ../apple/${FONT_NAME}_00.ttf &
-python3 $NAME.py ../apple/${FONT_NAME}_01.ttf &
-wait -n
+python3 $NAME.py ../apple/${FONT_NAME}_00.ttf
+python3 $NAME.py ../apple/${FONT_NAME}_01.ttf
 
 otf2otc ${FONT_NAME}_00.ttf ${FONT_NAME}_01.ttf -o $NAME.ttc
 rm -f *_00.ttf *_01.ttf
