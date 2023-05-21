@@ -29,7 +29,7 @@ for ppem, strike in f['sbix'].strikes.items():
         name = norm_dual(name)
         if name is None:
             continue
-        name = base_norm_variants(name, False, False, True)
+        name = base_norm_variants(name)
         name = base_norm_special(name)
         name = lig.norm_name(name)
         name = lig.get_glyph_name(name)
