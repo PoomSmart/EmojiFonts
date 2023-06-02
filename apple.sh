@@ -24,10 +24,9 @@ if [[ $MOD == 'LQ' ]]
 then
     COLORS=8
     echo "Applying mod: LQ..."
-    mogrify +dither -posterize 8 -normalize $ASSETS/96/*.png &
-    mogrify +dither -posterize 8 -normalize $ASSETS/64/*.png &
-    mogrify +dither -posterize 8 -normalize $ASSETS/40/*.png &
-    wait -n
+    mogrify +dither -posterize 8 -normalize $ASSETS/96/*.png
+    mogrify +dither -posterize 8 -normalize $ASSETS/64/*.png
+    mogrify +dither -posterize 8 -normalize $ASSETS/40/*.png
 fi
 
 echo "Optimizing PNGs..."
@@ -36,11 +35,10 @@ pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/96/*.png || true
 pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/64/*.png || true
 pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/40/*.png || true
 
-[[ $HD == true ]] && oxipng -q $ASSETS/160/*.png &
-oxipng -q $ASSETS/96/*.png &
-oxipng -q $ASSETS/64/*.png &
-oxipng -q $ASSETS/40/*.png &
-wait -n
+[[ $HD == true ]] && oxipng -q $ASSETS/160/*.png
+oxipng -q $ASSETS/96/*.png
+oxipng -q $ASSETS/64/*.png
+oxipng -q $ASSETS/40/*.png
 
 if [[ $MOD != '' ]]
 then

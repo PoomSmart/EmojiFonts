@@ -33,9 +33,8 @@ python3 gen-handshake.py
 for svg in $(find ./svgs -type f -name '*.svg')
 do
     fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png} &
+    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
 done
-wait -n
 ../../resize.sh true false false
 cd ..
 
