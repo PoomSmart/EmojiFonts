@@ -92,7 +92,7 @@ It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-
 
 ## Twitter Twemoji
 
-1. Clone [twemoji](https://github.com/twitter/twemoji) and place its folder alongside this project.
+1. Clone [twemoji](https://github.com/jdecked/twemoji) and place its folder alongside this project.
 2. Execute `cd twemoji && ./twemoji.sh` to create the themed font, output at `twemoji/twemoji.ttc`.
 
 ## WhatsApp Emoji
