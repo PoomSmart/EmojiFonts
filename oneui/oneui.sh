@@ -4,7 +4,7 @@ set -e
 
 APPLE_FONT_NAME=AppleColorEmoji@2x
 NAME=oneui
-FONT_NAME=NotoColorEmoji
+FONT_NAME=SamsungColorEmoji
 
 ../image-sizes.sh false
 
