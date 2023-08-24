@@ -41,9 +41,6 @@ for ppem, strike in f['sbix'].strikes.items():
         if not os.path.exists(path):
             name = name.replace('-', '_')
             path = f'extra/images/{ppem}/{name}.png'
-            if not os.path.exists(path):
-                m_print(f'Could not find {name} at {path}')
-                continue
         glyph.imageData = get_image_data(path)
 
 if not os.path.exists('../.test'):

@@ -11,7 +11,7 @@ fi
 
 FONT_NAME=AppleColorEmoji@2x
 NAME=joypixels
-EMOJI_ASSETS=../../$NAME-7/png/unicode/128
+EMOJI_ASSETS=../../emoji-assets/png/128
 ASSETS=$MOD
 
 mkdir -p $ASSETS

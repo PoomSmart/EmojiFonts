@@ -72,7 +72,7 @@ It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-
 
 ## JoyPixels Emoji
 
-1. Download JoyPixels 7 Free assets from JoyPixels [Download page](https://joypixels.com/download) and place the folder alongside this project.
+1. Clone [emoji-assets](https://github.com/joypixels/emoji-assets) and place its folder alongside this project.
 2. Execute `cd joypixels && ./joypixels.sh` to create themed font, output at `joypixels/joypixels.ttc`.
 
 ## OpenMoji Emoji
@@ -82,7 +82,7 @@ It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-
 
 ## Samsung One UI Emoji
 
-1. Retrieve `NotoColorEmoji.ttf` with Samsung One UI 5.0 emojis somehow and place that in `oneui` folder.
+1. Retrieve `SamsungColorEmoji.ttf` with Samsung One UI emojis somehow and place that in `oneui` folder.
 2. Execute `cd oneui && ./oneui.sh` to create themed font, output at `oneui/oneui.ttc`.
 
 ## Toss Face Emoji
