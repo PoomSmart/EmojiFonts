@@ -15,6 +15,7 @@ NAME=fluentui
 ASSETS="$STYLE"
 MAX_SIZE=96
 
+mkdir -p "$ASSETS"
 cd "$ASSETS"
 ../../image-sizes.sh false
 cd ..

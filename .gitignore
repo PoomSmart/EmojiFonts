@@ -11,7 +11,8 @@ emjc-exp.py
 
 # Project assets
 **/images/*/*.png
-fluentui/*/*/*.png
+fluentui/**/*.png
+fluentui/**/*.svg
 apple
 .DS_Store
 .test
