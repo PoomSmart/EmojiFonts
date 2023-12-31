@@ -8,7 +8,7 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## Facebook Emoji
 
-- Unicode 14.0 only.
+- Nothing of significant.
 
 ## FluentUI Emoji
 
@@ -20,11 +20,10 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## JoyPixels Emoji
 
-- Unicode 14.0 only.
+- Nothing of significant.
 
 ## OpenMoji Emoji
 
-- Unicode 14.0 only.
 - Couple emojis of different skins will not share the same hair color as it seems so in the original OpenMoji. In my opinion, this is better because why would two people of different races always share the same hair color?
 
 ## Samsung One UI Emoji
@@ -39,7 +38,7 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## Twitter Twemoji
 
-- Unicode 14.0 only.
+- Nothing of significant.
 
 ## WhatsApp Emoji
 

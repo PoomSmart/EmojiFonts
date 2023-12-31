@@ -29,7 +29,7 @@ missing = [
     '1f91d_1f3fb', '1f91d_1f3fc', '1f91d_1f3fd', '1f91d_1f3fe', '1f91d_1f3ff',
     '1f9d1_200d_1f4bb',
     '1f9d1_1f3fb_200d_1f4bb', '1f9d1_1f3fc_200d_1f4bb', '1f9d1_1f3fd_200d_1f4bb', '1f9d1_1f3fe_200d_1f4bb', '1f9d1_1f3ff_200d_1f4bb',
-] + u15
+]
 
 def norm_special(name: str):
     if name == '1f441_1f5e8':
