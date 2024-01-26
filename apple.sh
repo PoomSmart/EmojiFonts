@@ -3,10 +3,12 @@
 set -e
 
 NAME=apple
-IOS_FONT_NAME=AppleColorEmoji_iOS
-MAC_FONT_NAME=AppleColorEmoji_macOS
-ASSETS=$NAME
 MOD=$1
+KIND=$2
+[[ $KIND == '' ]] && KIND=macOS
+IOS_FONT_NAME=AppleColorEmoji_iOS
+MAC_FONT_NAME=AppleColorEmoji_$KIND
+ASSETS=$NAME
 COLORS=
 [[ $MOD = 'HD' ]] && HD=true || HD=false
 
