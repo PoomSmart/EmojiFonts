@@ -26,19 +26,18 @@ if [[ $MOD == 'LQ' ]]
 then
     COLORS=8
     echo "Applying mod: LQ..."
-    mogrify +dither -posterize 8 -normalize $ASSETS/160/*.png
     mogrify +dither -posterize 8 -normalize $ASSETS/96/*.png
     mogrify +dither -posterize 8 -normalize $ASSETS/64/*.png
     mogrify +dither -posterize 8 -normalize $ASSETS/40/*.png
 fi
 
 echo "Optimizing PNGs..."
-[[ $HD == true ]] && pngquant --skip-if-larger -f --ext .png $ASSETS/160/*.png || true
+[[ $HD == true ]] && [[ $MOD != 'LQ' ]] && pngquant --skip-if-larger -f --ext .png $ASSETS/160/*.png || true
 pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/96/*.png || true
 pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/64/*.png || true
 pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/40/*.png || true
 
-[[ $HD == true ]] && oxipng -q $ASSETS/160/*.png
+[[ $HD == true ]] && && [[ $MOD != 'LQ' ]] && oxipng -q $ASSETS/160/*.png
 oxipng -q $ASSETS/96/*.png
 oxipng -q $ASSETS/64/*.png
 oxipng -q $ASSETS/40/*.png
@@ -58,4 +57,8 @@ rm -f apple/$OUT_FONT_NAME.ttf
 ln apple/${OUT_FONT_NAME}_00.ttf apple/$OUT_FONT_NAME.ttf
 
 otf2otc apple/${OUT_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_01.ttf -o apple/$OUT_FONT_NAME.ttc
-[[ $COMPAT_OUT_FONT_NAME != '' ]] && ln apple/$OUT_FONT_NAME.ttc apple/$COMPAT_OUT_FONT_NAME.ttc
+if [[ $COMPAT_OUT_FONT_NAME != '' ]]
+then
+    [[ -f apple/$COMPAT_OUT_FONT_NAME.ttc ]] && rm -f apple/$COMPAT_OUT_FONT_NAME.ttc
+    ln apple/$OUT_FONT_NAME.ttc apple/$COMPAT_OUT_FONT_NAME.ttc
+fi
