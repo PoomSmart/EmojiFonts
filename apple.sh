@@ -15,11 +15,11 @@ COLORS=
 mkdir -p $ASSETS
 rm -rf $ASSETS/160 $ASSETS/96 $ASSETS/64 $ASSETS/52 $ASSETS/48 $ASSETS/40 $ASSETS/32 $ASSETS/26 $ASSETS/20
 
-echo "Extracting sbix table from $MAC_FONT_NAME font..."
-ttx -q -s -f -y 0 -t sbix ${MAC_FONT_NAME}.ttc
+echo "Copying sbix table for $MAC_FONT_NAME font..."
+cp common/${MAC_FONT_NAME}_00._s_b_i_x.ttx ${MAC_FONT_NAME}._s_b_i_x.ttx
 
 echo "Extracting PNGs from $MAC_FONT_NAME font..."
-python3 remove-strikes.py ${MAC_FONT_NAME}._s_b_i_x.ttx
+python3 remove-strikes.py $HD ${MAC_FONT_NAME}._s_b_i_x.ttx
 python3 extractor.py $NAME ${MAC_FONT_NAME}._s_b_i_x.ttx
 
 if [[ $MOD == 'LQ' ]]
