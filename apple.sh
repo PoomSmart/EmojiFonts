@@ -3,9 +3,9 @@
 set -e
 
 NAME=apple
-MOD=$1
-KIND=$2
-[[ $KIND == '' ]] && KIND=macOS
+KIND=$1
+[[ $KIND != 'iOS' && $KIND != 'macOS' ]] && echo "KIND can only be iOS or macOS" && exit 1
+MOD=$2
 IOS_FONT_NAME=AppleColorEmoji_iOS
 MAC_FONT_NAME=AppleColorEmoji_$KIND
 ASSETS=$NAME
@@ -26,6 +26,7 @@ if [[ $MOD == 'LQ' ]]
 then
     COLORS=8
     echo "Applying mod: LQ..."
+    mogrify +dither -posterize 8 -normalize $ASSETS/160/*.png
     mogrify +dither -posterize 8 -normalize $ASSETS/96/*.png
     mogrify +dither -posterize 8 -normalize $ASSETS/64/*.png
     mogrify +dither -posterize 8 -normalize $ASSETS/40/*.png
@@ -46,7 +47,8 @@ if [[ $MOD != '' ]]
 then
     OUT_FONT_NAME=AppleColorEmoji-$MOD
 else
-    OUT_FONT_NAME=AppleColorEmoji@2x
+    OUT_FONT_NAME=AppleColorEmoji
+    COMPAT_OUT_FONT_NAME=AppleColorEmoji@2x
 fi
 
 python3 $NAME.py $HD common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS
@@ -56,3 +58,4 @@ rm -f apple/$OUT_FONT_NAME.ttf
 ln apple/${OUT_FONT_NAME}_00.ttf apple/$OUT_FONT_NAME.ttf
 
 otf2otc apple/${OUT_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_01.ttf -o apple/$OUT_FONT_NAME.ttc
+[[ $COMPAT_OUT_FONT_NAME != '' ]] && ln apple/$OUT_FONT_NAME.ttc apple/$COMPAT_OUT_FONT_NAME.ttc
