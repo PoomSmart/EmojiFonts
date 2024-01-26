@@ -15,7 +15,7 @@ prepare_strikes(f, hd)
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():
-        if glyph.graphicType != 'emjc': # or 'png ' for macOS equivalent of the font
+        if glyph.graphicType != 'emjc' and glyph.graphicType != 'flip': # or 'png ' for macOS equivalent of the font
             continue
         glyph.graphicType = 'png '
         path = f'{assets}/{ppem}/{name}.png'

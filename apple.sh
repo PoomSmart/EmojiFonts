@@ -37,7 +37,7 @@ pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/96/*.png || true
 pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/64/*.png || true
 pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/40/*.png || true
 
-[[ $HD == true ]] && && [[ $MOD != 'LQ' ]] && oxipng -q $ASSETS/160/*.png
+[[ $HD == true ]] && [[ $MOD != 'LQ' ]] && oxipng -q $ASSETS/160/*.png
 oxipng -q $ASSETS/96/*.png
 oxipng -q $ASSETS/64/*.png
 oxipng -q $ASSETS/40/*.png
