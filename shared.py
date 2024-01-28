@@ -13,6 +13,7 @@ professions = [
     '1f527', '1f52c', '1f680', '1f692', '1f9af',
     '1f9bc', '1f9bd'
 ] + hairs
+directions = ['2194', '2195', '27a1']
 heart = '2764'
 kiss = '1f48b'
 modifiers = ['2695', '2696', '2708']
@@ -34,6 +35,11 @@ persons = {
     'g': girl,
     '': ''
 }
+neutral_fams = [
+    '1f9d1_1f9d2',
+    '1f9d1_1f9d2_1f9d2',
+    '1f9d1_1f9d1_1f9d2_1f9d2'
+]
 
 flags = [
     '1f1e6', '1f1e7', '1f1e8', '1f1e9', '1f1ea',
@@ -156,6 +162,8 @@ def native_norm_name(name: str):
     return name
 
 def norm_fam(name: str):
+    if name in neutral_fams:
+        return '_200d_'.join(name.split('_'))
     if '1f46a.' not in name:
         return name
     for p1 in ['m', 'w', '']:
@@ -217,32 +225,46 @@ def base_norm_variants(name: str, with_variant_selector = False, gender_need_sel
         for m in modifiers:
             if name.endswith(f'_{m}.{s}'):
                 name = name.replace(f'_{m}.{s}', f'_{skins[s]}_200d_{m}{v}')
+    for d in directions:
+        if name.endswith(f'_{d}'):
+            name = name.replace(f'_{d}', f'_200d_{d}')
     for p in professions:
         for s in range(1, 6):
             if name.endswith(f'_{p}.{s}'):
                 return name.replace(f'_{p}.{s}', f'_{skins[s]}_200d_{p}')
+            for d in directions:
+                if name.endswith(f'_{p}.{s}_200d_{d}'):
+                    return name.replace(f'_{p}.{s}_200d_{d}', f'_{skins[s]}_200d_{p}_200d_{d}')
     if '.0' in name:
         name = name.replace('.0', '')
     for s in range(1, 6):
         if f'.{s}' in name:
             if '1f9d1_1f384' in name:
-                return name.replace(f'_1f384.{s}', f'_{skins[s]}_200d_1f384')
+                name = name.replace(f'_1f384.{s}', f'_{skins[s]}_200d_1f384')
             else:
-                return name.replace(f'.{s}', f'_{skins[s]}')
+                name = name.replace(f'.{s}', f'_{skins[s]}')
     return name
 
 def base_norm_special(name: str, with_variant_selector = False):
     v = '_fe0f' if with_variant_selector else ''
+    if name == '26d3_1f4a5':
+        return f'26d3_200d_1f4a5'
     if name == '2764_1f525':
         return f'2764{v}_200d_1f525'
     if name == '2764_1fa79':
         return f'2764{v}_200d_1fa79'
+    if name == '1f344_1f7eb':
+        return f'1f344_200d_1f7eb'
+    if name == '1f34b_1f7e9':
+        return f'1f34b_200d_1f7e9'
     if name == '1f3f3_26a7':
         return f'1f3f3{v}_200d_26a7{v}'
     if name == '1f3f3_1f308':
         return f'1f3f3{v}_200d_1f308'
     if name == '1f3f4_2620':
         return f'1f3f4_200d_2620{v}'
+    if name == '1f426_1f525':
+        return f'1f426_200d_1f525'
     if name == '1f43b_2744':
         return f'1f43b_200d_2744{v}'
     if name == '1f636_1f32b':
@@ -268,6 +290,9 @@ def base_norm_special(name: str, with_variant_selector = False):
         for p in professions:
             if name == f'{g}_{p}':
                 return f'{g}_200d_{p}'
+            for d in directions:
+                if name == f'{g}_{p}_200d_{d}':
+                    return f'{g}_200d_{p}_200d_{d}'
     return name
 
 def get_image_data(path: str):
