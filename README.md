@@ -24,13 +24,17 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 
 1. Copy `Apple Color Emoji.ttc` from `/System/Library/Fonts` of your macOS instance to the root of this repository and rename it to `AppleColorEmoji_macOS.ttc`.
 2. Copy AppleColorEmoji font from your iOS instance to the root of this repository and rename it to `AppleColorEmoji_iOS.ttc`. Read [here](https://poomsmart.github.io/emojiport) for the exact file path.
-3. Execute `prepare.sh` to create emoji TTF files and tables. Run this once.
+3. Execute `./prepare.sh` to create emoji TTF files and tables. Run this once.
 
 # Building Apple Color Emoji font
 
-Execute `./apple.sh macOS HD`, you will get `AppleColorEmoji@2x.ttc` (for iOS 10 and above) and `AppleColorEmoji@2x.ttf` (for iOS 9 and below) under `apple` directory.
+Build format: `./apple-prepare.sh <OS> && ./apple.sh [HD]`
 
-If you only have `AppleColorEmoji_iOS.ttc`, execute `./apple.sh iOS HD` instead.
+Replace `<OS>` with `macOS` (if you have both macOS and iOS fonts) or `iOS` (if you only have iOS font).
+
+Replace `[HD]` with `HD` if you want to build HD version (160x160 image set included), or leave it blank for normal version.
+
+Executing `./apple-prepare.sh <OS> && ./apple.sh` will get `AppleColorEmoji@2x.ttc` (for iOS 10 and above) and `AppleColorEmoji@2x.ttf` (for iOS 9 and below) for you under `apple` directory.
 
 # Notable Python Scripts
 
@@ -48,7 +52,7 @@ EmojiFonts deals with certain font tables; mainly `GDEF` and `sbix`.
 
 # Theming
 
-Theming scripts for all emojis vendors produce the font in TTC format. The font may be used by EmojiFontManager iOS tweak, and is guaranteed to work on iOS 6 and higher. Ensure that you executed `./apple.sh macOS HD` before following instructions below.
+Theming scripts for all emojis vendors produce the font in TTC format. The font may be used by EmojiFontManager iOS tweak, and is guaranteed to work on iOS 6 and higher. Ensure that you executed `./apple-prepare.sh <OS> && ./apple.sh HD` before following instructions below.
 
 It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-URL`) because the repository size is usually big.
 
