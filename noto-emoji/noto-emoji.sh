@@ -2,7 +2,6 @@
 
 set -e
 
-FONT_NAME=AppleColorEmoji
 NAME=noto-emoji
 ASSETS=../../$NAME/svg
 FLAG_ASSETS=../../$NAME/third_party/region-flags/waved-svg
