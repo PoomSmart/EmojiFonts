@@ -2,7 +2,6 @@
 
 set -e
 
-FONT_NAME=AppleColorEmoji@2x
 NAME=openmoji
 ASSETS=../../$NAME/color/svg
 MAX_SIZE=160

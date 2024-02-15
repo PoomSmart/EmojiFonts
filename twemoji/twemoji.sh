@@ -2,7 +2,6 @@
 
 set -e
 
-FONT_NAME=AppleColorEmoji@2x
 NAME=twemoji
 ASSETS=../../$NAME/assets/svg
 MAX_SIZE=160

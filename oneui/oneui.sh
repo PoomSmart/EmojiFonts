@@ -2,7 +2,7 @@
 
 set -e
 
-APPLE_FONT_NAME=AppleColorEmoji@2x
+APPLE_FONT_NAME=AppleColorEmoji
 NAME=oneui
 FONT_NAME=SamsungColorEmoji
 

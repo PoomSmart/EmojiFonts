@@ -9,7 +9,7 @@ if [ -z $MOD ]; then
     exit 1
 fi
 
-FONT_NAME=AppleColorEmoji@2x
+FONT_NAME=AppleColorEmoji
 NAME=joypixels
 EMOJI_ASSETS=../../emoji-assets/png/128
 ASSETS=$MOD

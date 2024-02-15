@@ -10,7 +10,7 @@ if [ -z "$STYLE" ]; then
     exit 1
 fi
 
-FONT_NAME=AppleColorEmoji@2x
+FONT_NAME=AppleColorEmoji
 NAME=fluentui
 ASSETS="$STYLE"
 MAX_SIZE=96

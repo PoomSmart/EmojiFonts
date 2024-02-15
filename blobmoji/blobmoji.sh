@@ -2,7 +2,7 @@
 
 set -e
 
-APPLE_FONT_NAME=AppleColorEmoji@2x
+APPLE_FONT_NAME=AppleColorEmoji
 NAME=blobmoji
 ASSETS=../../$NAME/svg
 FONT_ASSETS=../../$NAME/fonts

@@ -3,7 +3,7 @@
 set -e
 
 NAME=tossface
-APPLE_FONT_NAME=AppleColorEmoji@2x
+APPLE_FONT_NAME=AppleColorEmoji
 FONT_NAME=TossFaceFontMac
 ASSETS=images
 ORIGINAL_SIZE=112

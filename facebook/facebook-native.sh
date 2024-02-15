@@ -2,7 +2,7 @@
 
 set -e
 
-APPLE_FONT_NAME=AppleColorEmoji@2x
+APPLE_FONT_NAME=AppleColorEmoji
 NAME=facebook
 FONT_NAME=NotoColorEmoji
 ASSETS=../../facebook-emojis/images/96
