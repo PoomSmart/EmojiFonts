@@ -3,6 +3,7 @@
 set -e
 
 IOS_FONT_NAME=AppleColorEmoji_iOS
+MAC_FONT_NAME=AppleColorEmoji_macOS
 WORK_DIR=common
 
 mkdir -p $WORK_DIR
@@ -13,6 +14,10 @@ otc2otf $IOS_FONT_NAME.ttc
 mv AppleColorEmoji.ttf $WORK_DIR/${IOS_FONT_NAME}_00.ttf
 mv .AppleColorEmojiUI.ttf $WORK_DIR/${IOS_FONT_NAME}_01.ttf
 
+otc2otf $MAC_FONT_NAME.ttc
+mv AppleColorEmoji.ttf $WORK_DIR/${MAC_FONT_NAME}_00.ttf
+rm .AppleColorEmojiUI.ttf
+
 cd $WORK_DIR
 echo "Extracting tables..."
 # Un-shared tables: ['head', 'hhea', 'meta', 'name', 'trak']
@@ -20,9 +25,7 @@ UNSHARED_TABLES='-t head -t hhea -t meta -t name -t trak'
 SHARED_TABLES='-x GDEF -x DSIG -x cmap -x feat -x glyf -x hmtx -x loca -x maxp -x morx -x post -x sbix -x vhea -x vmtx -x GPOS -x GlyphOrder -x OS/2'
 ttx -q -s -f -x DSIG ${IOS_FONT_NAME}_00.ttf
 ttx -q -s -f $SHARED_TABLES ${IOS_FONT_NAME}_01.ttf
-
-echo "Removing unneeded strikes..."
-python3 ../remove-strikes.py ${IOS_FONT_NAME}_00._s_b_i_x.ttx
+ttx -q -s -f -t sbix ${MAC_FONT_NAME}_00.ttf
 
 echo "Fixing up interracial emojis..."
 python3 ../shift-multi.py ${IOS_FONT_NAME}_00._h_m_t_x.ttx

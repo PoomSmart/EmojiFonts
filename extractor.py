@@ -1,4 +1,5 @@
 import binascii
+import io
 import pathlib
 import sys
 import xml.etree.ElementTree as ET
@@ -38,5 +39,10 @@ for strike in data.iter('strike'):
                     img = img.transpose(Image.FLIP_LEFT_RIGHT)
                 img.save(out_path)
             else:
-                with open(out_path, 'wb') as fout:
-                    fout.write(data)
+                if flipped:
+                    img = Image.open(io.BytesIO(data))
+                    img = img.transpose(Image.FLIP_LEFT_RIGHT)
+                    img.save(out_path)
+                else:
+                    with open(out_path, 'wb') as fout:
+                        fout.write(data)
