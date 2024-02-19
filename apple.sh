@@ -5,9 +5,9 @@ set -e
 NAME=apple
 MOD=$1
 IOS_FONT_NAME=AppleColorEmoji_iOS
-[[ $MOD == 'LQ' ]] && ASSETS=$NAME/$MOD || ASSETS=$NAME/Default
+[[ $MOD = 'LQ' || $MOD = 'HD-flip' ]] && ASSETS=$NAME/$MOD || ASSETS=$NAME/Default
 COLORS=
-[[ $MOD = 'HD' ]] && HD=true || HD=false
+[[ $MOD = 'HD' || $MOD = 'HD-flip' ]] && HD=true || HD=false
 
 echo "Copying PNGs..."
 mkdir -p $ASSETS
@@ -21,6 +21,13 @@ then
     mogrify +dither -posterize 8 -normalize $ASSETS/96/*.png
     mogrify +dither -posterize 8 -normalize $ASSETS/64/*.png
     mogrify +dither -posterize 8 -normalize $ASSETS/40/*.png
+elif [[ $MOD == 'HD-flip' ]]
+then
+    echo "Applying mod: HD-flip..."
+    mogrify -flop $ASSETS/160/*.png
+    mogrify -flop $ASSETS/96/*.png
+    mogrify -flop $ASSETS/64/*.png
+    mogrify -flop $ASSETS/40/*.png
 fi
 
 echo "Optimizing PNGs..."
@@ -53,4 +60,9 @@ if [[ $COMPAT_OUT_FONT_NAME != '' ]]
 then
     [[ -f apple/$COMPAT_OUT_FONT_NAME.ttc ]] && rm -f apple/$COMPAT_OUT_FONT_NAME.ttc
     ln apple/$OUT_FONT_NAME.ttc apple/$COMPAT_OUT_FONT_NAME.ttc
+fi
+
+if [[ $MOD == '' || $MOD == 'HD' ]]
+then
+    rm -f apple/${OUT_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_01.ttf
 fi

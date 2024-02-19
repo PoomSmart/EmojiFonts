@@ -3,6 +3,7 @@
 All fonts are to be used with [WDBFontOverwrite 1.7.1+ (@ginsudev's fork)](https://github.com/ginsudev/WDBFontOverwrite/releases), [EmojiFontManager](https://www.ios-repo-updates.com/repository/poomsmart/package/com.ps.emojifontmanager) and so on.
 
 - `AppleColorEmoji-HD.ttc` for AppleColorEmoji emojis with 160x160 image sizes
+- `AppleColorEmoji-HD-flip.ttc` for AppleColorEmoji emojis with 160x160 image sizes, and flipped horizontally
 - `AppleColorEmoji-LQ.ttc` for AppleColorEmoji emojis in Low Quality
 - `blobmoji.ttc` for Blobmoji emojis (Blobified Google Noto)
 - `facebook.ttc` for Facebook emojis
