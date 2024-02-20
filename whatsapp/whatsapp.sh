@@ -2,27 +2,25 @@
 
 set -e
 
-APPLE_FONT_NAME=AppleColorEmoji
 NAME=whatsapp
-FONT_NAME=NotoColorEmoji
-FONT_PATH=$FONT_NAME.ttf
+ASSETS=../../whatsapp-emoji-linux/png/160
 
-../image-sizes.sh false
-
-echo "Extracting font..."
-ttx -q -f -z extfile $FONT_NAME.ttf
-ttx -q -f -s -t GSUB $FONT_NAME.ttf
+../image-sizes.sh true
+cp -r $ASSETS/ images/160
 
 echo "Resizing and optimizing PNGs..."
-mogrify -resize 96x96 -path images/96 bitmaps/strike0/*.png
-../resize.sh false false false
-rm -rf bitmaps
+../resize.sh true false false
 
-../get-assets.sh whatsapp
+../get-assets.sh whatsapp false true
 
-python3 $NAME.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
-python3 $NAME.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
+# IN_FONT_NAME=AppleColorEmoji-HD
+IN_FONT_NAME=AppleColorEmoji
+OUT_FONT_NAME=$NAME.ttc
 
-otf2otc ${APPLE_FONT_NAME}_00.ttf ${APPLE_FONT_NAME}_01.ttf -o $NAME.ttc
+python3 $NAME.py ../apple/${IN_FONT_NAME}_00.ttf
+python3 $NAME.py ../apple/${IN_FONT_NAME}_01.ttf
 
-echo "Output file at $NAME/$NAME.ttc"
+otf2otc ${IN_FONT_NAME}_00.ttf ${IN_FONT_NAME}_01.ttf -o $OUT_FONT_NAME
+rm -f *_00.ttf *_01.ttf
+
+echo "Output file at $NAME/$OUT_FONT_NAME"

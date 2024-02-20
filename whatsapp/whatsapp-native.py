@@ -3,22 +3,18 @@ import sys
 
 sys.path.append('..')
 from shared import *
+from shared_lig import *
 
-# input: font ttf
+# input: apple font ttf, whatsapp font ttf, whatsapp GSUB ttx
 
 ttf = sys.argv[1]
+bttf = sys.argv[2]
+bgsubttx = sys.argv[3]
 
 f = ttLib.TTFont(ttf)
 
-def whatsapp_name(name: str):
-    tokens = name.split('_')
-    n = []
-    for t in tokens:
-        if t[0] == 'u':
-            t = t[1:] # strip u prefix
-        n.append(t)
-    result = '_'.join(n)
-    return 'u' + result
+lig = Lig(f, bttf, bgsubttx)
+lig.build()
 
 prepare_strikes(f)
 for ppem, strike in f['sbix'].strikes.items():
@@ -35,15 +31,16 @@ for ppem, strike in f['sbix'].strikes.items():
             continue
         name = base_norm_variants(name)
         name = base_norm_special(name)
-        if name in u15_1 or name.endswith('_200d_27a1'):
-            m_print(f'{name} is missing')
-            continue
         o_name = name
-        name = whatsapp_name(name)
-        path = f'images/{ppem}/emoji_{name}.png'
+        name = lig.norm_name(name)
+        name = lig.get_glyph_name(name)
+        path = f'images/{ppem}/{name}.png'
         if not os.path.exists(path) or o_name.startswith('1f491') or o_name.startswith('1f48f'):
-            name = name[1:] if name[0] == 'u' else name
+            name = native_norm_name(o_name)
             path = f'extra/images/{ppem}/{name}.png'
+            if not os.path.exists(path):
+                name = name.replace('_', '-')
+                path = f'extra/images/{ppem}/{name}.png'
         glyph.imageData = get_image_data(path)
 
 if not os.path.exists('../.test'):

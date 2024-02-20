@@ -45,7 +45,7 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## WhatsApp Emoji
 
-- Unicode 14.0 only.
+- Unicode 15.0 only.
 
 ## Notes
 

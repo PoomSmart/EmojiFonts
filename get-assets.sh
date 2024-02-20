@@ -7,11 +7,13 @@ then
     echo "Provide emoji vendor name!"
     exit 1
 fi
+HD=$2
+MORE_PNGS=$3
 
 FOLDER=extra
 PNG_PATH=$FOLDER/original
 MAKE_1F491_1F48F=false
-MAX_SIZE=96
+[[ $HD = true ]] && MAX_SIZE=160 || MAX_SIZE=96
 SEP='_'
 
 [[ $1 == 'facebook' || $1 == 'whatsapp' ]] && MAKE_1F491_1F48F=true
@@ -47,6 +49,7 @@ kinds['kiss']='1f48b'
 handshakes['l']='1faf1'
 handshakes['r']='1faf2'
 
+[[ $HD = true ]] && mkdir -p $FOLDER/160
 mkdir -p $FOLDER/images/96 $FOLDER/images/64 $FOLDER/images/48 $FOLDER/images/40 $FOLDER/images/32 $FOLDER/images/20
 
 echo "get-assets: Renaming PNGs..."
@@ -149,7 +152,14 @@ if $MAKE_1F491_1F48F; then
     unset codes
 fi
 
+if [[ $MORE_PNGS = true ]]
+then
+    echo "get-assets: Copying more PNGs..."
+    cp -r $FOLDER/more/* $FOLDER/images/
+fi
+
 echo "get-assets: Resizing PNGs..."
+[[ $HD = true ]] && mogrify -resize 160x160 -path $FOLDER/images/160 $FOLDER/images/96/*.png
 mogrify -resize 64x64 -path $FOLDER/images/64 $FOLDER/images/96/*.png
 mogrify -resize 40x40 -path $FOLDER/images/40 $FOLDER/images/64/*.png
 # mogrify -resize 48x48 -path $FOLDER/images/48 $FOLDER/images/64/*.png

@@ -103,5 +103,5 @@ It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-
 
 ## WhatsApp Emoji
 
-1. Retrieve `NotoColorEmoji.ttf` with WhatsApp emojis somehow and place that in `whatsapp` folder.
+1. Clone [whatsapp-emoji-linux](https://github.com/dmlls/whatsapp-emoji-linux) and place its folder alongside this project.
 2. Execute `cd whatsapp && ./whatsapp.sh` to create themed font, output at `whatsapp/whatsapp.ttc`.

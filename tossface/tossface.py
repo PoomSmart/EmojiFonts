@@ -16,12 +16,6 @@ f = ttLib.TTFont(ttf)
 lig = Lig(f, bttf, bgsubttx)
 lig.build()
 
-temp_list = [
-    '1f9d1_200d_1f9d1_200d_1f9d2_200d_1f9d2',
-    '1f9d1_200d_1f9d2',
-    '1f9d1_200d_1f9d2_200d_1f9d2',
-]
-
 prepare_strikes(f)
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
@@ -37,7 +31,7 @@ for ppem, strike in f['sbix'].strikes.items():
             continue
         name = base_norm_variants(name)
         name = base_norm_special(name)
-        if name in u15_1 or name.endswith('_200d_27a1') or name in temp_list:
+        if name in u15_1 or name.endswith('_200d_27a1'):
             m_print(f'{name} is missing')
             continue
         name = lig.norm_name(name)
