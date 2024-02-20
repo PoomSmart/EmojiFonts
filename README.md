@@ -93,7 +93,7 @@ It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-
 
 ## Toss Face Emoji
 
-1. Download `TossFaceFontMac.ttf` from [tossface website](https://toss.im/tossface) and place that in `tossface` folder.
+1. Download `TossFaceFontMac.ttf` from [tossface GitHub Releases](https://github.com/toss/tossface) and place that in `tossface` folder.
 2. Execute `cd tossface && ./tossface.sh` to create themed font, output at `tossface/tossface.ttc`.
 
 ## Twitter Twemoji

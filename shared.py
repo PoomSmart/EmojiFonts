@@ -122,6 +122,15 @@ u15 = [
     '1faf8_1f3fb', '1faf8_1f3fc', '1faf8_1f3fd', '1faf8_1f3fe', '1faf8_1f3ff',
 ]
 
+u15_1 = [
+    '26d3_200d_1f4a5',
+    '1f344_200d_1f7eb',
+    '1f34b_200d_1f7e9',
+    '1f426_200d_1f525',
+    '1f642_200d_2194',
+    '1f642_200d_2195',
+]
+
 whitelist = ['hiddenglyph']
 signs = ['00a9', '00ae']
 
