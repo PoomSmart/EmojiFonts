@@ -62,7 +62,7 @@ then
     ln apple/$OUT_FONT_NAME.ttc apple/$COMPAT_OUT_FONT_NAME.ttc
 fi
 
-if [[ $MOD == '' || $MOD == 'HD' ]]
+if [[ $MOD != '' && $MOD != 'HD' ]]
 then
     rm -f apple/${OUT_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_01.ttf
 fi
