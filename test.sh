@@ -2,7 +2,7 @@
 
 set -e
 
-FONT_NAME=AppleColorEmoji@2x
+FONT_NAME=AppleColorEmoji
 
 touch .test
 

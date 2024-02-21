@@ -96,32 +96,6 @@ with_variants = [
     '1f6f0', '1f6f3'
 ]
 
-u15 = [
-    '1f426_200d_2b1b',
-    '1f6dc',
-    '1fa75',
-    '1fa76',
-    '1fa77',
-    '1fa87',
-    '1fa88',
-    '1faad',
-    '1faae',
-    '1faaf',
-    '1fabb',
-    '1fabc',
-    '1fabd',
-    '1fabf',
-    '1face',
-    '1facf',
-    '1fada',
-    '1fadb',
-    '1fae8',
-    '1faf7',
-    '1faf7_1f3fb', '1faf7_1f3fc', '1faf7_1f3fd', '1faf7_1f3fe', '1faf7_1f3ff',
-    '1faf8',
-    '1faf8_1f3fb', '1faf8_1f3fc', '1faf8_1f3fd', '1faf8_1f3fe', '1faf8_1f3ff',
-]
-
 u15_1 = [
     '26d3_200d_1f4a5',
     '1f344_200d_1f7eb',

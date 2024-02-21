@@ -54,7 +54,7 @@ EmojiFonts deals with certain font tables; mainly `GDEF` and `sbix`.
 
 Theming scripts for all emojis vendors produce the font in TTC format. The font may be used by EmojiFontManager iOS tweak, and is guaranteed to work on iOS 6 and higher. Ensure that you executed `./apple-prepare.sh <OS> && ./apple.sh HD` before following instructions below.
 
-It is recommended to limit the depth of clone to `1` (`git clone --depth 1 REPO-URL`) because the repository size is usually big.
+It is recommended to limit the depth of clone to `1` (`git clone --depth 1 git@github.com:PoomSmart/EmojiFonts.git`) because of a long history of commits.
 
 ## Blobmoji Emoji
 

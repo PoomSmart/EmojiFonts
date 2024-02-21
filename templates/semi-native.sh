@@ -2,7 +2,7 @@
 
 set -e
 
-APPLE_FONT_NAME=AppleColorEmoji@2x
+APPLE_FONT_NAME=AppleColorEmoji
 NAME=EMOJI_FONT
 FONT_NAME=NotoColorEmoji
 FONT_PATH=$FONT_NAME.ttf
