@@ -53,7 +53,15 @@ python3 $NAME.py $HD common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.tt
 python3 $NAME.py $HD common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS
 
 rm -f apple/$OUT_FONT_NAME.ttf
-ln apple/${OUT_FONT_NAME}_00.ttf apple/$OUT_FONT_NAME.ttf
+if [[ $COMPAT_OUT_FONT_NAME != '' ]]
+then
+    ln apple/${OUT_FONT_NAME}_00.ttf apple/$COMPAT_OUT_FONT_NAME.ttf
+fi
+
+if [[ $MOD == 'HD' ]]
+then
+    ln apple/${OUT_FONT_NAME}.ttc apple/AppleColorEmoji-160px.ttc
+fi
 
 otf2otc apple/${OUT_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_01.ttf -o apple/$OUT_FONT_NAME.ttc
 if [[ $COMPAT_OUT_FONT_NAME != '' ]]
