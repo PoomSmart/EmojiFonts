@@ -12,10 +12,13 @@ from PIL import Image
 data = ET.parse(sys.argv[2]).getroot()
 
 supported_types = ['png ', 'emjc']
+allowed_strikes = [40, 64, 96, 160]
 strike = data.find('sbix/strike')
 
 for strike in data.iter('strike'):
     ppem = int(strike.find('ppem').attrib['value'])
+    if ppem not in allowed_strikes:
+        continue
     print(f'Reading strike of size {ppem}x{ppem}')
     pathlib.Path(f'{sys.argv[1]}/{ppem}').mkdir(parents=True, exist_ok=True)
     for glyph in strike.findall('glyph'):
