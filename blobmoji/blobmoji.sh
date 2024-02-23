@@ -24,7 +24,7 @@ rm -rf bitmaps
 
 cd extra
 rm -rf svgs images
-mkdir -p svgs images/96 images/64 images/48 images/40 images/32 images/20
+mkdir -p svgs images/96 images/64 images/40
 python3 gen-couple-heart.py
 python3 gen-couple-kiss.py
 python3 gen-couple-stand.py
