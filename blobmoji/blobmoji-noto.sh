@@ -4,23 +4,15 @@ set -e
 
 NAME=blobmoji
 APPLE_FONT_NAME=AppleColorEmoji
-ASSETS=../../$NAME/svg
-FONT_ASSETS=../../$NAME/fonts
-FONT_NAME=Blobmoji
-FONT_PATH=$FONT_ASSETS/$FONT_NAME.ttf
+ASSETS=../../$NAME/png
 MAX_SIZE=96
 
 ../image-sizes.sh false
 
-echo "Extracting font..."
-cp $FONT_PATH .
-ttx -q -f -z extfile $FONT_NAME.ttf
-ttx -q -f -s -t GSUB $FONT_NAME.ttf
+cp -r $ASSETS/ images/$MAX_SIZE
 
 echo "Resizing and optimizing PNGs..."
-mogrify -resize 96x96 -path images/96 bitmaps/strike0/*.png
-../resize.sh false false false
-rm -rf bitmaps
+../resize.sh false false false true
 
 cd extra
 rm -rf svgs images
@@ -37,8 +29,8 @@ done
 ../../resize.sh false false false
 cd ..
 
-python3 $NAME.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
-python3 $NAME.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
+python3 $NAME-noto.py ../apple/${APPLE_FONT_NAME}_00.ttf
+python3 $NAME-noto.py ../apple/${APPLE_FONT_NAME}_01.ttf
 
 otf2otc ${APPLE_FONT_NAME}_00.ttf ${APPLE_FONT_NAME}_01.ttf -o $NAME.ttc
 rm -f *_00.ttf *_01.ttf
