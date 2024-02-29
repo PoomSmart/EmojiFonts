@@ -11,6 +11,7 @@ All fonts are to be used with [WDBFontOverwrite 1.7.1+ (@ginsudev's fork)](https
 - `joypixels.ttc` for JoyPixels emojis
 - `joypixels-Decal.ttc` for JoyPixels Decal emojis
 - `noto-emoji.ttc` for Google Noto Color emojis
+- `noto-emoji-cursed.ttc` for Google Noto Color (Cursed flavor) emojis
 - `oneui.ttc` for Samsung One UI 5.0 emojis
 - `oneui-6.ttc` for Samsung One UI 6 beta emojis
 - `openmoji.ttc` for OpenMoji emojis
