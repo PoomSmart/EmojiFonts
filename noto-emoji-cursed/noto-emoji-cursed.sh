@@ -4,7 +4,7 @@ set -e
 
 APPLE_FONT_NAME=AppleColorEmoji
 NAME=noto-emoji-cursed
-FONT_NAME=SamsungColorEmoji
+FONT_NAME=NotoColorEmoji
 FONT_PATH=$FONT_NAME.ttf
 
 ../image-sizes.sh false

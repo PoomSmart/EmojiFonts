@@ -16,6 +16,16 @@ f = ttLib.TTFont(ttf)
 lig = Lig(f, bttf, bgsubttx)
 lig.build()
 
+def noto_name(name: str):
+    tokens = name.split('_')
+    n = []
+    for t in tokens:
+        if t[0] == 'u':
+            t = t[1:] # strip u prefix
+        n.append(t)
+    result = '_'.join(n)
+    return 'u' + result
+
 prepare_strikes(f)
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
@@ -31,13 +41,15 @@ for ppem, strike in f['sbix'].strikes.items():
             continue
         name = base_norm_variants(name)
         name = base_norm_special(name)
+        fallback_name = noto_name(name)
         name = lig.norm_name(name)
         name = lig.get_glyph_name(name)
         path = f'images/{ppem}/{name}.png'
         if not os.path.exists(path):
-            print(name)
-            name = native_norm_name(name)
-            path = f'../noto-emoji/extra/images/{ppem}/{name}.png'
+            path = f'../noto-emoji/images/{ppem}/emoji_{fallback_name}.png'
+            if not os.path.exists(path):
+                name = native_norm_name(name)
+                path = f'../noto-emoji/extra/images/{ppem}/{name}.png'
         glyph.imageData = get_image_data(path)
 
 if not os.path.exists('../.test'):
