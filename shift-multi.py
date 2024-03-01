@@ -4,6 +4,10 @@ import xml.etree.ElementTree as ET
 data = ET.parse(sys.argv[1]).getroot()
 
 overrides = {
+    "silhouette.ML": { "width": "400", "lsb": "0" },
+    "silhouette.MR": { "width": "400", "lsb": "-400" },
+    "silhouette.WL": { "width": "400", "lsb": "0" },
+    "silhouette.WR": { "width": "400", "lsb": "-400" },
     "silhouette.u1F468.u1F48B.L": { "width": "400", "lsb": "0" },
     "silhouette.u1F468.u1F48B.R": { "width": "400", "lsb": "-400" },
     "silhouette.u1F468.u2764.L": { "width": "400", "lsb": "0" },
