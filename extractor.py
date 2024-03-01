@@ -12,7 +12,7 @@ from PIL import Image
 data = ET.parse(sys.argv[2]).getroot()
 
 supported_types = ['png ', 'emjc']
-allowed_strikes = [40, 64, 96, 160]
+allowed_strikes = [40, 64, 96, 160] + [112]
 strike = data.find('sbix/strike')
 
 for strike in data.iter('strike'):
