@@ -55,18 +55,20 @@ python3 $NAME.py $HD common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.tt
 rm -f apple/$OUT_FONT_NAME.ttf
 if [[ $COMPAT_OUT_FONT_NAME != '' ]]
 then
+    rm -f apple/$COMPAT_OUT_FONT_NAME.ttf
     ln apple/${OUT_FONT_NAME}_00.ttf apple/$COMPAT_OUT_FONT_NAME.ttf
 fi
 
 if [[ $MOD == 'HD' ]]
 then
+    rm -f apple/AppleColorEmoji-160px.ttc
     ln apple/${OUT_FONT_NAME}.ttc apple/AppleColorEmoji-160px.ttc
 fi
 
 otf2otc apple/${OUT_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_01.ttf -o apple/$OUT_FONT_NAME.ttc
 if [[ $COMPAT_OUT_FONT_NAME != '' ]]
 then
-    [[ -f apple/$COMPAT_OUT_FONT_NAME.ttc ]] && rm -f apple/$COMPAT_OUT_FONT_NAME.ttc
+    rm -f apple/$COMPAT_OUT_FONT_NAME.ttc
     ln apple/$OUT_FONT_NAME.ttc apple/$COMPAT_OUT_FONT_NAME.ttc
 fi
 
