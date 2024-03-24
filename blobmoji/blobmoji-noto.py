@@ -23,7 +23,6 @@ def blobmoji_name(name: str):
     return 'u' + result
 
 corrections = {
-    'u26d3_200d_1f4a5': 'u26d3_fe0f_200d_1f4a5',
     'u1f3cc_200d_2640': 'u1f3cc_fe0f_200d_2640',
     'u1f3f3_fe0f_200d_1f308': 'u1f3f3_200d_1f308',
     'u1f3f4_200d_2620_fe0f': 'u1f3f4_200d_2620',

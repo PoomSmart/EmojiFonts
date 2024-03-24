@@ -213,14 +213,14 @@ def base_norm_variants(name: str, with_variant_selector = False, gender_need_sel
                 name = name.replace(f'_{m}.{s}', f'_{skins[s]}_200d_{m}{v}')
     for d in directions:
         if name.endswith(f'_{d}'):
-            name = name.replace(f'_{d}', f'_200d_{d}')
+            name = name.replace(f'_{d}', f'_200d_{d}{v}')
     for p in professions:
         for s in range(1, 6):
             if name.endswith(f'_{p}.{s}'):
                 return name.replace(f'_{p}.{s}', f'_{skins[s]}_200d_{p}')
             for d in directions:
-                if name.endswith(f'_{p}.{s}_200d_{d}'):
-                    return name.replace(f'_{p}.{s}_200d_{d}', f'_{skins[s]}_200d_{p}_200d_{d}')
+                if name.endswith(f'_{p}.{s}_200d_{d}{v}'):
+                    return name.replace(f'_{p}.{s}_200d_{d}{v}', f'_{skins[s]}_200d_{p}_200d_{d}{v}')
     if '.0' in name:
         name = name.replace('.0', '')
     for s in range(1, 6):
@@ -234,7 +234,7 @@ def base_norm_variants(name: str, with_variant_selector = False, gender_need_sel
 def base_norm_special(name: str, with_variant_selector = False):
     v = '_fe0f' if with_variant_selector else ''
     if name == '26d3_1f4a5':
-        return f'26d3_200d_1f4a5'
+        return f'26d3{v}_200d_1f4a5'
     if name == '2764_1f525':
         return f'2764{v}_200d_1f525'
     if name == '2764_1fa79':
@@ -277,8 +277,8 @@ def base_norm_special(name: str, with_variant_selector = False):
             if name == f'{g}_{p}':
                 return f'{g}_200d_{p}'
             for d in directions:
-                if name == f'{g}_{p}_200d_{d}':
-                    return f'{g}_200d_{p}_200d_{d}'
+                if name == f'{g}_{p}_200d_{d}{v}':
+                    return f'{g}_200d_{p}_200d_{d}{v}'
     return name
 
 def get_image_data(path: str):
