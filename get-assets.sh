@@ -68,8 +68,8 @@ do
             oname=${handshakes[$direction]}$skin.$direction.png
             cp $png $FOLDER/images/$MAX_SIZE/$oname
         done
-        convert $FOLDER/images/$MAX_SIZE/1faf1.l.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/silhouette${SEP}1faf1.l.png
-        convert $FOLDER/images/$MAX_SIZE/1faf2.r.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/silhouette${SEP}1faf2.r.png
+        magick $FOLDER/images/$MAX_SIZE/1faf1.l.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/silhouette${SEP}1faf1.l.png
+        magick $FOLDER/images/$MAX_SIZE/1faf2.r.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/silhouette${SEP}1faf2.r.png
     else
         joiner=''
         joiner_value=${kinds[$kind]}
@@ -100,8 +100,8 @@ do
                     done
                 done
                 oname=${gender_value}$skin$joiner.${direction::1}.png
-                convert $PNG_PATH/$category/left-d.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}l.png
-                convert $PNG_PATH/$category/right-d.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}r.png
+                magick $PNG_PATH/$category/left-d.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}l.png
+                magick $PNG_PATH/$category/right-d.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}r.png
             else
                 for png in $(find $PNG_PATH/$category -type f -name '*.png')
                 do
@@ -113,7 +113,7 @@ do
                     oname=${gender_value}$skin$joiner.${direction::1}.png
                     cp $png $FOLDER/images/$MAX_SIZE/$oname
                 done
-                convert $FOLDER/images/$MAX_SIZE/$base_image.l.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}l.png
+                magick $FOLDER/images/$MAX_SIZE/$base_image.l.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}l.png
                 if [[ $kind != 'couple' ]]
                 then
                     cp $FOLDER/images/$MAX_SIZE/$base_image.r.png $FOLDER/images/$MAX_SIZE/${output_image}r.png
@@ -121,10 +121,10 @@ do
                     [[ ! -f $HEART_PATH ]] && HEART_PATH=$PNG_PATH/heart-$joiner_value.png # May cause unremoved bits
                     [[ ! -f $HEART_PATH ]] && HEART_PATH=$PNG_PATH/heart.png # May cause unremoved bits
                     magick composite -compose subtract $FOLDER/images/$MAX_SIZE/${output_image}r.png $HEART_PATH $FOLDER/images/$MAX_SIZE/${output_image}r.png
-                    convert $FOLDER/images/$MAX_SIZE/$base_image.r.png -fill gray -colorize 100 PNG32:$FOLDER/images/$MAX_SIZE/${output_image}r.png
+                    magick $FOLDER/images/$MAX_SIZE/$base_image.r.png -fill gray -colorize 100 PNG32:$FOLDER/images/$MAX_SIZE/${output_image}r.png
                     magick $FOLDER/images/$MAX_SIZE/${output_image}r.png $HEART_PATH -compose over -composite $FOLDER/images/$MAX_SIZE/${output_image}r.png
                 else
-                    convert $FOLDER/images/$MAX_SIZE/$base_image.r.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}r.png
+                    magick $FOLDER/images/$MAX_SIZE/$base_image.r.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}r.png
                 fi
             fi
         done
