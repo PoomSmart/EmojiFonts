@@ -21,7 +21,7 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## JoyPixels Emoji
 
-- Unicode 15.0 only.
+- Nothing of significant.
 
 ## OpenMoji Emoji
 
