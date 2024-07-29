@@ -30,7 +30,6 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## Samsung One UI Emoji
 
-- Unicode 15.0 only.
 - One UI 6 beta still has version 5 of paired emojis.
 - Eye in speech emoji is from the older design of One UI. Samsung just didn't include it in One UI 5.0 officially.
 
@@ -45,7 +44,7 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## WhatsApp Emoji
 
-- Unicode 15.0 only.
+- Nothing of significant.
 
 ## Notes
 

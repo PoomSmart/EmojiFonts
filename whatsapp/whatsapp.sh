@@ -13,8 +13,7 @@ echo "Resizing and optimizing PNGs..."
 
 ../get-assets.sh whatsapp false true
 
-# IN_FONT_NAME=AppleColorEmoji-HD
-IN_FONT_NAME=AppleColorEmoji
+IN_FONT_NAME=AppleColorEmoji-HD
 OUT_FONT_NAME=$NAME.ttc
 
 python3 $NAME.py ../apple/${IN_FONT_NAME}_00.ttf
