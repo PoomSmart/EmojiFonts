@@ -46,6 +46,8 @@ EmojiFonts deals with certain font tables; mainly `GDEF` and `sbix`.
 
 `extractor.py` extracts PNG emoji images from the font. This opens up the possibility to theme the emoji font.
 
+Also in `extractor.py`, it detects glyphs of type `flip`, reads the actual image glyph ID that they reference to, programmatically flips them and then extracts them. `flip` glyphs are present in iOS 17.4 version of Apple Color Emoji font and not supported by any lower OS versions. They are for directional emojis - Apple has a single image for each direction, and the font uses `flip` glyphs to render the correct image.
+
 # PNG Optimization
 
 `pngquant` and `oxipng` are used to optimize the images with little to none changes to the quality. The Apple emoji font sizes are reduced by 50% using this method. The simpler the emoji images, the more size reduction is achieved.
