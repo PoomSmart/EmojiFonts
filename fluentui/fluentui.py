@@ -12,11 +12,6 @@ style = sys.argv[2]
 f = ttLib.TTFont(ttf)
 
 missing = [
-    '1f3ae',
-    '1f468_200d_1f4bb',
-    '1f468_1f3fb_200d_1f4bb', '1f468_1f3fc_200d_1f4bb', '1f468_1f3fd_200d_1f4bb', '1f468_1f3fe_200d_1f4bb', '1f468_1f3ff_200d_1f4bb',
-    '1f469_200d_1f4bb',
-    '1f469_1f3fb_200d_1f4bb', '1f469_1f3fc_200d_1f4bb', '1f469_1f3fd_200d_1f4bb', '1f469_1f3fe_200d_1f4bb', '1f469_1f3ff_200d_1f4bb',
     '1f46a',
     '1f46b',
     '1f46c',
@@ -25,10 +20,7 @@ missing = [
     '1f48f_1f3fb', '1f48f_1f3fc', '1f48f_1f3fd', '1f48f_1f3fe', '1f48f_1f3ff',
     '1f491',
     '1f491_1f3fb', '1f491_1f3fc', '1f491_1f3fd', '1f491_1f3fe', '1f491_1f3ff',
-    '1f4ce',
     '1f91d_1f3fb', '1f91d_1f3fc', '1f91d_1f3fd', '1f91d_1f3fe', '1f91d_1f3ff',
-    '1f9d1_200d_1f4bb',
-    '1f9d1_1f3fb_200d_1f4bb', '1f9d1_1f3fc_200d_1f4bb', '1f9d1_1f3fd_200d_1f4bb', '1f9d1_1f3fe_200d_1f4bb', '1f9d1_1f3ff_200d_1f4bb',
 ]
 
 def norm_special(name: str):
