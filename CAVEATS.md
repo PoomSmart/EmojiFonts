@@ -12,7 +12,6 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## FluentUI Emoji
 
-- Unicode 15.0 only.
 - Upstream is missing family, couple, flag, skinned handshake, paperclip, technologist and some other emojis.
 
 ## Google Noto Color Emoji
