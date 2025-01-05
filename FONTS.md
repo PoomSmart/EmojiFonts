@@ -5,6 +5,7 @@ All fonts are to be used with [WDBFontOverwrite 1.7.1+ (@ginsudev's fork)](https
 - `AppleColorEmoji-HD.ttc` for AppleColorEmoji emojis with 160x160 image sizes
 - `AppleColorEmoji-HD-flip.ttc` for AppleColorEmoji emojis with 160x160 image sizes, and flipped horizontally
 - `AppleColorEmoji-LQ.ttc` for AppleColorEmoji emojis in Low Quality
+- `AppleColorEmoji-pixel.ttc` for AppleColorEmojis with pixellated effect
 - `blobmoji.ttc` for Blobmoji emojis (Blobified Google Noto)
 - `facebook.ttc` for Facebook emojis
 - `fluentui-Flat.ttc` and `fluentui-Color.ttc` for Windows 11 FluentUI emojis of Flat and Color style

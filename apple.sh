@@ -5,9 +5,9 @@ set -e
 NAME=apple
 MOD=$1
 IOS_FONT_NAME=AppleColorEmoji_iOS
-[[ $MOD = 'LQ' || $MOD = 'HD-flip' ]] && ASSETS=$NAME/$MOD || ASSETS=$NAME/Default
+[[ $MOD = 'LQ' || $MOD = 'HD-flip' || $MOD = 'pixel' ]] && ASSETS=$NAME/$MOD || ASSETS=$NAME/Default
 COLORS=
-[[ $MOD = 'HD' || $MOD = 'HD-flip' ]] && HD=true || HD=false
+[[ $MOD = 'HD' || $MOD = 'HD-flip' || $MOD = 'pixel' ]] && HD=true || HD=false
 
 echo "Copying PNGs..."
 mkdir -p $ASSETS
@@ -28,6 +28,13 @@ then
     mogrify -flop $ASSETS/96/*.png
     mogrify -flop $ASSETS/64/*.png
     mogrify -flop $ASSETS/40/*.png
+elif [[ $MOD == 'pixel' ]]
+then
+    echo "Applying mod: pixel..."
+    mogrify -resize 10% -scale 1000% -filter point $ASSETS/160/*.png
+    mogrify -resize 96x96 -filter point -path $ASSETS/96 $ASSETS/160/*.png
+    mogrify -resize 64x64 -filter point -path $ASSETS/64 $ASSETS/96/*.png
+    mogrify -resize 40x40 -filter point -path $ASSETS/40 $ASSETS/64/*.png
 fi
 
 echo "Optimizing PNGs..."
