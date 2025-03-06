@@ -4,7 +4,7 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## Blobmoji Emoji
 
-- Nothing of significant.
+- Unicode 15.1 only.
 
 ## Facebook Emoji
 
@@ -12,6 +12,7 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## FluentUI Emoji
 
+- Unicode 15.1 only.
 - Upstream is missing family, couple, flag, skinned handshake, paperclip, technologist and some other emojis.
 
 ## Google Noto Color Emoji
@@ -20,7 +21,7 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## JoyPixels Emoji
 
-- Nothing of significant.
+- Unicode 15.1 only.
 
 ## OpenMoji Emoji
 
@@ -28,6 +29,7 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## Samsung One UI Emoji
 
+- Unicode 15.1 only.
 - One UI 6 beta still has version 5 of paired emojis.
 - Eye in speech emoji is from the older design of One UI. Samsung just didn't include it in One UI 5.0 officially.
 
@@ -38,11 +40,11 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## Twitter Twemoji
 
-- Nothing of significant.
+- Unicode 15.1 only.
 
 ## WhatsApp Emoji
 
-- Nothing of significant.
+- Unicode 15.1 only.
 
 ## Notes
 
