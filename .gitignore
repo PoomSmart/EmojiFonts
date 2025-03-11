@@ -2,7 +2,8 @@
 Fonts
 release
 update-deb.sh
-emjc-exp.py
+emjc_exp.py
+*-wip
 
 # Font assets
 *.ttx
