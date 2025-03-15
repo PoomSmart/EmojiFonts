@@ -20,8 +20,8 @@ rm .AppleColorEmojiUI.ttf
 
 cd $WORK_DIR
 echo "Extracting tables..."
-# Un-shared tables: ['head', 'hhea', 'meta', 'name', 'trak']
-UNSHARED_TABLES='-t head -t hhea -t meta -t name -t trak'
+# Un-shared tables: ['head', 'hhea', 'meta', 'name', 'trak', 'cntr']
+UNSHARED_TABLES='-t head -t hhea -t meta -t name -t trak -t cntr'
 SHARED_TABLES='-x GDEF -x DSIG -x cmap -x feat -x glyf -x hmtx -x loca -x maxp -x morx -x post -x sbix -x vhea -x vmtx -x GPOS -x GlyphOrder -x OS/2'
 ttx -q -s -f -x DSIG ${IOS_FONT_NAME}_00.ttf
 ttx -q -s -f $SHARED_TABLES ${IOS_FONT_NAME}_01.ttf
