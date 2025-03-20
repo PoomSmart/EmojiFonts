@@ -34,7 +34,7 @@ for ppem, strike in f['sbix'].strikes.items():
         name = norm_dual(name)
         if name is None:
             continue
-        name = base_norm_variants(name, True, True, True)
+        name = base_norm_variants(name, True, True)
         name = base_norm_special(name, True)
         name = joypixels_name(name)
         path = f'{style}/images/{ppem}/{name}.png'

@@ -1,6 +1,6 @@
 from fontTools import ttLib
 import xml.etree.ElementTree as ET
-from shared import genders
+from shared import gender_selectors
 
 name_map = {
     'u0023': 'numbersign',
@@ -42,7 +42,7 @@ class Lig:
         tokens = name.split('_')
         s = []
         for t in tokens:
-            t = f'uni{t}' if t in genders else f'u{t}'
+            t = f'uni{t}' if t in gender_selectors.values() else f'u{t}'
             s.append(t)
         if s[0] in name_map:
             s[0] = name_map[s[0]]

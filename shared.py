@@ -17,7 +17,10 @@ directions = ['2194', '2195', '27a1']
 heart = '2764'
 kiss = '1f48b'
 modifiers = ['2695', '2696', '2708']
-genders = ['2640', '2642']
+gender_selectors = {
+    'm': '2642',
+    'w': '2640'
+}
 skins = {
     1: '1f3fb',
     2: '1f3fc',
@@ -192,21 +195,21 @@ gender_with_selector = [
 
 def base_norm_variants(name: str, with_variant_selector = False, gender_need_selector = False, convert_male = False):
     v = '_fe0f' if with_variant_selector else ''
-    if '.m' in name:
-        name = name.replace('.m',  f'_2642{v}' if convert_male else '')
-    for s in range(1, 6):
-        if f'.{s}.w' in name:
-            name = name.replace(f'.{s}.w', f'_{skins[s]}_200d_2640{v}')
-    if '.w' in name:
-        found = False
-        if gender_need_selector:
-            for x in gender_with_selector:
-                if x in name:
-                    found = True
-                    name = name.replace('.w', f'_fe0f_200d_2640{v}')
-                    break
-        if not found:
-            name = name.replace('.w', f'_200d_2640{v}')
+    for gender in ['m', 'w']:
+        selector = gender_selectors[gender]
+        for s in range(1, 6):
+            if f'.{s}.{gender}' in name:
+                name = name.replace(f'.{s}.{gender}', f'_{skins[s]}_200d_{selector}{v}')
+        if f'.{gender}' in name:
+            found = False
+            if gender_need_selector:
+                for x in gender_with_selector:
+                    if x in name:
+                        found = True
+                        name = name.replace(f'.{gender}', f'_fe0f_200d_{selector}{v}')
+                        break
+            if not found:
+                name = name.replace(f'.{gender}', f'_200d_{selector}{v}')
     for s in range(1, 6):
         for m in modifiers:
             if name.endswith(f'_{m}.{s}'):
