@@ -56,8 +56,8 @@ else
     COMPAT_OUT_FONT_NAME=AppleColorEmoji@2x
 fi
 
-python3 $NAME.py $HD common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS
-python3 $NAME.py $HD common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS
+uv run $NAME.py $HD common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS
+uv run $NAME.py $HD common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS
 
 rm -f apple/$OUT_FONT_NAME.ttf
 if [[ $COMPAT_OUT_FONT_NAME != '' ]]
@@ -66,7 +66,7 @@ then
     ln apple/${OUT_FONT_NAME}_00.ttf apple/$COMPAT_OUT_FONT_NAME.ttf
 fi
 
-otf2otc apple/${OUT_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_01.ttf -o apple/$OUT_FONT_NAME.ttc
+uv run otf2otc apple/${OUT_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_01.ttf -o apple/$OUT_FONT_NAME.ttc
 
 if [[ $MOD == 'HD' ]]
 then

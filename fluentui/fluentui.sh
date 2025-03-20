@@ -21,7 +21,7 @@ cd "$ASSETS"
 cd ..
 
 echo "Preparing SVGs..."
-python3 $NAME-prepare.py ../../fluentui-emoji/assets . "$STYLE"
+uv run $NAME-prepare.py ../../fluentui-emoji/assets . "$STYLE"
 
 mv "$ASSETS"/*.svg "$ASSETS"/images/$MAX_SIZE
 cd "$ASSETS"/images/$MAX_SIZE
@@ -43,10 +43,10 @@ echo "Resizing and optimizing PNGs..."
 ../../resize.sh false false false
 cd ..
 
-python3 $NAME.py ../apple/${FONT_NAME}_00.ttf "$STYLE"
-python3 $NAME.py ../apple/${FONT_NAME}_01.ttf "$STYLE"
+uv run $NAME.py ../apple/${FONT_NAME}_00.ttf "$STYLE"
+uv run $NAME.py ../apple/${FONT_NAME}_01.ttf "$STYLE"
 
-otf2otc "$STYLE"-${FONT_NAME}_00.ttf "$STYLE"-${FONT_NAME}_01.ttf -o $NAME-"$STYLE".ttc
+uv run otf2otc "$STYLE"-${FONT_NAME}_00.ttf "$STYLE"-${FONT_NAME}_01.ttf -o $NAME-"$STYLE".ttc
 rm -f *_00.ttf *_01.ttf
 
 echo "Output file at $NAME/$NAME-$STYLE.ttc"

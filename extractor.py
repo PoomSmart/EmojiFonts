@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 from emjc import decode_emjc
 from PIL import Image
 
-# python3 extractor.py apple common/AppleColorEmoji_macOS._s_b_i_x.ttx
+# uv run extractor.py apple common/AppleColorEmoji_macOS._s_b_i_x.ttx
 
 # input: output folder, font sbix ttx
 data = ET.parse(sys.argv[2]).getroot()

@@ -22,10 +22,10 @@ cd extra
 ../../resize.sh false false false
 cd ..
 
-python3 $NAME.py ../apple/${FONT_NAME}_00.ttf
-python3 $NAME.py ../apple/${FONT_NAME}_01.ttf
+uv run $NAME.py ../apple/${FONT_NAME}_00.ttf
+uv run $NAME.py ../apple/${FONT_NAME}_01.ttf
 
-otf2otc ${FONT_NAME}_00.ttf ${FONT_NAME}_01.ttf -o $NAME.ttc
+uv run otf2otc ${FONT_NAME}_00.ttf ${FONT_NAME}_01.ttf -o $NAME.ttc
 rm -f *_00.ttf *_01.ttf
 
 echo "Output file at $NAME/$NAME.ttc"

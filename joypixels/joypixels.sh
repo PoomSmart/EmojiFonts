@@ -37,13 +37,13 @@ cd ../extra
 ../../resize.sh false false false true
 cd ..
 
-python3 $NAME.py ../apple/${FONT_NAME}_00.ttf $MOD
-python3 $NAME.py ../apple/${FONT_NAME}_01.ttf $MOD
+uv run $NAME.py ../apple/${FONT_NAME}_00.ttf $MOD
+uv run $NAME.py ../apple/${FONT_NAME}_01.ttf $MOD
 
 PREFIX=$MOD-
 OUT_FONT_NAME=$NAME-$MOD.ttc
 
-otf2otc $PREFIX${FONT_NAME}_00.ttf $PREFIX${FONT_NAME}_01.ttf -o $OUT_FONT_NAME
+uv run otf2otc $PREFIX${FONT_NAME}_00.ttf $PREFIX${FONT_NAME}_01.ttf -o $OUT_FONT_NAME
 rm -f *_00.ttf *_01.ttf
 
 if [ $OUT_FONT_NAME = "$NAME-Default.ttc" ]; then

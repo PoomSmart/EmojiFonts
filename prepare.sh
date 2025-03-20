@@ -28,8 +28,8 @@ ttx -q -s -f $SHARED_TABLES ${IOS_FONT_NAME}_01.ttf
 ttx -q -s -f -t sbix ${MAC_FONT_NAME}_00.ttf
 
 echo "Fixing up interracial emojis..."
-python3 ../shift-multi.py ${IOS_FONT_NAME}_00._h_m_t_x.ttx
-python3 ../remove-class3.py ${IOS_FONT_NAME}_00.G_D_E_F_.ttx
+uv run ../shift-multi.py ${IOS_FONT_NAME}_00._h_m_t_x.ttx
+uv run ../remove-class3.py ${IOS_FONT_NAME}_00.G_D_E_F_.ttx
 
 for ttx in $(find . -type f -name "${IOS_FONT_NAME}_00.*.ttx")
 do

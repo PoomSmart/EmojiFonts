@@ -5,7 +5,8 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 # Prerequisites
 
 - Bash version 5+ (`brew install bash`)
-- [Python 3.7+](http://www.python.org/download/)
+- [Python 3.8+](http://www.python.org/download/)
+- [uv](https://github.com/astral-sh/uv)
 - [pip](https://pip.pypa.io/en/stable/)
 - [fonttools 4.48.0+](https://github.com/fonttools/fonttools) (`pip3 install fonttools[repacker]>=4.48.0`)
 - [afdko](https://github.com/adobe-type-tools/afdko) (`pip3 install afdko`)
@@ -24,7 +25,7 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 
 1. Copy `Apple Color Emoji.ttc` from `/System/Library/Fonts` of your macOS instance to the root of this repository and rename it to `AppleColorEmoji_macOS.ttc`.
 2. Copy AppleColorEmoji font from your iOS instance to the root of this repository and rename it to `AppleColorEmoji_iOS.ttc`. Read [here](https://poomsmart.github.io/emojiport) for the exact file path.
-3. Execute `source ~/.venv/bin/activate` to activate the virtual environment for Python scripts. Run this first every time you run scripts in this repository.
+3. Execute `uv sync` to activate/synchronize the Python virtual environment.
 4. Execute `./prepare.sh` to create emoji TTF files and tables. Run this once.
 
 # Building Apple Color Emoji font

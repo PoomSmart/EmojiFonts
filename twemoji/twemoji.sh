@@ -19,10 +19,10 @@ cd extra
 rm -rf svgs
 mkdir -p svgs
 ../../image-sizes.sh true
-python3 gen-couple-heart.py
-python3 gen-couple-kiss.py
-python3 gen-couple-stand.py
-python3 gen-handshake.py
+uv run gen-couple-heart.py
+uv run gen-couple-kiss.py
+uv run gen-couple-stand.py
+uv run gen-handshake.py
 for svg in $(find ./svgs -type f -name '*.svg')
 do
     fname=$(basename $svg)
@@ -37,10 +37,10 @@ echo "Resizing and optimizing PNGs..."
 IN_FONT_NAME=AppleColorEmoji-HD
 OUT_FONT_NAME=$NAME.ttc
 
-python3 $NAME.py ../apple/${IN_FONT_NAME}_00.ttf
-python3 $NAME.py ../apple/${IN_FONT_NAME}_01.ttf
+uv run $NAME.py ../apple/${IN_FONT_NAME}_00.ttf
+uv run $NAME.py ../apple/${IN_FONT_NAME}_01.ttf
 
-otf2otc ${IN_FONT_NAME}_00.ttf ${IN_FONT_NAME}_01.ttf -o $OUT_FONT_NAME
+uv run otf2otc ${IN_FONT_NAME}_00.ttf ${IN_FONT_NAME}_01.ttf -o $OUT_FONT_NAME
 rm -f *_00.ttf *_01.ttf
 
 echo "Output file at $NAME/$OUT_FONT_NAME"
