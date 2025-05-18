@@ -1,5 +1,7 @@
 import os
+import io
 import sys
+from PIL import Image
 
 sys.path.append('..')
 from shared import *
@@ -35,16 +37,24 @@ for ppem, strike in f['sbix'].strikes.items():
             continue
         name = base_norm_variants(name)
         name = base_norm_special(name)
-        if name in u15_1 or name.endswith('_200d_27a1'):
-            m_print(f'{name} is missing')
-            continue
+        flipped = False
+        if name.endswith('_200d_27a1'):
+            flipped = True
+            name = name[:-len('_200d_27a1')]
         o_name = name
         name = whatsapp_name(name)
         path = f'images/{ppem}/emoji_{name}.png'
         if not os.path.exists(path) or o_name.startswith('1f491') or o_name.startswith('1f48f'):
             name = name[1:] if name[0] == 'u' else name
             path = f'extra/images/{ppem}/{name}.png'
-        glyph.imageData = get_image_data(path)
+        data = get_image_data(path)
+        if flipped:
+            img = Image.open(io.BytesIO(data))
+            img = img.transpose(Image.FLIP_LEFT_RIGHT)
+            data = io.BytesIO()
+            img.save(data, format='PNG')
+            data = data.getvalue()
+        glyph.imageData = data
 
 if not os.path.exists('../.test'):
     print('Saving changes...')
