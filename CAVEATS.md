@@ -40,7 +40,7 @@ Missing emojis or limitations of each non-Apple themed font will be listed here.
 
 ## Twitter Twemoji
 
-- Unicode 15.1 only.
+- Nothing of significant.
 
 ## WhatsApp Emoji
 
