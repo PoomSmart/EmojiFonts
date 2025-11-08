@@ -243,9 +243,9 @@ def base_norm_special(name: str, with_variant_selector = False):
     if name == '2764_1fa79':
         return f'2764{v}_200d_1fa79'
     if name == '1f344_1f7eb':
-        return f'1f344_200d_1f7eb'
+        return '1f344_200d_1f7eb'
     if name == '1f34b_1f7e9':
-        return f'1f34b_200d_1f7e9'
+        return '1f34b_200d_1f7e9'
     if name == '1f3f3_26a7':
         return f'1f3f3{v}_200d_26a7{v}'
     if name == '1f3f3_1f308':
@@ -253,7 +253,7 @@ def base_norm_special(name: str, with_variant_selector = False):
     if name == '1f3f4_2620':
         return f'1f3f4_200d_2620{v}'
     if name == '1f426_1f525':
-        return f'1f426_200d_1f525'
+        return '1f426_200d_1f525'
     if name == '1f43b_2744':
         return f'1f43b_200d_2744{v}'
     if name == '1f636_1f32b':

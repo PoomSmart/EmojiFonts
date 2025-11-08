@@ -1,8 +1,10 @@
 # decoder credit: https://github.com/cc4966/emjc-decoder
 
 from array import array
-from liblzfse import decompress, error
 from struct import unpack
+
+from liblzfse import decompress, error
+
 
 def convert_to_difference(value: int, offset: int):
     return -(value >> 1) - offset if value & 1 else (value >> 1) + offset
@@ -67,7 +69,7 @@ def decode_emjc(emjc_data: bytes):
                     else:
                         buffer[i * 3 + 0] += left
                         buffer[i * 3 + 1] += buffer[(i - 1) * 3 + 1]
-                        buffer[i * 3 + 2] += buffer[(i - 1) * 3 + 2] 
+                        buffer[i * 3 + 2] += buffer[(i - 1) * 3 + 2]
                 elif x > 0:
                     buffer[i * 3 + 0] += buffer[(i - 1) * 3 + 0]
                     buffer[i * 3 + 1] += buffer[(i - 1) * 3 + 1]

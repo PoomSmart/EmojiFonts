@@ -10,3 +10,51 @@ dependencies = [
     "pillow>=9.5.0",
     "pyliblzfse>=0.4.1",
 ]
+
+[project.scripts]
+emojifonts-apple = "apple:main"
+emojifonts-extract = "extractor:main"
+emojifonts-remove-class3 = "remove_class3:main"
+emojifonts-shift-multi = "shift_multi:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "ruff>=0.6",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.ruff]
+target-version = "py38"
+line-length = 120
+extend-exclude = [
+    "apple/AppleColorEmoji*",
+    "blobmoji/Blobmoji*.ttx",
+    "common/AppleColorEmoji_iOS_*",
+    "Fonts/",
+    "noto-emoji/NotoColorEmoji.*",
+    "twemoji/",
+    "whatsapp/",
+    "facebook/",
+    "joypixels/",
+    "openmoji/",
+    "tossface/",
+    "oneui/",
+    "noto-emoji/",
+    "templates/",
+    "blobmoji/",
+    "fluentui/",
+    "noto-emoji-cursed/",
+    "serenity-wip/",
+    "emojipedia-wip/",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "W", "UP", "I"]
+ignore = []
+
+[tool.ruff.format]
+exclude = ["**/*.ttx", "**/*.ttc", "**/*.ttf"]

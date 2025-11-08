@@ -1,5 +1,7 @@
-from fontTools import ttLib
 import xml.etree.ElementTree as ET
+
+from fontTools import ttLib
+
 from shared import gender_selectors
 
 name_map = {

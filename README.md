@@ -42,17 +42,34 @@ Executing `./apple-prepare.sh <OS> && ./apple.sh` will get `AppleColorEmoji@2x.t
 
 EmojiFonts deals with certain font tables; mainly `GDEF` and `sbix`.
 
-`shift-multi.py` resizes and shifts the multi-skinned emojis that pair up as one, including couples and handshake, to have them displayed on iOS 13 and below correctly where there is no render logic to automatically place the pair close together.
+`shift-multi.py` (or CLI alias `emojifonts-shift-multi`) resizes and shifts the multi-skinned emojis that pair up as one, including couples and handshake, to have them displayed on iOS 13 and below correctly where there is no render logic to automatically place the pair close together.
 
 `GDEF` table which maps each of paired emojis to a certain class, is modified by the scripts. This is for the easiest backward-compatible solution for the emoji font. In this table, emojis with class `1` and `3` represent `left` and `right`, respectively. With those present, the text render engine on iOS 14+ will try to place the pair close together again even when we applied `shift-multi.py` to the font. Another script `remove-class3.py` ensures that there are no class `1` and `3` emojis that will otherwise be visible to the users.
 
-`extractor.py` extracts PNG emoji images from the font. This opens up the possibility to theme the emoji font.
+`extractor.py` (CLI alias `emojifonts-extract`) extracts PNG emoji images from the font. This opens up the possibility to theme the emoji font.
 
 Also in `extractor.py`, it detects glyphs of type `flip`, reads the actual image glyph ID that they reference to, programmatically flips them and then extracts them. `flip` glyphs are present in iOS 17.4 version of Apple Color Emoji font and not supported by any lower OS versions. They are for directional emojis - Apple has a single image for each direction, and the font uses `flip` glyphs to render the correct image.
+
+`apple.py` (CLI alias `emojifonts-apple`) swaps in PNG assets extracted with the previous step back into the sbix table.
+
+`remove-class3.py` (CLI alias `emojifonts-remove-class3`) trims class 3 glyph assignments from the Apple GDEF table.
 
 # PNG Optimization
 
 `pngquant` and `oxipng` are used to optimize the images with little to none changes to the quality. The Apple emoji font sizes are reduced by 50% using this method. The simpler the emoji images, the more size reduction is achieved.
+
+# Verification
+
+- Run `uv run pytest` to ensure the extractor, class trimming, and metric overrides behave as expected against the bundled fixtures.
+- Run `uv run ruff check .` to lint the Python toolchain, or `uv run ruff format .` to auto-format when needed.
+- After running `emojifonts-extract`, spot-check output with `open apple/images/64/u1F600.png` (or any glyph) and verify flipped glyphs are emitted.
+- After `emojifonts-apple`, diff the sbix table with `ttx -o - apple/AppleColorEmoji@2x.ttc | grep -c '<glyph'` to confirm the strike counts remain unchanged.
+
+# Troubleshooting
+
+- `Flip glyph references unknown glyph`: regenerate TTX tables with `./prepare.sh` to keep sbix data in sync with recent Apple font updates.
+- `Overrides refer to missing glyph metrics`: re-run `emojifonts-shift-multi` against the freshly exported `hmtx.ttx`; stale files from earlier releases omit the new handshake glyphs.
+- `pngquant: command not found`: install the dependency via `brew install pngquant` (or remove the optimizer by setting `PNGQUANT=0` before invoking shell helpers).
 
 # Theming
 
