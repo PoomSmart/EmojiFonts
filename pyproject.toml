@@ -24,7 +24,11 @@ dev = [
     "ruff>=0.6",
 ]
 
+[tool.setuptools]
+py-modules = ["apple", "extractor", "remove_class3", "shift_multi", "shared", "shared_lig", "emjc", "emjc_exp"]
+
 [tool.uv]
+package = true
 default-groups = ["dev"]
 
 [tool.ruff]
