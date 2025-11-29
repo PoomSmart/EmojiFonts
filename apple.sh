@@ -56,8 +56,9 @@ else
     COMPAT_OUT_FONT_NAME=AppleColorEmoji@2x
 fi
 
-uv run $NAME.py $HD common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS
-uv run $NAME.py $HD common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS
+[[ $HD == true ]] && HD_FLAG="--hd" || HD_FLAG=""
+uv run emojifonts-apple $HD_FLAG common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS
+uv run emojifonts-apple $HD_FLAG common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS
 
 rm -f apple/$OUT_FONT_NAME.ttf
 if [[ $COMPAT_OUT_FONT_NAME != '' ]]
