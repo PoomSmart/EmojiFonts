@@ -18,8 +18,6 @@ def blobmoji_name(name: str):
             t = t[1:] # strip u prefix
         n.append(t)
     result = '_'.join(n)
-    if result.endswith('_20e3'):
-        result = result[2:]
     return 'u' + result
 
 corrections = {
@@ -68,7 +66,7 @@ for ppem, strike in f['sbix'].strikes.items():
         if name is None or name in signs:
             continue
         name = base_norm_variants(name)
-        name = base_norm_special(name, True)
+        name = base_norm_special(name)
         name = norm_variant_selector(name)
         name = blobmoji_name(name)
         path = f'images/{ppem}/emoji_{name}.png'

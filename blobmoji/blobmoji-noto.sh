@@ -3,20 +3,29 @@
 set -e
 
 NAME=blobmoji
-APPLE_FONT_NAME=AppleColorEmoji
-ASSETS=../../${NAME}2/png
-MAX_SIZE=96
+APPLE_FONT_NAME=AppleColorEmoji-HD
+ASSETS=../../${NAME}2/svg
+FLAG_ASSETS=../../${NAME}2/third_party/region-flags/waved-svg
+MAX_SIZE=160
 
-../image-sizes.sh false
+../image-sizes.sh true
 
-cp -r $ASSETS/ images/$MAX_SIZE
-
-echo "Resizing and optimizing PNGs..."
-../resize.sh false false false true
+echo "Converting SVGs into PNGs..."
+for svg in $(find $ASSETS -type f -name '*.svg')
+do
+    fname=$(basename $svg)
+    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
+done
+for svg in $(find $FLAG_ASSETS -type f -name '*.svg')
+do
+    fname=$(basename $svg)
+    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
+done
 
 cd extra
 rm -rf svgs images
-mkdir -p svgs images/96 images/64 images/40
+mkdir -p svgs
+../../image-sizes.sh true
 uv run python gen-couple-heart.py
 uv run python gen-couple-kiss.py
 uv run python gen-couple-stand.py
@@ -26,8 +35,11 @@ do
     fname=$(basename $svg)
     rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
 done
-../../resize.sh false false false
+../../resize.sh true false false
 cd ..
+
+echo "Resizing and optimizing PNGs..."
+../resize.sh true false false
 
 uv run python $NAME-noto.py ../apple/${APPLE_FONT_NAME}_00.ttf
 uv run python $NAME-noto.py ../apple/${APPLE_FONT_NAME}_01.ttf
