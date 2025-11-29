@@ -4,9 +4,9 @@ set -e
 
 NAME=blobmoji
 APPLE_FONT_NAME=AppleColorEmoji
-ASSETS=../../$NAME/svg
-FONT_ASSETS=../../$NAME/fonts
-FONT_NAME=Blobmoji
+ASSETS=../../${NAME}2/svg
+FONT_ASSETS=../../${NAME}2/fonts
+FONT_NAME=NotoColorEmoji
 FONT_PATH=$FONT_ASSETS/$FONT_NAME.ttf
 MAX_SIZE=96
 
@@ -14,8 +14,8 @@ MAX_SIZE=96
 
 echo "Extracting font..."
 cp $FONT_PATH .
-ttx -q -f -z extfile $FONT_NAME.ttf
-ttx -q -f -s -t GSUB $FONT_NAME.ttf
+uv run ttx -q -f -z extfile $FONT_NAME.ttf
+uv run ttx -q -f -s -t GSUB $FONT_NAME.ttf
 
 echo "Resizing and optimizing PNGs..."
 mogrify -resize 96x96 -path images/96 bitmaps/strike0/*.png
@@ -25,10 +25,10 @@ rm -rf bitmaps
 cd extra
 rm -rf svgs images
 mkdir -p svgs images/96 images/64 images/40
-uv run gen-couple-heart.py
-uv run gen-couple-kiss.py
-uv run gen-couple-stand.py
-uv run gen-handshake.py
+uv run python gen-couple-heart.py
+uv run python gen-couple-kiss.py
+uv run python gen-couple-stand.py
+uv run python gen-handshake.py
 for svg in $(find ./svgs -type f -name '*.svg')
 do
     fname=$(basename $svg)
@@ -37,8 +37,8 @@ done
 ../../resize.sh false false false
 cd ..
 
-uv run $NAME.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
-uv run $NAME.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
+uv run python $NAME.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
+uv run python $NAME.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
 
 uv run otf2otc ${APPLE_FONT_NAME}_00.ttf ${APPLE_FONT_NAME}_01.ttf -o $NAME.ttc
 rm -f *_00.ttf *_01.ttf

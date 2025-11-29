@@ -37,8 +37,8 @@ cd ../extra
 ../../resize.sh false false false true
 cd ..
 
-uv run $NAME.py ../apple/${FONT_NAME}_00.ttf $MOD
-uv run $NAME.py ../apple/${FONT_NAME}_01.ttf $MOD
+uv run python $NAME.py ../apple/${FONT_NAME}_00.ttf $MOD
+uv run python $NAME.py ../apple/${FONT_NAME}_01.ttf $MOD
 
 PREFIX=$MOD-
 OUT_FONT_NAME=$NAME-$MOD.ttc

@@ -9,8 +9,8 @@ FONT_NAME=SamsungColorEmoji
 ../image-sizes.sh false
 
 echo "Extracting font..."
-ttx -q -f -z extfile $FONT_NAME.ttf
-ttx -q -f -s -t GSUB $FONT_NAME.ttf
+uv run ttx -q -f -z extfile $FONT_NAME.ttf
+uv run ttx -q -f -s -t GSUB $FONT_NAME.ttf
 
 echo "Resizing and optimizing PNGs..."
 mogrify -resize 96x96 -path images/96 bitmaps/strike0/*.png
@@ -21,8 +21,8 @@ mkdir -p extra/images/96
 cp extra/original/*.png extra/images/96
 ../get-assets.sh oneui
 
-uv run $NAME.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
-uv run $NAME.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
+uv run python $NAME.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
+uv run python $NAME.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
 
 uv run otf2otc ${APPLE_FONT_NAME}_00.ttf ${APPLE_FONT_NAME}_01.ttf -o $NAME.ttc
 rm -f *_00.ttf *_01.ttf

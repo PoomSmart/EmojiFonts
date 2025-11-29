@@ -16,4 +16,4 @@ echo "Copying sbix table for $MAC_FONT_NAME font..."
 cp common/${MAC_FONT_NAME}_00._s_b_i_x.ttx $NAME/${MAC_FONT_NAME}._s_b_i_x.ttx
 
 echo "Extracting PNGs from $MAC_FONT_NAME font..."
-uv run extractor.py $ASSETS $NAME/${MAC_FONT_NAME}._s_b_i_x.ttx
+uv run emojifonts-extract $ASSETS $NAME/${MAC_FONT_NAME}._s_b_i_x.ttx

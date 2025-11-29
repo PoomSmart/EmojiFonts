@@ -79,7 +79,7 @@ It is recommended to limit the depth of clone to `1` (`git clone --depth 1 git@g
 
 ## Blobmoji Emoji
 
-1. Clone [blobmoji](https://github.com/C1710/blobmoji) and place its folder alongside this project.
+1. Clone [blobmoji2](https://github.com/DavidBerdik/blobmoji2) and place its folder alongside this project.
 2. Execute `cd blobmoji && ./blobmoji.sh` to create themed font, output at `blobmoji/blobmoji.ttc`.
 
 ## Facebook Emoji

@@ -4,7 +4,7 @@ set -e
 
 NAME=blobmoji
 APPLE_FONT_NAME=AppleColorEmoji
-ASSETS=../../$NAME/png
+ASSETS=../../${NAME}2/png
 MAX_SIZE=96
 
 ../image-sizes.sh false
@@ -17,10 +17,10 @@ echo "Resizing and optimizing PNGs..."
 cd extra
 rm -rf svgs images
 mkdir -p svgs images/96 images/64 images/40
-uv run gen-couple-heart.py
-uv run gen-couple-kiss.py
-uv run gen-couple-stand.py
-uv run gen-handshake.py
+uv run python gen-couple-heart.py
+uv run python gen-couple-kiss.py
+uv run python gen-couple-stand.py
+uv run python gen-handshake.py
 for svg in $(find ./svgs -type f -name '*.svg')
 do
     fname=$(basename $svg)
@@ -29,8 +29,8 @@ done
 ../../resize.sh false false false
 cd ..
 
-uv run $NAME-noto.py ../apple/${APPLE_FONT_NAME}_00.ttf
-uv run $NAME-noto.py ../apple/${APPLE_FONT_NAME}_01.ttf
+uv run python $NAME-noto.py ../apple/${APPLE_FONT_NAME}_00.ttf
+uv run python $NAME-noto.py ../apple/${APPLE_FONT_NAME}_01.ttf
 
 uv run otf2otc ${APPLE_FONT_NAME}_00.ttf ${APPLE_FONT_NAME}_01.ttf -o $NAME.ttc
 rm -f *_00.ttf *_01.ttf

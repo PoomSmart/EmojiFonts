@@ -12,10 +12,10 @@ cd extra
 rm -rf svgs
 mkdir -p svgs
 ../../image-sizes.sh true
-uv run gen-couple-heart.py
-uv run gen-couple-kiss.py
-uv run gen-couple-stand.py
-uv run gen-handshake.py
+uv run python gen-couple-heart.py
+uv run python gen-couple-kiss.py
+uv run python gen-couple-stand.py
+uv run python gen-handshake.py
 
 echo "Converting SVGs into PNGs..."
 for svg in $(find ./svgs -type f -name '*.svg')
@@ -38,8 +38,8 @@ echo "Resizing and optimizing PNGs..."
 IN_FONT_NAME=AppleColorEmoji-HD
 OUT_FONT_NAME=$NAME.ttc
 
-uv run $NAME.py ../apple/${IN_FONT_NAME}_00.ttf
-uv run $NAME.py ../apple/${IN_FONT_NAME}_01.ttf
+uv run python $NAME.py ../apple/${IN_FONT_NAME}_00.ttf
+uv run python $NAME.py ../apple/${IN_FONT_NAME}_01.ttf
 
 uv run otf2otc ${IN_FONT_NAME}_00.ttf ${IN_FONT_NAME}_01.ttf -o $OUT_FONT_NAME
 rm -f *_00.ttf *_01.ttf
