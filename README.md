@@ -5,7 +5,7 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 # Prerequisites
 
 - Bash version 5+ (`brew install bash`)
-- [Python 3.8+](http://www.python.org/download/)
+- [Python 3.11+](http://www.python.org/download/)
 - [uv](https://github.com/astral-sh/uv)
 - [pip](https://pip.pypa.io/en/stable/)
 - [fonttools 4.48.0+](https://github.com/fonttools/fonttools) (`pip3 install fonttools[repacker]>=4.48.0`)

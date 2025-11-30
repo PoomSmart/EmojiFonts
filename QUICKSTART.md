@@ -1,6 +1,6 @@
 # Quickstart
 
-Assuming a macOS machine with homebrew and Python 3.8+ installed:
+Assuming a macOS machine with homebrew and Python 3.11+ installed:
 
 ## Dependencies
 
