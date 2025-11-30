@@ -21,7 +21,7 @@ def _resolve_asset(path: Path) -> bytes:
     return get_image_data(str(path))
 
 
-def update_sbix_images(input_font: Path, output_font: Path, assets_dir: Path, *, hd: bool) -> None:
+def update_sbix_images(input_font: Path, output_font: Path, assets_dir: Path, *, hd: bool, emjc: bool) -> None:
     font = _load_font(input_font)
 
     prepare_strikes(font, hd)
@@ -30,10 +30,16 @@ def update_sbix_images(input_font: Path, output_font: Path, assets_dir: Path, *,
     for ppem, strike in sbix_table.strikes.items():
         LOGGER.info('Reading strike of size %sx%s', ppem, ppem)
         for name, glyph in strike.glyphs.items():
-            if glyph.graphicType not in {'emjc', 'flip'}:
+            if glyph.graphicType not in {'emjc', 'flip', 'png '}:
                 continue
-            glyph.graphicType = 'png '
-            asset_path = assets_dir / str(ppem) / f'{name}.png'
+            
+            ext = 'emjc' if emjc else 'png'
+            asset_path = assets_dir / str(ppem) / f'{name}.{ext}'
+            
+            if not asset_path.exists():
+                continue
+                
+            glyph.graphicType = 'emjc' if emjc else 'png '
             glyph.imageData = _resolve_asset(asset_path)
 
     LOGGER.info('Saving changes to %s', output_font)
@@ -50,6 +56,11 @@ def build_parser() -> argparse.ArgumentParser:
         action='store_true',
         help='Expect HD assets (keep 160ppem strike). The default trims 160ppem.',
     )
+    parser.add_argument(
+        '--emjc',
+        action='store_true',
+        help='Use EMJC assets instead of PNG.',
+    )
     parser.add_argument('--log-level', default='INFO', help='Python logging level (default: INFO)')
     return parser
 
@@ -61,7 +72,7 @@ def main(argv=None) -> int:
     logging.basicConfig(level=getattr(logging, args.log_level.upper(), logging.INFO))
 
     try:
-        update_sbix_images(args.input_font, args.output_font, args.assets_dir, hd=args.hd)
+        update_sbix_images(args.input_font, args.output_font, args.assets_dir, hd=args.hd, emjc=args.emjc)
     except Exception as exc:  # pylint: disable=broad-except
         LOGGER.error('Failed to update sbix images: %s', exc)
         return 1

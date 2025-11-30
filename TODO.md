@@ -6,4 +6,3 @@
 - [ ] Rely more on GSUB/MORX tables of the font than manual name mapping
 - [ ] Streamline code for manipulating SVGs for couple emojis
 - [ ] Un-uglify SVGs manipulation code
-- [ ] Code that do not offend linting too much

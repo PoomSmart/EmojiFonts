@@ -5,9 +5,9 @@ set -e
 NAME=apple
 MOD=$1
 IOS_FONT_NAME=AppleColorEmoji_iOS
-[[ $MOD = 'LQ' || $MOD = 'HD-flip' || $MOD = 'pixel' ]] && ASSETS=$NAME/$MOD || ASSETS=$NAME/Default
+[[ $MOD = 'LQ' || $MOD = 'HD-flip' || $MOD = 'pixel' || $MOD = 'EMJC' ]] && ASSETS=$NAME/$MOD || ASSETS=$NAME/Default
 COLORS=
-[[ $MOD = 'HD' || $MOD = 'HD-flip' || $MOD = 'pixel' ]] && HD=true || HD=false
+[[ $MOD = 'HD' || $MOD = 'HD-flip' || $MOD = 'pixel' || $MOD = 'EMJC' ]] && HD=true || HD=false
 
 echo "Copying PNGs..."
 mkdir -p $ASSETS
@@ -48,6 +48,10 @@ oxipng -q $ASSETS/96/*.png
 oxipng -q $ASSETS/64/*.png
 oxipng -q $ASSETS/40/*.png
 
+if [[ $MOD == 'EMJC' ]]; then
+    ./convert_to_emjc.sh "$ASSETS"
+fi
+
 if [[ $MOD != '' ]]
 then
     OUT_FONT_NAME=AppleColorEmoji-$MOD
@@ -57,8 +61,9 @@ else
 fi
 
 [[ $HD == true ]] && HD_FLAG="--hd" || HD_FLAG=""
-uv run emojifonts-apple $HD_FLAG common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS
-uv run emojifonts-apple $HD_FLAG common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS
+[[ $MOD == 'EMJC' ]] && EMJC_FLAG="--emjc" || EMJC_FLAG=""
+uv run emojifonts-apple $HD_FLAG $EMJC_FLAG common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS
+uv run emojifonts-apple $HD_FLAG $EMJC_FLAG common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS
 
 rm -f apple/$OUT_FONT_NAME.ttf
 if [[ $COMPAT_OUT_FONT_NAME != '' ]]

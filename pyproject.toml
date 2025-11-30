@@ -52,7 +52,6 @@ extend-exclude = [
     "blobmoji/",
     "fluentui/",
     "noto-emoji-cursed/",
-    "serenity-wip/",
     "emojipedia-wip/",
 ]
 
