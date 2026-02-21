@@ -23,4 +23,8 @@ apple
 **/bitmaps
 
 # Python assets
-__pycache__
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
