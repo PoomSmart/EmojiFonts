@@ -4,22 +4,24 @@ Python and shell scripts to backport and theme [Apple Color Emoji font](https://
 
 # Prerequisites
 
-- Bash version 5+ (`brew install bash`)
-- [Python 3.11+](http://www.python.org/download/)
-- [uv](https://github.com/astral-sh/uv)
-- [pip](https://pip.pypa.io/en/stable/)
-- [fonttools 4.48.0+](https://github.com/fonttools/fonttools) (`pip3 install fonttools[repacker]>=4.48.0`)
-- [afdko](https://github.com/adobe-type-tools/afdko) (`pip3 install afdko`)
-- [libpylzfse](https://github.com/ydkhatri/pyliblzfse) (`pip3 install libpylzfse`)
-- [Pillow](https://github.com/python-pillow/Pillow) (`pip3 install Pillow`)
-- [pngquant](https://pngquant.org) (`brew install pngquant`)
-- [oxipng](https://github.com/shssoichiro/oxipng) (`brew install oxipng`)
+The following tools are required to build and theme the font.
 
-# Prerequisites (Theming)
+### System Tools
+* **Bash 5+**
+* **[uv](https://github.com/astral-sh/uv)** (Recommended for managing Python environment and dependencies)
+* **[pngquant](https://pngquant.org)** & **[oxipng](https://github.com/shssoichiro/oxipng)** (For PNG optimization)
+* **For Theming**: [ImageMagick](https://imagemagick.org/), [librsvg](https://wiki.gnome.org/Projects/LibRsvg), and [svgo](https://github.com/svg/svgo)
 
-- [ImageMagick](https://imagemagick.org/index.php) (`brew install freetype imagemagick`)
-- [librsvg](https://wiki.gnome.org/Projects/LibRsvg) (`brew install librsvg`)
-- [svgo](https://github.com/svg/svgo) (`brew install svgo`)
+**Install all system tools with Homebrew:**
+```bash
+brew install bash uv pngquant oxipng imagemagick librsvg svgo
+```
+
+### Python Dependencies
+Python 3.11+ is required. All Python dependencies are automatically managed by `uv` and defined in `pyproject.toml`:
+* `afdko`, `fonttools[repacker]`, `pillow`, and `pyliblzfse`.
+
+These will be installed automatically into a virtual environment when you run `uv sync`.
 
 # Before anything
 
