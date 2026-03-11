@@ -20,6 +20,8 @@ All fonts are to be used with [WDBFontOverwrite 1.7.1+ (@ginsudev's fork)](https
 - `twemoji.ttc` for Twitter Twemoji emojis
 - `whatsapp.ttc` for WhatsApp emojis
 
+For other Apple Color Emoji fonts, refer to [here](APPLE_FONTS.md).
+
 For macOS, download the font and place it to `~/Library/Fonts/Apple Color Emoji.ttc` and you will start seeing new emojis right away.
 
 Refer to [here](https://github.com/PoomSmart/EmojiFonts/blob/main/CAVEATS.md) for known issues.
