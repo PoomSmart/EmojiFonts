@@ -32,26 +32,43 @@ def load_overrides(path: Path) -> MetricOverrides:
     return data
 
 
+L_SUFFIXES = ('.L', '.ML', '.WL')
+R_SUFFIXES = ('.R', '.RA', '.MR', '.WR')
+
+
 def apply_overrides(hmtx_ttx: Path, overrides: MetricOverrides) -> int:
     tree = ET.parse(str(hmtx_ttx))
     root = tree.getroot()
 
-    remaining = set(overrides.keys())
+    applied_count = 0
+    remaining_explicit = set(overrides.keys())
+
     for mtx in root.iter('mtx'):
         name = mtx.attrib.get('name')
-        if not name or name not in overrides:
+        if not name:
             continue
-        metrics = overrides[name]
-        mtx.set('width', str(metrics['width']))
-        mtx.set('lsb', str(metrics['lsb']))
-        remaining.discard(name)
 
-    applied_total = len(overrides) - len(remaining)
-    if remaining:
-        raise KeyError(f'Overrides refer to missing glyph metrics: {", ".join(sorted(remaining))}')
+        metrics = None
+        if name in overrides:
+            metrics = overrides[name]
+            remaining_explicit.discard(name)
+        elif name.endswith(L_SUFFIXES):
+            metrics = {'width': 400, 'lsb': 0}
+        elif name.endswith(R_SUFFIXES):
+            metrics = {'width': 400, 'lsb': -400}
+
+        if metrics:
+            mtx.set('width', str(metrics['width']))
+            mtx.set('lsb', str(metrics['lsb']))
+            applied_count += 1
+
+    if remaining_explicit:
+        raise KeyError(
+            f'Explicit overrides refer to missing glyph metrics: {", ".join(sorted(remaining_explicit))}'
+        )
 
     tree.write(str(hmtx_ttx), encoding='utf-8')
-    return applied_total
+    return applied_count
 
 
 def build_parser() -> argparse.ArgumentParser:
