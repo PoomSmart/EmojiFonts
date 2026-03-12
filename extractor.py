@@ -24,6 +24,14 @@ def _decode_hexdata(hexdata: str) -> bytes:
     return binascii.unhexlify(''.join(hexdata.split()))
 
 
+def _save_emjc(data_bytes: bytes, ppem: int, is_flip: bool, out_path: Path) -> None:
+    decoded = decode_emjc(data_bytes)
+    img = Image.frombuffer('RGBA', (ppem, ppem), decoded, 'raw', 'BGRA', 0, 1)
+    if is_flip:
+        img = img.transpose(Image.FLIP_LEFT_RIGHT)
+    img.save(out_path)
+
+
 def _resolve_flip_source(strike: ET.Element, reference: ET.Element) -> ET.Element:
     glyphname = reference.get('glyphname')
     if not glyphname:
@@ -36,18 +44,33 @@ def _resolve_flip_source(strike: ET.Element, reference: ET.Element) -> ET.Elemen
 
 def extract_images(
     output_dir: Path,
-    sbix_ttx: Path,
+    ios_sbix_ttx: Path,
+    macos_sbix_ttx: Path,
     *,
     allowed_strikes: Optional[Iterable[int]] = DEFAULT_ALLOWED_STRIKES,
 ) -> None:
-    if not sbix_ttx.exists():
-        raise FileNotFoundError(f'SBIX ttx file not found: {sbix_ttx}')
+    if not ios_sbix_ttx.exists():
+        raise FileNotFoundError(f'iOS SBIX ttx file not found: {ios_sbix_ttx}')
+    
+    should_read_macos_ttx = macos_sbix_ttx != ios_sbix_ttx
+    if should_read_macos_ttx and not macos_sbix_ttx.exists():
+        raise FileNotFoundError(f'macOS SBIX ttx file not found: {macos_sbix_ttx}')
 
     output_dir = output_dir.resolve()
     allowed = set(allowed_strikes) if allowed_strikes is not None else set()
-    data = ET.parse(sbix_ttx).getroot()
+    ios_data = ET.parse(ios_sbix_ttx).getroot()
 
-    for strike in data.iter('strike'):
+    # Build a ppem -> strike element map for macOS TTX so we can look up glyphs
+    # in the correct per-ppem strike rather than only the first one.
+    macos_strikes_by_ppem: dict[int, ET.Element] = {}
+    if should_read_macos_ttx:
+        macos_root = ET.parse(macos_sbix_ttx).getroot()
+        for ms in macos_root.iter('strike'):
+            ms_ppem_node = ms.find('ppem')
+            if ms_ppem_node is not None:
+                macos_strikes_by_ppem[int(ms_ppem_node.attrib['value'])] = ms
+
+    for strike in ios_data.iter('strike'):
         ppem_text = strike.find('ppem')
         if ppem_text is None:
             LOGGER.debug('Skipping strike without ppem entry')
@@ -68,7 +91,7 @@ def extract_images(
                 LOGGER.debug('Skipping glyph with no name in strike %s', ppem)
                 continue
 
-            is_flip = graphic_type == 'flip'
+            is_flip = (graphic_type == 'flip')
             source_glyph = glyph
             if is_flip:
                 ref = glyph.find('ref')
@@ -94,30 +117,38 @@ def extract_images(
             data_bytes = _decode_hexdata(hexdata_text.strip())
             out_path = strike_output_dir / f'{name}.png'
 
-            if graphic_type == 'emjc':
-                decoded = decode_emjc(data_bytes)
-                img = Image.frombuffer('RGBA', (ppem, ppem), decoded, 'raw', 'BGRA', 0, 1)
-                if is_flip:
-                    img = img.transpose(Image.FLIP_LEFT_RIGHT)
-                img.save(out_path)
-                continue
+            # 1. Try to swap in macOS PNG if current glyph is EMJC
+            if graphic_type == 'emjc' and macos_strikes_by_ppem:
+                macos_strike_el = macos_strikes_by_ppem.get(ppem)
+                macos_glyph_el = macos_strike_el.find(f'glyph[@name="{name}"]') if macos_strike_el is not None else None
+                if macos_glyph_el is not None:
+                    macos_hexdata_node = macos_glyph_el.find('hexdata')
+                    if macos_hexdata_node is not None and macos_hexdata_node.text:
+                        data_bytes = _decode_hexdata(macos_hexdata_node.text.strip())
+                        graphic_type = 'png '
+                        LOGGER.debug('Using macOS PNG for glyph %s', name)
+                else:
+                    LOGGER.debug('Glyph %s not found in macOS sbix table (ppem=%s); falling back to EMJC', name, ppem)
 
-            if graphic_type == 'png ':
+            # 2. Extract based on (final) graphic_type
+            if graphic_type == 'emjc':
+                _save_emjc(data_bytes, ppem, is_flip, out_path)
+            elif graphic_type == 'png ':
                 if is_flip:
                     img = Image.open(io.BytesIO(data_bytes))
                     img = img.transpose(Image.FLIP_LEFT_RIGHT)
                     img.save(out_path)
                 else:
                     out_path.write_bytes(data_bytes)
-                continue
-
-            LOGGER.debug('Glyph %s uses unsupported type %s after flip resolution', name, graphic_type)
+            else:
+                LOGGER.debug('Glyph %s uses unsupported type %s after processing', name, graphic_type)
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description='Extract emoji images from an sbix TTX file.')
     parser.add_argument('output_dir', type=Path, help='Directory where extracted images will be written')
-    parser.add_argument('sbix_ttx', type=Path, help='sbix table exported as TTX (xml)')
+    parser.add_argument('ios_sbix_ttx', type=Path, help='iOS sbix table exported as TTX (xml)')
+    parser.add_argument('macos_sbix_ttx', type=Path, help='macOS sbix table exported as TTX (xml)')
     parser.add_argument(
         '--all-strikes',
         action='store_true',
@@ -152,7 +183,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         allowed = DEFAULT_ALLOWED_STRIKES
 
     try:
-        extract_images(args.output_dir, args.sbix_ttx, allowed_strikes=allowed)
+        extract_images(args.output_dir, args.ios_sbix_ttx, args.macos_sbix_ttx, allowed_strikes=allowed)
     except Exception as exc:  # pylint: disable=broad-except
         LOGGER.error('Extraction failed: %s', exc)
         return 1

@@ -15,5 +15,10 @@ rm -rf $ASSETS/160 $ASSETS/96 $ASSETS/64 $ASSETS/52 $ASSETS/48 $ASSETS/40 $ASSET
 echo "Copying sbix table for $MAC_FONT_NAME font..."
 cp common/${MAC_FONT_NAME}_00._s_b_i_x.ttx $NAME/${MAC_FONT_NAME}._s_b_i_x.ttx
 
+if [ $KIND != 'iOS' ]
+then
+    cp common/${IOS_FONT_NAME}_00._s_b_i_x.ttx $NAME/${IOS_FONT_NAME}._s_b_i_x.ttx
+fi
+
 echo "Extracting PNGs from $MAC_FONT_NAME font..."
-uv run emojifonts-extract $ASSETS $NAME/${MAC_FONT_NAME}._s_b_i_x.ttx
+uv run emojifonts-extract $ASSETS $NAME/${IOS_FONT_NAME}._s_b_i_x.ttx $NAME/${MAC_FONT_NAME}._s_b_i_x.ttx
