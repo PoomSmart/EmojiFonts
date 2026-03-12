@@ -11,7 +11,7 @@ professions = [
     '1f33e', '1f373', '1f37c', '1f393', '1f3a4',
     '1f3a8', '1f3eb', '1f3ed', '1f4bb', '1f4bc',
     '1f527', '1f52c', '1f680', '1f692', '1f9af',
-    '1f9bc', '1f9bd'
+    '1f9bc', '1f9bd', '1fa70'
 ] + hairs
 directions = ['2194', '2195', '27a1']
 heart = '2764'

@@ -37,6 +37,7 @@ def update_sbix_images(input_font: Path, output_font: Path, assets_dir: Path, *,
             asset_path = assets_dir / str(ppem) / f'{name}.{ext}'
             
             if not asset_path.exists():
+                LOGGER.debug('Asset image missing: %s', asset_path)
                 continue
                 
             glyph.graphicType = 'emjc' if emjc else 'png '
