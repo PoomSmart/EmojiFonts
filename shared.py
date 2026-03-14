@@ -11,7 +11,7 @@ professions = [
     '1f33e', '1f373', '1f37c', '1f393', '1f3a4',
     '1f3a8', '1f3eb', '1f3ed', '1f4bb', '1f4bc',
     '1f527', '1f52c', '1f680', '1f692', '1f9af',
-    '1f9bc', '1f9bd', '1fa70'
+    '1f9bc', '1f9bd', '1fa70', '1f430', '1faef'
 ] + hairs
 directions = ['2194', '2195', '27a1']
 heart = '2764'
@@ -226,6 +226,13 @@ def base_norm_variants(name: str, with_variant_selector = False, gender_need_sel
                     return name.replace(f'_{p}.{s}_200d_{d}{v}', f'_{skins[s]}_200d_{p}_200d_{d}{v}')
     if '.0' in name:
         name = name.replace('.0', '')
+    for p in ['1f430', '1faef']:
+        for s in range(1, 6):
+            for d in ['l', 'r']:
+                if f'_{p}.{s}.{d}' in name:
+                    name = name.replace(f'_{p}.{s}.{d}', f'_{skins[s]}_{p}.{d}')
+                if f'_{p}.{d}.{s}' in name:
+                    name = name.replace(f'_{p}.{d}.{s}', f'_{skins[s]}_{p}.{d}')
     for s in range(1, 6):
         if f'.{s}' in name:
             if '1f9d1_1f384' in name:

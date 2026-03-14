@@ -45,12 +45,14 @@ kinds['couple']=''
 kinds['handshake']=''
 kinds['heart']='2764'
 kinds['kiss']='1f48b'
+kinds['bunny']='1f430'
+kinds['wrestling']='1faef'
 
 handshakes['l']='1faf1'
 handshakes['r']='1faf2'
 
 [[ $HD = true ]] && mkdir -p $FOLDER/160
-mkdir -p $FOLDER/images/96 $FOLDER/images/64 $FOLDER/images/48 $FOLDER/images/40 $FOLDER/images/32 $FOLDER/images/20
+mkdir -p $FOLDER/images/96 $FOLDER/images/64 $FOLDER/images/40
 
 echo "get-assets: Renaming PNGs..."
 for kind in "${!kinds[@]}"
@@ -114,7 +116,7 @@ do
                     cp $png $FOLDER/images/$MAX_SIZE/$oname
                 done
                 magick $FOLDER/images/$MAX_SIZE/$base_image.l.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}l.png
-                if [[ $kind != 'couple' ]]
+                if [[ $kind == 'heart' || $kind == 'kiss' ]]
                 then
                     cp $FOLDER/images/$MAX_SIZE/$base_image.r.png $FOLDER/images/$MAX_SIZE/${output_image}r.png
                     HEART_PATH=$PNG_PATH/heart-$gender_value-$joiner_value.png
@@ -162,10 +164,6 @@ echo "get-assets: Resizing PNGs..."
 [[ $HD = true ]] && mogrify -resize 160x160 -path $FOLDER/images/160 $FOLDER/images/96/*.png
 mogrify -resize 64x64 -path $FOLDER/images/64 $FOLDER/images/96/*.png
 mogrify -resize 40x40 -path $FOLDER/images/40 $FOLDER/images/64/*.png
-# mogrify -resize 48x48 -path $FOLDER/images/48 $FOLDER/images/64/*.png
-# mogrify -resize 40x40 -path $FOLDER/images/40 $FOLDER/images/48/*.png
-# mogrify -resize 32x32 -path $FOLDER/images/32 $FOLDER/images/40/*.png
-# mogrify -resize 20x20 -path $FOLDER/images/20 $FOLDER/images/32/*.png
 
 echo "get-assets: Optimizing PNGs..."
 pngquant --skip-if-larger -f --ext .png $FOLDER/images/*/*.png || true
