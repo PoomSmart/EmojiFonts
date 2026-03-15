@@ -110,4 +110,4 @@ for g_code, filename_base in gender_map.items():
         root = tree.getroot()
         left, right = split_person(root)
         
-        write_dual(left, right, f"{g_code}_1f430", f"{g_code}_1f430", skin, None)
+        write_dual(left, right, g_code, g_code, skin, "1f430")

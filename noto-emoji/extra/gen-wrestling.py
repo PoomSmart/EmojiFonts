@@ -97,4 +97,4 @@ for g_code, filename_base in gender_map.items():
         tree = ET.parse(name)
         root = tree.getroot()
         left, right = split_person(root)
-        write_dual(left, right, f"{g_code}_{JOINER}", f"{g_code}_{JOINER}", skin, None)
+        write_dual(left, right, g_code, g_code, skin, JOINER)
