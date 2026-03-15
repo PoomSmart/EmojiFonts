@@ -75,9 +75,7 @@ Also in `extractor.py`, it detects glyphs of type `flip`, reads the actual image
 
 # Theming
 
-Theming scripts for all emojis vendors produce the font in TTC format. The font may be used by EmojiFontManager iOS tweak, and is guaranteed to work on iOS 6 and higher. Ensure that you executed `./apple-prepare.sh <OS> && ./apple.sh HD` before following instructions below.
-
-It is recommended to limit the depth of clone to `1` (`git clone --depth 1 git@github.com:PoomSmart/EmojiFonts.git`) because of a long history of commits.
+Theming scripts for all emojis vendors produce the font in TTC format. The font may be used by EmojiFontManager iOS tweak, and is guaranteed to work on iOS 6 and higher. Ensure that you executed `./apple-prepare.sh <OS> && ./apple.sh && ./apple.sh HD` before following instructions below.
 
 ## Blobmoji Emoji
 
