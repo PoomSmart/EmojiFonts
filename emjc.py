@@ -9,39 +9,41 @@ from liblzfse import decompress, error
 def convert_to_difference(value: int, offset: int):
     return -(value >> 1) - offset if value & 1 else (value >> 1) + offset
 
+
 def filter4_value(left: int, upper: int):
     value = left + upper + 1
     return -((-value) // 2) if value < 0 else value // 2
 
+
 def decode_emjc(emjc_data: bytes):
-    '''decode emjc image data to BGRA image data'''
-    header = unpack('>4s', emjc_data[:4])[0]
-    if header != b'emj1':
-        print(f'Expected emj1 but got {header}')
+    """decode emjc image data to BGRA image data"""
+    header = unpack(">4s", emjc_data[:4])[0]
+    if header != b"emj1":
+        print(f"Expected emj1 but got {header}")
         return None
     # version = int(unpack('<H', emjc_data[4:6])[0])
     # unknown = int(unpack('<H', emjc_data[6:8])[0]) # 0xa101
-    width = int(unpack('<H', emjc_data[8:10])[0])
-    height = int(unpack('<H', emjc_data[10:12])[0])
-    appendix_length = int(unpack('<H', emjc_data[12:14])[0])
+    width = int(unpack("<H", emjc_data[8:10])[0])
+    height = int(unpack("<H", emjc_data[10:12])[0])
+    appendix_length = int(unpack("<H", emjc_data[12:14])[0])
     # padding = int(unpack('<H', emjc_data[14:16])[0])
     filter_length = height
-    pixels = height * width # alpha array
+    pixels = height * width  # alpha array
     dst_length = pixels + filter_length + pixels * 3 + appendix_length
     try:
         decompressed_data = decompress(emjc_data[16:])
     except error:
-        print(f'decompression failed with an error: {error}')
+        print(f"decompression failed with an error: {error}")
         exit(1)
     if len(decompressed_data) != dst_length:
-        print(f'decompressed data length ({len(decompressed_data)}) is not equal to expected length ({dst_length})')
+        print(f"decompressed data length ({len(decompressed_data)}) is not equal to expected length ({dst_length})")
         exit(1)
-    colors = pixels * 3 # rgb
+    colors = pixels * 3  # rgb
     alpha = decompressed_data
     filters = decompressed_data[pixels:]
-    rgb = decompressed_data[(pixels + filter_length):]
-    appendix = decompressed_data[(pixels + filter_length + colors):]
-    buffer = array('i', (0 for _ in range(0, colors * 4 + 1)))
+    rgb = decompressed_data[(pixels + filter_length) :]
+    appendix = decompressed_data[(pixels + filter_length + colors) :]
+    buffer = array("i", (0 for _ in range(0, colors * 4 + 1)))
     dst_buffer = bytearray(width * height * 4)
     offset = 0
     for i in range(0, appendix_length):

@@ -4,36 +4,36 @@ import argparse
 import json
 import logging
 import xml.etree.ElementTree as ET
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Dict, Optional, Sequence
 
 LOGGER = logging.getLogger(__name__)
-DEFAULT_OVERRIDE_PATH = Path(__file__).resolve().parent / 'data' / 'shift_overrides.json'
+DEFAULT_OVERRIDE_PATH = Path(__file__).resolve().parent / "data" / "shift_overrides.json"
 
-MetricOverrides = Dict[str, Dict[str, int]]
+MetricOverrides = dict[str, dict[str, int]]
 
 
 def load_overrides(path: Path) -> MetricOverrides:
     if not path.exists():
-        raise FileNotFoundError(f'Override file not found: {path}')
-    with path.open('r', encoding='utf-8') as handle:
+        raise FileNotFoundError(f"Override file not found: {path}")
+    with path.open("r", encoding="utf-8") as handle:
         data = json.load(handle)
 
     if not isinstance(data, dict):
-        raise ValueError('Overrides file must contain a JSON object at the top level')
+        raise ValueError("Overrides file must contain a JSON object at the top level")
 
     for glyph_name, metrics in data.items():
         if not isinstance(metrics, dict):
-            raise ValueError(f'Override for {glyph_name} must be an object with width/lsb values')
-        if 'width' not in metrics or 'lsb' not in metrics:
+            raise ValueError(f"Override for {glyph_name} must be an object with width/lsb values")
+        if "width" not in metrics or "lsb" not in metrics:
             raise ValueError(f'Override for {glyph_name} must declare "width" and "lsb" keys')
-        if not isinstance(metrics['width'], int) or not isinstance(metrics['lsb'], int):
-            raise ValueError(f'Override for {glyph_name} must use integer width/lsb values')
+        if not isinstance(metrics["width"], int) or not isinstance(metrics["lsb"], int):
+            raise ValueError(f"Override for {glyph_name} must use integer width/lsb values")
     return data
 
 
-L_SUFFIXES = ('.L', '.ML', '.WL')
-R_SUFFIXES = ('.R', '.RA', '.MR', '.WR')
+L_SUFFIXES = (".L", ".ML", ".WL")
+R_SUFFIXES = (".R", ".RA", ".MR", ".WR")
 
 
 def apply_overrides(hmtx_ttx: Path, overrides: MetricOverrides) -> int:
@@ -43,8 +43,8 @@ def apply_overrides(hmtx_ttx: Path, overrides: MetricOverrides) -> int:
     applied_count = 0
     remaining_explicit = set(overrides.keys())
 
-    for mtx in root.iter('mtx'):
-        name = mtx.attrib.get('name')
+    for mtx in root.iter("mtx"):
+        name = mtx.attrib.get("name")
         if not name:
             continue
 
@@ -53,44 +53,42 @@ def apply_overrides(hmtx_ttx: Path, overrides: MetricOverrides) -> int:
             metrics = overrides[name]
             remaining_explicit.discard(name)
         elif name.endswith(L_SUFFIXES):
-            metrics = {'width': 400, 'lsb': 0}
+            metrics = {"width": 400, "lsb": 0}
         elif name.endswith(R_SUFFIXES):
-            metrics = {'width': 400, 'lsb': -400}
+            metrics = {"width": 400, "lsb": -400}
 
         if metrics:
-            mtx.set('width', str(metrics['width']))
-            mtx.set('lsb', str(metrics['lsb']))
+            mtx.set("width", str(metrics["width"]))
+            mtx.set("lsb", str(metrics["lsb"]))
             applied_count += 1
 
     if remaining_explicit:
-        raise KeyError(
-            f'Explicit overrides refer to missing glyph metrics: {", ".join(sorted(remaining_explicit))}'
-        )
+        raise KeyError(f"Explicit overrides refer to missing glyph metrics: {', '.join(sorted(remaining_explicit))}")
 
-    tree.write(str(hmtx_ttx), encoding='utf-8')
+    tree.write(str(hmtx_ttx), encoding="utf-8")
     return applied_count
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description='Apply width/lsb overrides for multi-glyph emoji silhouettes.',
+        description="Apply width/lsb overrides for multi-glyph emoji silhouettes.",
     )
     parser.add_argument(
-        'hmtx_ttx',
+        "hmtx_ttx",
         type=Path,
-        help='Path to the hmtx table exported as TTX (XML)',
+        help="Path to the hmtx table exported as TTX (XML)",
     )
     parser.add_argument(
-        '--overrides',
+        "--overrides",
         type=Path,
         default=DEFAULT_OVERRIDE_PATH,
-        help=f'Path to JSON overrides file (default: {DEFAULT_OVERRIDE_PATH.name})',
+        help=f"Path to JSON overrides file (default: {DEFAULT_OVERRIDE_PATH.name})",
     )
-    parser.add_argument('--log-level', default='INFO', help='Python logging level (default: INFO)')
+    parser.add_argument("--log-level", default="INFO", help="Python logging level (default: INFO)")
     return parser
 
 
-def main(argv: Optional[Sequence[str]] = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
@@ -100,12 +98,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         overrides = load_overrides(args.overrides)
         applied_count = apply_overrides(args.hmtx_ttx, overrides)
     except Exception as exc:  # pylint: disable=broad-except
-        LOGGER.error('Failed to apply overrides: %s', exc)
+        LOGGER.error("Failed to apply overrides: %s", exc)
         return 1
 
-    LOGGER.info('Applied overrides for %s glyphs', applied_count)
+    LOGGER.info("Applied overrides for %s glyphs", applied_count)
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())
