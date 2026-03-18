@@ -11,15 +11,12 @@ This table lists the supported Unicode version and known limitations for each no
 | **Google Noto Color** | 17.0 | |
 | **JoyPixels** | 16.0 | |
 | **OpenMoji** | 16.0 | Unique skin/hair color logic for couple emojis |
-| **Samsung One UI** | 17.0 | _PNGs only_ |
-| **Toss Face** | 15.0 | _PNGs only_. Missing emojis replaced with Twemoji |
+| **Samsung One UI** | 17.0 | |
+| **Toss Face** | 15.0 | Missing emojis replaced with Twemoji |
 | **Twitter Twemoji** | 16.0 | |
-| **WhatsApp** | 16.0 | |
+| **WhatsApp** | 17.0 | |
 
 ## Notes
-
-### PNGs only
-Fonts marked as **_PNGs only_** provide images in PNG format, which makes adding certain variants like silhouettes, handshakes, and couple emojis difficult compared to SVG-based fonts.
 
 ### OpenMoji
 Couple emojis of different skins in OpenMoji do not share the same hair color, unlike some other vendors. This design choice is intended to better represent diversity in couples of different races.

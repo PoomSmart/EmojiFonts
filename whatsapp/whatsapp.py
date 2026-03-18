@@ -22,7 +22,7 @@ def whatsapp_name(name: str):
     result = '_'.join(n)
     return 'u' + result
 
-prepare_strikes(f)
+prepare_strikes(f, True)
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():
