@@ -14,6 +14,9 @@ echo "Resizing and optimizing PNGs..."
 echo "Generating couple split tiles..."
 uv run python split_from_160_restart.py
 
+echo "Generating NN couple silhouette tiles..."
+uv run python extra/gen-couple-nn.py
+
 echo "Optimizing generated PNGs..."
 pngquant --skip-if-larger -f --ext .png extra/images/*/*.png || true
 oxipng -q extra/images/*/*.png

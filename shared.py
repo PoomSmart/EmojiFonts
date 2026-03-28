@@ -379,6 +379,8 @@ gender_with_selector = ["26f9", "1f3cb", "1f3cc", "1f3fb", "1f575"]
 
 
 def base_norm_variants(name: str, with_variant_selector=False, gender_need_selector=False, convert_male=False):
+    if name.startswith("silhouette_1f9d1_1f91d"):
+        return name
     v = "_fe0f" if with_variant_selector else ""
     for gender in ["m", "w"]:
         selector = gender_selectors[gender]

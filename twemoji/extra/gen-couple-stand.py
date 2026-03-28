@@ -1,5 +1,10 @@
+import sys
+from pathlib import Path
 import xml.etree.ElementTree as ET
 from shared import *
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+import gen_couple_nn
 
 # left woman, right man
 for skin in skins:
@@ -33,7 +38,7 @@ for skin in skins:
     right_out.write(f'svgs/{right_name}', encoding='utf-8')
 
 # silhouette woman
-name = f'{font}/1f46d.svg' 
+name = f'{font}/1f46d.svg'
 left = ET.parse(name).getroot()
 right = ET.parse(name).getroot()
 for i in range(29, 11, -1):
@@ -50,7 +55,7 @@ right_out = ET.ElementTree(right)
 right_out.write('svgs/silhouette.wr.svg', encoding='utf-8')
 
 # silhouette man
-name = f'{font}/1f46c.svg' 
+name = f'{font}/1f46c.svg'
 left = ET.parse(name).getroot()
 right = ET.parse(name).getroot()
 for i in range(26, 12, -1):
@@ -65,3 +70,15 @@ left_out = ET.ElementTree(left)
 left_out.write('svgs/silhouette.ml.svg', encoding='utf-8')
 right_out = ET.ElementTree(right)
 right_out.write('svgs/silhouette.mr.svg', encoding='utf-8')
+
+# NN (neutral-person) couple silhouettes
+_SKIN = {1: "1f3fb", 2: "1f3fc", 3: "1f3fd", 4: "1f3fe", 5: "1f3ff"}
+
+def _couple_fn(x: int, y: int) -> str:
+    if x == 6 and y == 6:
+        return "1f9d1-200d-1f91d-200d-1f9d1"
+    s1 = f"-{_SKIN[x]}" if x != 6 else ""
+    s2 = f"-{_SKIN[y]}" if y != 6 else ""
+    return f"1f9d1{s1}-200d-1f91d-200d-1f9d1{s2}"
+
+gen_couple_nn.main(_couple_fn, "-", caller_file=__file__)

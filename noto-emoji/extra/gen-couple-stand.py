@@ -1,5 +1,10 @@
+import sys
+from pathlib import Path
 import xml.etree.ElementTree as ET
 from shared import *
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+import gen_couple_nn
 
 # left woman, right man
 for skin in skins:
@@ -53,3 +58,16 @@ left_out = ET.ElementTree(left)
 left_out.write('svgs/silhouette.ml.svg', encoding='utf-8')
 right_out = ET.ElementTree(right)
 right_out.write('svgs/silhouette.mr.svg', encoding='utf-8')
+
+# NN (neutral-person) couple silhouettes — generated after SVG→PNG conversion
+# is handled by the caller (blobmoji.sh / noto-emoji.sh).
+_SKIN = {1: "1f3fb", 2: "1f3fc", 3: "1f3fd", 4: "1f3fe", 5: "1f3ff"}
+
+def _couple_fn(x: int, y: int) -> str:
+    if x == 6 and y == 6:
+        return "emoji_u1f9d1_200d_1f91d_200d_1f9d1"
+    s1 = f"_{_SKIN[x]}" if x != 6 else ""
+    s2 = f"_{_SKIN[y]}" if y != 6 else ""
+    return f"emoji_u1f9d1{s1}_200d_1f91d_200d_1f9d1{s2}"
+
+gen_couple_nn.main(_couple_fn, "_", caller_file=__file__)
