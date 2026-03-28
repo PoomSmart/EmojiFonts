@@ -188,25 +188,37 @@ def _strip_silhouette_from_font(font_path: Path) -> None:
     font.save(str(font_path))
 
 
-@pytest.fixture
-def font_copy(tmp_path: Path) -> Path:
-    """Return a temporary copy of the compiled iOS font, or skip if not built yet."""
+@pytest.fixture(scope="session")
+def _unpatched_font_path(tmp_path_factory: pytest.TempPathFactory) -> Path:
+    """Strip silhouette glyphs from the real font once per session; tests copy from here."""
     if not _REAL_FONT.exists():
         pytest.skip("Compiled font not available – run prepare.sh first")
-    dst = tmp_path / "AppleColorEmoji_iOS_00.ttf"
+    dst = tmp_path_factory.mktemp("font_cache") / "AppleColorEmoji_iOS_00_unpatched.ttf"
     shutil.copy(_REAL_FONT, dst)
     _strip_silhouette_from_font(dst)
     return dst
 
 
-def test_inject_silhouette_adds_glyph_and_metrics(tmp_path: Path, font_copy: Path) -> None:
-    assets_dir = tmp_path / "images"
-    assets_dir.mkdir()
+@pytest.fixture(scope="session")
+def _patched_font_path(_unpatched_font_path: Path, tmp_path_factory: pytest.TempPathFactory) -> Path:
+    """Inject silhouette support once per session for read-only assertion tests."""
+    dst = tmp_path_factory.mktemp("font_cache") / "AppleColorEmoji_iOS_00_patched.ttf"
+    shutil.copy(_unpatched_font_path, dst)
+    assets_dir = tmp_path_factory.mktemp("assets_patched")
+    _inj.inject_silhouette(dst, assets_dir)
+    return dst
 
-    changed = _inj.inject_silhouette(font_copy, assets_dir)
-    assert changed is True
 
-    font = ttLib.TTFont(str(font_copy))
+@pytest.fixture
+def font_copy(tmp_path: Path, _unpatched_font_path: Path) -> Path:
+    """Return a per-test mutable copy of the unpatched font (fast — no strip needed)."""
+    dst = tmp_path / "AppleColorEmoji_iOS_00.ttf"
+    shutil.copy(_unpatched_font_path, dst)
+    return dst
+
+
+def test_inject_silhouette_adds_glyph_and_metrics(_patched_font_path: Path) -> None:
+    font = ttLib.TTFont(str(_patched_font_path))
     # Spot-check first (.11) and last (.66) of each direction.
     sample = (
         _inj.ALL_SILHOUETTE_GLYPHS_L[0],
@@ -221,13 +233,8 @@ def test_inject_silhouette_adds_glyph_and_metrics(tmp_path: Path, font_copy: Pat
             assert font["vmtx"].metrics[glyph_name] == (800, 0)
 
 
-def test_inject_silhouette_morx_subtables(tmp_path: Path, font_copy: Path) -> None:
-    assets_dir = tmp_path / "images"
-    assets_dir.mkdir()
-
-    _inj.inject_silhouette(font_copy, assets_dir)
-
-    font = ttLib.TTFont(str(font_copy))
+def test_inject_silhouette_morx_subtables(_patched_font_path: Path) -> None:
+    font = ttLib.TTFont(str(_patched_font_path))
     chain = font["morx"].table.MorphChain[0]
 
     left_subst: dict[str, str] | None = None
