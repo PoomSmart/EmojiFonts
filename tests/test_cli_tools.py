@@ -57,7 +57,7 @@ def test_extract_images_handles_flip_glyph(tmp_path: Path, sample_png_hex: str) 
     sbix_path = _write_file(tmp_path / "sbix.ttx", sbix_content)
     output_dir = tmp_path / "out"
 
-    extractor.extract_images(output_dir, sbix_path, allowed_strikes=[40])
+    extractor.extract_images(output_dir, sbix_path, sbix_path, allowed_strikes=[40])
 
     base = output_dir / "40" / "u1F600.png"
     flipped = output_dir / "40" / "u1F603.png"
