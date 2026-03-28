@@ -1,3 +1,4 @@
+import math
 import struct
 import sys
 
@@ -44,6 +45,13 @@ def filter4_value(left, upper):
     return -((-value) // 2) if value < 0 else value // 2
 
 
+def decode_zigzag(enc: int, offset: int) -> int:
+    if enc % 2 == 0:
+        return (enc // 2) + offset
+    else:
+        return -((enc - 1) // 2) - offset
+
+
 def predict_filter(filter_type, x, y, width, buffer, i):
     if filter_type == 0:
         return 0, 0, 0
@@ -59,23 +67,17 @@ def predict_filter(filter_type, x, y, width, buffer, i):
     if x > 0 and y > 0:
         left_upper = buffer[(i - width - 1) * 3 : (i - width - 1) * 3 + 3]
 
-    if filter_type == 1:  # Paeth
-        res = []
-        for c in range(3):
-            a = left[c]
-            b = upper[c]
-            c_val = left_upper[c]
-            p = a + b - c_val
-            pa = abs(p - a)
-            pb = abs(p - b)
-            pc = abs(p - c_val)
-            if pa <= pb and pa <= pc:
-                res.append(a)
-            elif pb <= pc:
-                res.append(b)
+    if filter_type == 1:  # Decoder filter 1: pick left or upper based on component 0 only
+        if x > 0 and y > 0:
+            if abs(left[0] - left_upper[0]) < abs(upper[0] - left_upper[0]):
+                return (upper[0], upper[1], upper[2])
             else:
-                res.append(c_val)
-        return tuple(res)
+                return (left[0], left[1], left[2])
+        elif x > 0:
+            return left
+        elif y > 0:
+            return upper
+        return (0, 0, 0)
 
     elif filter_type == 2:  # Sub (Left)
         return left
@@ -83,8 +85,14 @@ def predict_filter(filter_type, x, y, width, buffer, i):
     elif filter_type == 3:  # Up
         return upper
 
-    elif filter_type == 4:  # Average
-        return tuple(filter4_value(left[c], upper[c]) for c in range(3))
+    elif filter_type == 4:  # Average (filter4_value only when both left AND upper exist)
+        if x > 0 and y > 0:
+            return tuple(filter4_value(left[c], upper[c]) for c in range(3))
+        elif x > 0:
+            return left   # decoder: adds left directly
+        elif y > 0:
+            return upper  # decoder: adds upper directly
+        return (0, 0, 0)
 
     return 0, 0, 0
 
@@ -138,199 +146,87 @@ def encode_emjc(rgba_data, width, height, quantize_colors=None):
     for r, g, b in rgb_input:
         transformed.append(forward_transform(r, g, b))
 
-    # Improved appendix generation
-    # Analyze all pixels to determine which components need offsets
-    component_values = [[] for _ in range(3)]
-    for base, p, q in transformed:
-        component_values[0].append(base)
-        component_values[1].append(p)
-        component_values[2].append(q)
-
-    # Determine optimal offsets for components
-    # We can set offsets to 0, 128, 256, or 384 (0*128, 1*128, 2*128, 3*128)
-    optimal_offsets = []
-    for comp_idx in range(3):
-        values = component_values[comp_idx]
-        # Try each possible offset and see which minimizes encoding cost
-        best_offset = 0
-        best_cost = float("inf")
-
-        for offset_multiplier in [0, 1, 2, 3]:
-            offset = offset_multiplier * 128
-            cost = 0
-            for val in values[:100]:  # Sample first 100 pixels for speed
-                enc = zigzag_encode(val, offset)
-                if enc is None:
-                    cost += 1000  # Penalty for non-encodable
-                else:
-                    cost += enc
-            if cost < best_cost:
-                best_cost = cost
-                best_offset = offset_multiplier
-
-        optimal_offsets.append(best_offset)
-
-    # Build appendix
+    # Dynamic appendix: covers ANY buffer position that needs a non-zero initial offset.
+    # The decoder processes appendix bytes before the main pixel loop, scanning sequentially
+    # through buffer positions. Each byte encodes (skip << 2 | multiplier).
     appendix = bytearray()
-    current_offset = 0
-    initial_buffer_values = [0, 0, 0]
+    _appendix_cur_pos = 0
 
-    for comp_idx in range(3):
-        offset_multiplier = optimal_offsets[comp_idx]
-        if offset_multiplier > 0:  # Only add to appendix if non-zero
-            skip = comp_idx - current_offset
-            appendix_byte = skip * 4 + offset_multiplier
-            if appendix_byte <= 255:
-                appendix.append(appendix_byte)
-                initial_buffer_values[comp_idx] = offset_multiplier * 128
-                current_offset = comp_idx + 1
+    def append_entry(buf_pos, multiplier):
+        nonlocal _appendix_cur_pos
+        if multiplier == 0:
+            return
+        skip = buf_pos - _appendix_cur_pos
+        while skip > 63:
+            # Padding byte: skip 63, set buffer[pos]=0 (no-op), advance 64
+            appendix.append(63 * 4)
+            _appendix_cur_pos += 64
+            skip -= 64
+        appendix.append(skip * 4 + multiplier)
+        _appendix_cur_pos = buf_pos + 1
 
-    appendix_length = len(appendix)
+    def required_multiplier(diff):
+        """Minimum appendix multiplier m (0-3) so that zigzag_encode(diff, m*128) succeeds."""
+        needed = abs(diff) - 127
+        for m in range(4):
+            if m * 128 >= needed:
+                return m
+        return 3  # handles |diff| up to 511; valid pixels never exceed 510
 
-    # Initialize buffer for prediction
-    # buffer is flat array of reconstructed values.
-    # But wait, `buffer` in decoder is updated IN PLACE.
-    # `buffer[i] = convert(...)`.
-    # So `buffer[i]` holds the final reconstructed value (Target).
-    # So for prediction, we just need `transformed` array!
-    # `transformed` IS the reconstructed values (since lossless).
-    # So `predict_filter` can just read from `transformed`.
-    # BUT, we need `buffer` (offset) for `zigzag_encode`.
-    # The `offset` used in `zigzag_encode` is the value of `buffer` BEFORE update.
-    # Before update, `buffer` holds the Appendix value (for i < appendix_len) or 0.
-    # Wait, `buffer` is size `colors*4`.
-    # Appendix initializes it.
-    # Then loop `i` from 0 to `colors`.
-    # `buffer[i]` is used as offset.
-    # Then `buffer[i]` is updated to `Target`.
-    # So for `zigzag_encode`, we need the "Previous Buffer State".
-    # For `i=0,1,2`, previous state is `initial_buffer_values`.
-    # For `i >= 3`, previous state is 0 (assuming Appendix only set first 3).
-
-    # So we need an array of `offsets`.
     offsets = [0] * (pixels * 3)
-    for k in range(3):
-        offsets[k] = initial_buffer_values[k]
 
-    buffer_flat = []
-    for t in transformed:
-        buffer_flat.extend(t)
+    # With lossless encoding (appendix covers all hard pixels), reconstructed == target
+    # for every pixel, so buffer_flat stays at target values throughout.
+    buffer_flat = [v for t in transformed for v in t]
 
     filters = bytearray(height)
     encoded_rgb = bytearray()
-
     candidates = [0, 1, 2, 3, 4]
 
     for y in range(height):
-        best_filter = 0
-        best_cost = float("inf")
-        best_residuals = []
+        # Evaluate each filter candidate. For components that would overflow with the
+        # current offset, project the required multiplier and include an appendix penalty.
+        candidate_results = {}  # f -> (total_cost, residuals, new_entries)
 
         for f in candidates:
-            current_residuals = []
-            current_cost = 0
-            possible = True
+            residuals = []
+            cost = 0
+            new_entries = []  # (comp_idx, multiplier) pairs for overflow components
 
             for x in range(width):
                 i = y * width + x
                 target = transformed[i]
                 pred = predict_filter(f, x, y, width, buffer_flat, i)
 
-                diffs = [target[0] - pred[0], target[1] - pred[1], target[2] - pred[2]]
-
-                encoded_diffs = []
                 for k in range(3):
                     comp_idx = i * 3 + k
-                    offset = offsets[comp_idx]
-                    d = diffs[k]
-
-                    enc = zigzag_encode(d, offset)
+                    diff = target[k] - pred[k]
+                    enc = zigzag_encode(diff, offsets[comp_idx])
                     if enc is None:
-                        possible = False
-                        break
-                    encoded_diffs.append(enc)
+                        mult = required_multiplier(diff)
+                        new_entries.append((comp_idx, mult))
+                        enc = zigzag_encode(diff, mult * 128)
+                    residuals.append(enc)
+                    cost += enc
 
-                if not possible:
-                    break
+            # Prefer fewer appendix entries; break ties by residual cost.
+            candidate_results[f] = (cost + len(new_entries) * 1000, residuals, new_entries)
 
-                current_cost += sum(encoded_diffs)
-                current_residuals.extend(encoded_diffs)
+        best_filter = min(candidate_results, key=lambda f: candidate_results[f][0])
+        _, best_residuals, new_entries = candidate_results[best_filter]
 
-            if possible and current_cost < best_cost:
-                best_cost = current_cost
-                best_filter = f
-                best_residuals = current_residuals
-
-        if best_cost == float("inf"):
-            # Fallback: Use Filter 0 and clamp
-            best_filter = 0
-            best_residuals = []
-            for x in range(width):
-                i = y * width + x
-                target = transformed[i]
-                pred = predict_filter(0, x, y, width, buffer_flat, i)
-                diffs = [target[0] - pred[0], target[1] - pred[1], target[2] - pred[2]]
-                for k in range(3):
-                    comp_idx = i * 3 + k
-                    offset = offsets[comp_idx]
-                    d = diffs[k]
-                    enc = zigzag_encode(d, offset)
-                    if enc is None:
-                        # Best effort clamp
-                        # We want E such that convert(E, offset) is closest to D
-                        # If D > offset, use max Even (254 -> 127+offset)
-                        # If D < -offset, use max Odd (255 -> -127-offset)
-                        # This is getting complicated. Just clamp E to 255.
-                        # But E calculation assumes validity.
-                        # If diff is huge positive:
-                        if d > 0:
-                            enc = 254  # Max positive
-                        else:
-                            enc = 255  # Max negative
-                    best_residuals.append(enc)
+        # Commit appendix entries for this row's chosen filter (in comp_idx order).
+        for comp_idx, mult in new_entries:
+            append_entry(comp_idx, mult)
+            offsets[comp_idx] = mult * 128
 
         filters[y] = best_filter
         encoded_rgb.extend(best_residuals)
 
-        # Verify reconstruction for this row to catch drift
-        for x in range(width):
-            i = y * width + x
-            target = transformed[i]
-            pred = predict_filter(best_filter, x, y, width, buffer_flat, i)
-
-            # Reconstruct from residuals
-            diffs = [0, 0, 0]
-            for k in range(3):
-                comp_idx = i * 3 + k
-                offset = offsets[comp_idx]
-                enc = best_residuals[x * 3 + k]
-
-                # Decode ZigZag
-                # convert(E, offset)
-                val = 0
-                if enc % 2 == 0:
-                    val = (enc // 2) + offset
-                else:
-                    val = -((enc - 1) // 2) - offset
-
-                diffs[k] = val
-
-            reconstructed = (pred[0] + diffs[0], pred[1] + diffs[1], pred[2] + diffs[2])
-
-            if reconstructed != target:
-                # Encoder drift detected.
-                # Update buffer with RECONSTRUCTED value to match decoder state
-                pass
-
-            # Update buffer_flat with reconstructed values
-            buffer_flat[i * 3 + 0] = reconstructed[0]
-            buffer_flat[i * 3 + 1] = reconstructed[1]
-            buffer_flat[i * 3 + 2] = reconstructed[2]
-
     data_to_compress = bytes(alpha + filters + encoded_rgb + appendix)
     compressed_data = liblzfse.compress(data_to_compress)
 
-    header = struct.pack("<4sHHH HHH", b"emj1", 0, 0xA101, width, height, appendix_length, 0)
+    header = struct.pack("<4sHHH HHH", b"emj1", 0, 0xA101, width, height, len(appendix), 0)
 
     return header + compressed_data
 
