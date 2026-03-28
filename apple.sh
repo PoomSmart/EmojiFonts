@@ -11,7 +11,7 @@ COLORS=
 
 echo "Copying PNGs..."
 mkdir -p $ASSETS
-rm -rf $ASSETS/160 $ASSETS/96 $ASSETS/64
+rm -rf $ASSETS/160 $ASSETS/96 $ASSETS/64 $ASSETS/40
 cp -r $NAME/images/* $ASSETS
 
 if [[ $MOD == 'LQ' ]]
