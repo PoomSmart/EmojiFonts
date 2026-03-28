@@ -15,6 +15,7 @@ dependencies = [
 [project.scripts]
 emojifonts-apple = "apple:main"
 emojifonts-extract = "extractor:main"
+emojifonts-inject-silhouette = "inject_neutral_couple_silhouette:main"
 emojifonts-remove-class3 = "remove_class3:main"
 emojifonts-shift-multi = "shift_multi:main"
 
@@ -26,7 +27,7 @@ dev = [
 ]
 
 [tool.setuptools]
-py-modules = ["apple", "extractor", "remove_class3", "shift_multi", "shared", "shared_lig", "emjc", "emjc_exp"]
+py-modules = ["apple", "extractor", "inject_neutral_couple_silhouette", "make_neutral_couple_silhouette", "remove_class3", "shift_multi", "shared", "shared_lig", "emjc", "emjc_exp"]
 
 [tool.uv]
 package = true

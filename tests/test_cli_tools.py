@@ -5,17 +5,20 @@ from __future__ import annotations
 import binascii
 import io
 import json
+import shutil
 import sys
 import textwrap
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pytest
+from fontTools import ttLib
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import extractor
+import inject_neutral_couple_silhouette as _inj
 import remove_class3
 import shift_multi
 
@@ -127,3 +130,122 @@ def test_apply_overrides_updates_metrics(tmp_path: Path) -> None:
 
     with pytest.raises(KeyError):
         shift_multi.apply_overrides(hmtx_path, {"missing": {"width": 1, "lsb": 2}})
+
+
+# ---------------------------------------------------------------------------
+# inject_neutral_couple_silhouette tests
+# ---------------------------------------------------------------------------
+
+_REAL_FONT = Path(__file__).resolve().parents[1] / "common" / "AppleColorEmoji_iOS_00.ttf"
+
+
+@pytest.fixture
+def font_copy(tmp_path: Path) -> Path:
+    """Return a temporary copy of the compiled iOS font, or skip if not built yet."""
+    if not _REAL_FONT.exists():
+        pytest.skip("Compiled font not available – run prepare.sh first")
+    dst = tmp_path / "AppleColorEmoji_iOS_00.ttf"
+    shutil.copy(_REAL_FONT, dst)
+    return dst
+
+
+def test_inject_silhouette_adds_glyph_and_metrics(tmp_path: Path, font_copy: Path) -> None:
+    assets_dir = tmp_path / "images"
+    assets_dir.mkdir()
+
+    changed = _inj.inject_silhouette(font_copy, assets_dir)
+    assert changed is True
+
+    font = ttLib.TTFont(str(font_copy))
+    # Spot-check first (.11) and last (.66) of each direction.
+    sample = (
+        _inj.ALL_SILHOUETTE_GLYPHS_L[0],
+        _inj.ALL_SILHOUETTE_GLYPHS_L[-1],
+        _inj.ALL_SILHOUETTE_GLYPHS_R[0],
+        _inj.ALL_SILHOUETTE_GLYPHS_R[-1],
+    )
+    for glyph_name in sample:
+        assert glyph_name in font.getGlyphOrder()
+        assert font["hmtx"].metrics[glyph_name] == (800, 0)
+        if "vmtx" in font:
+            assert font["vmtx"].metrics[glyph_name] == (800, 0)
+
+
+def test_inject_silhouette_morx_subtables(tmp_path: Path, font_copy: Path) -> None:
+    assets_dir = tmp_path / "images"
+    assets_dir.mkdir()
+
+    _inj.inject_silhouette(font_copy, assets_dir)
+
+    font = ttLib.TTFont(str(font_copy))
+    chain = font["morx"].table.MorphChain[0]
+
+    left_subst: dict[str, str] | None = None
+    right_subst: dict[str, str] | None = None
+    identity_substs: list[dict[str, str]] = []
+
+    for sub in chain.MorphSubtable:
+        subst = _inj._get_noncontextual_subst(sub)
+        if subst is None:
+            continue
+        if sub.SubFeatureFlags == _inj._LEFT_SILHOUETTE_FLAGS:
+            left_subst = subst
+        elif sub.SubFeatureFlags == _inj._RIGHT_SILHOUETTE_FLAGS:
+            right_subst = subst
+        elif subst.get("silhouette.ML") == "silhouette.ML":
+            identity_substs.append(subst)
+
+    assert left_subst is not None, "Left-silhouette subtable not found"
+    assert right_subst is not None, "Right-silhouette subtable not found"
+
+    for src, dst_l, dst_r in zip(
+        _inj.NEUTRAL_COUPLE_GLYPHS, _inj.ALL_SILHOUETTE_GLYPHS_L, _inj.ALL_SILHOUETTE_GLYPHS_R
+    ):
+        assert left_subst.get(src) == dst_l, (
+            f"{src} not mapped to {dst_l} in Left morx subtable"
+        )
+        assert right_subst.get(src) == dst_r, (
+            f"{src} not mapped to {dst_r} in Right morx subtable"
+        )
+
+    for subst in identity_substs:
+        for g in _inj.ALL_SILHOUETTE_GLYPHS_L[:2] + _inj.ALL_SILHOUETTE_GLYPHS_R[:2]:
+            assert subst.get(g) == g
+
+
+def test_inject_silhouette_idempotent(tmp_path: Path, font_copy: Path) -> None:
+    assets_dir = tmp_path / "images"
+    assets_dir.mkdir()
+
+    assert _inj.inject_silhouette(font_copy, assets_dir) is True
+    assert _inj.inject_silhouette(font_copy, assets_dir) is False
+
+
+def test_inject_silhouette_injects_png(tmp_path: Path, font_copy: Path) -> None:
+    assets_dir = tmp_path / "images"
+    (assets_dir / "64").mkdir(parents=True)
+
+    # Test first (.11) and last (.66) from each direction — 4 PNGs total.
+    test_glyphs = (
+        _inj.ALL_SILHOUETTE_GLYPHS_L[0],
+        _inj.ALL_SILHOUETTE_GLYPHS_L[-1],
+        _inj.ALL_SILHOUETTE_GLYPHS_R[0],
+        _inj.ALL_SILHOUETTE_GLYPHS_R[-1],
+    )
+    png_bytes: dict[str, bytes] = {}
+    for glyph_name in test_glyphs:
+        img = Image.new("RGBA", (64, 64), (128, 128, 128, 255))
+        buf = io.BytesIO()
+        img.save(buf, format="PNG")
+        data = buf.getvalue()
+        (assets_dir / "64" / f"{glyph_name}.png").write_bytes(data)
+        png_bytes[glyph_name] = data
+
+    _inj.inject_silhouette(font_copy, assets_dir)
+
+    font = ttLib.TTFont(str(font_copy))
+    for glyph_name in test_glyphs:
+        assert glyph_name in font["sbix"].strikes[64].glyphs
+        sil = font["sbix"].strikes[64].glyphs[glyph_name]
+        assert sil.graphicType == "png "
+        assert sil.imageData == png_bytes[glyph_name]

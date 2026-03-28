@@ -56,6 +56,8 @@ Also in `extractor.py`, it detects glyphs of type `flip`, reads the actual image
 
 `remove-class3.py` (CLI alias `emojifonts-remove-class3`) trims class 3 glyph assignments from the Apple GDEF table.
 
+`inject_neutral_couple_silhouette.py` (CLI alias `emojifonts-inject-silhouette`) patches the `morx` table in the compiled iOS font to add silhouette support for neutral-person (`U+1F9D1`) holding-hands couples — support that Apple never shipped. It inserts a ContextualMorph subtable and updates the two NoncontextualMorph silhouette subtables; themed fonts need no per-combination images. See [MORX.md](MORX.md) for a full technical explanation.
+
 # PNG Optimization
 
 `pngquant` and `oxipng` are used to optimize the images with little to none changes to the quality. The Apple emoji font sizes are reduced by 50% using this method. The simpler the emoji images, the more size reduction is achieved.
