@@ -20,19 +20,11 @@ uv run python gen-bunny-ears.py
 uv run python gen-wrestling.py
 
 echo "Converting SVGs into PNGs..."
-for svg in $(find ./svgs -type f -name '*.svg')
-do
-    fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
-done
+../../svg-to-png.sh ./svgs $MAX_SIZE
 ../../resize.sh true true
 cd ..
 
-for svg in $(find $ASSETS -type f -name '*.svg')
-do
-    fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
-done
+../svg-to-png.sh "$ASSETS" $MAX_SIZE
 
 echo "Resizing and optimizing PNGs..."
 ../resize.sh true true

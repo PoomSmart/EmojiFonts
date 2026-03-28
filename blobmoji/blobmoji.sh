@@ -29,11 +29,7 @@ uv run python gen-couple-heart.py
 uv run python gen-couple-kiss.py
 uv run python gen-couple-stand.py
 uv run python gen-handshake.py
-for svg in $(find ./svgs -type f -name '*.svg')
-do
-    fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
-done
+../../svg-to-png.sh ./svgs $MAX_SIZE
 ../../resize.sh false false
 cd ..
 

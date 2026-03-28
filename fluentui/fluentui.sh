@@ -14,6 +14,7 @@ FONT_NAME=AppleColorEmoji
 NAME=fluentui
 ASSETS="$STYLE"
 MAX_SIZE=96
+SVG_TO_PNG="$(cd "$(dirname "$0")" && pwd)/../svg-to-png.sh"
 
 mkdir -p "$ASSETS"
 cd "$ASSETS"
@@ -31,11 +32,7 @@ if [ "$STYLE" == 'Color' ]; then
     echo "Optimizing SVGs..."
     svgo -f . &> /dev/null
 fi
-for svg in $(find . -type f -name '*.svg')
-do
-    fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o ${fname/.svg/.png}
-done
+"$SVG_TO_PNG" . $MAX_SIZE .
 rm -f *.svg
 cd ../..
 

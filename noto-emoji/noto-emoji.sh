@@ -10,16 +10,8 @@ MAX_SIZE=160
 ../image-sizes.sh true
 
 echo "Converting SVGs into PNGs..."
-for svg in $(find $ASSETS -type f -name '*.svg')
-do
-    fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
-done
-for svg in $(find $FLAG_ASSETS -type f -name '*.svg')
-do
-    fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
-done
+../svg-to-png.sh "$ASSETS" $MAX_SIZE
+../svg-to-png.sh "$FLAG_ASSETS" $MAX_SIZE
 
 cd extra
 rm -rf svgs
@@ -31,11 +23,7 @@ uv run python gen-couple-stand.py
 uv run python gen-handshake.py
 uv run python gen-bunny-ears.py
 uv run python gen-wrestling.py
-for svg in $(find ./svgs -type f -name '*.svg')
-do
-    fname=$(basename $svg)
-    rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
-done
+../../svg-to-png.sh ./svgs $MAX_SIZE
 ../../resize.sh true false
 cd ..
 
