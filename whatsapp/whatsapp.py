@@ -44,7 +44,7 @@ for ppem, strike in f['sbix'].strikes.items():
         o_name = name
         name = whatsapp_name(name)
         path = f'images/{ppem}/emoji_{name}.png'
-        if not os.path.exists(path) or o_name.startswith('1f491') or o_name.startswith('1f48f'):
+        if not os.path.exists(path):
             name = name[1:] if name[0] == 'u' else name
             path = f'extra/images/{ppem}/{name}.png'
         data = get_image_data(path)

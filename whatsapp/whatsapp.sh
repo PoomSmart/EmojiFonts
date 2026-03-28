@@ -11,7 +11,8 @@ cp -r $ASSETS/ images/160
 echo "Resizing and optimizing PNGs..."
 ../resize.sh true false false
 
-../get-assets.sh whatsapp false true
+echo "Generating couple split tiles..."
+uv run python split_from_160_restart.py
 
 IN_FONT_NAME=AppleColorEmoji-HD
 OUT_FONT_NAME=$NAME.ttc

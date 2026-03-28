@@ -14,12 +14,14 @@ update-deb.sh
 fluentui/**/*.png
 fluentui/**/*.svg
 apple
+**/backup/**/*.png
 .DS_Store
 .test
 
 # Vendor emoji fonts
 **/extra/images
 **/extra/svgs
+**/extra/heart-mask
 **/bitmaps
 
 # Python assets
