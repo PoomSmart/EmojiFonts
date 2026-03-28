@@ -13,7 +13,7 @@ This table lists the supported Unicode version and known limitations for each no
 | **OpenMoji** | 16.0 | Unique skin/hair color logic for couple emojis |
 | **Samsung One UI** | 17.0 | |
 | **Toss Face** | 15.0 | Missing emojis replaced with Twemoji |
-| **Twitter Twemoji** | 16.0 | |
+| **Twitter Twemoji** | 17.0 | |
 | **WhatsApp** | 16.0 | |
 
 ## Notes

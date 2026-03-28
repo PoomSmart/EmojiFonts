@@ -28,6 +28,8 @@ do
     fname=$(basename $svg)
     rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
 done
+uv run python gen-bunny-ears.py
+uv run python gen-wrestling.py
 ../../resize.sh true false
 cd ..
 
