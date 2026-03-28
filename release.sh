@@ -8,6 +8,7 @@ mkdir -p release
 ln apple/AppleColorEmoji-HD.ttc release/AppleColorEmoji-HD.ttc
 ln apple/AppleColorEmoji-HD-flip.ttc release/AppleColorEmoji-HD-flip.ttc
 ln apple/AppleColorEmoji-LQ.ttc release/AppleColorEmoji-LQ.ttc
+ln apple/AppleColorEmoji-pixel.ttc release/AppleColorEmoji-LQ.ttc
 ln blobmoji/blobmoji.ttc release/blobmoji.ttc
 ln facebook/facebook.ttc release/facebook.ttc
 ln fluentui/fluentui-Color.ttc release/fluentui-Color.ttc
