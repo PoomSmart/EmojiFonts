@@ -16,7 +16,7 @@ MAKE_1F491_1F48F=false
 [[ $HD = true ]] && MAX_SIZE=160 || MAX_SIZE=96
 SEP='_'
 
-[[ $1 == 'facebook' || $1 == 'whatsapp' ]] && MAKE_1F491_1F48F=true
+[[ $1 == 'facebook' ]] && MAKE_1F491_1F48F=true
 
 mkdir -p $PNG_PATH
 

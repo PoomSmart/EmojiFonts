@@ -29,6 +29,7 @@ from split_emoji import find_valley, split_at, split_by_components, split_by_geo
 COUPLE_SRC = Path("images/160")
 SINGLE_SRC = Path("images/160")
 DST = Path("extra/original")
+EXTRA_IMAGES_DST = Path("extra/images/160")
 IDENTITY_OVERRIDES = Path("../data/couple_identity_overrides.json")
 HEART_MASK_DST = Path("extra/heart-mask")
 # Canonical heart mask provided by user — 160×160, correct position for all couple variants.
@@ -111,6 +112,12 @@ CATEGORIES: Dict[str, Tuple[str, str, str]] = {
     "kiss-nogender": ("kiss", "1f9d1", "1f9d1"),
 }
 
+# Unicode codepoint for the joiner element of each kind (heart or kiss mark).
+KIND_CODES: Dict[str, str] = {
+    "heart": "2764",
+    "kiss": "1f48b",
+}
+
 # Per-category (and optionally per-skin) manual ox/oy/sz overrides for the standalone fill alignment.
 # ox = horizontal offset (positive = right), oy = vertical offset (positive = down).
 # sz = scale size in pixels (standalone is resized from 160 to sz before pasting).
@@ -135,6 +142,13 @@ RGBA = Tuple[int, int, int, int]
 
 def rgba_at(img: Image.Image, point: Tuple[int, int]) -> RGBA:
     return cast(RGBA, img.getpixel(point))
+
+
+def to_silhouette(img: Image.Image) -> Image.Image:
+    """Return a copy of img with all RGB channels set to mid-gray (128), alpha preserved."""
+    _, _, _, a = img.split()
+    gray = Image.new("L", img.size, 128)
+    return Image.merge("RGBA", (gray, gray, gray, a))
 
 
 def tone_suffix(tone: str) -> str:
@@ -667,6 +681,53 @@ def apply_rules(
     return left_out, right_out
 
 
+def generate_extra_images(heart_core: List[List[bool]]) -> None:
+    """Write extra/images/160/ files consumed by whatsapp.py as fallback sources.
+
+    Produces two groups:
+    - Per-skin direction tiles for all CATEGORIES × SKINS:
+        {gender}{tone_suffix}_{kind_code}.{l|r}.png
+    - Silhouette placeholders (default skin, one per category):
+        silhouette_{gender}_{kind_code}.{l|r}.png
+          Left silhouette : all opaque pixels → mid-gray
+          Right silhouette: mid-gray body, original colours preserved in heart_core region
+    """
+    EXTRA_IMAGES_DST.mkdir(parents=True, exist_ok=True)
+
+    for category, (kind, gender, _) in CATEGORIES.items():
+        kind_code = KIND_CODES[kind]
+
+        for slot, tone in SKINS:
+            tone_part = f"_{tone}" if tone else ""
+            left_path = DST / category / f"left-{slot}.png"
+            right_path = DST / category / f"right-{slot}.png"
+            if not left_path.exists() or not right_path.exists():
+                print(f"  Warning: missing tiles for {category}/{slot}, skipping extra/images output")
+                continue
+
+            left_img = Image.open(left_path).convert("RGBA")
+            right_img = Image.open(right_path).convert("RGBA")
+            left_img.save(EXTRA_IMAGES_DST / f"{gender}{tone_part}_{kind_code}.l.png")
+            right_img.save(EXTRA_IMAGES_DST / f"{gender}{tone_part}_{kind_code}.r.png")
+
+        # Silhouette uses default skin (slot 'd') only.
+        left_d = Image.open(DST / category / "left-d.png").convert("RGBA")
+        right_d = Image.open(DST / category / "right-d.png").convert("RGBA")
+
+        sil_left = to_silhouette(left_d)
+        sil_right = to_silhouette(right_d)
+        # Restore original colours in the heart/kiss zone on the right silhouette.
+        w, h = right_d.size
+        for y in range(h):
+            for x in range(w):
+                if heart_core[y][x]:
+                    sil_right.putpixel((x, y), cast(RGBA, right_d.getpixel((x, y))))
+
+        sil_left.save(EXTRA_IMAGES_DST / f"silhouette_{gender}_{kind_code}.l.png")
+        sil_right.save(EXTRA_IMAGES_DST / f"silhouette_{gender}_{kind_code}.r.png")
+        print(f"{category}: wrote {len(SKINS) * 2} tiles + 2 silhouettes to {EXTRA_IMAGES_DST}")
+
+
 def main() -> None:
     identity_overrides = load_identity_overrides()
     heart_core, heart_full, heart_fill = build_shared_heart_mask()
@@ -742,6 +803,7 @@ def main() -> None:
             save_mask_png(heart_full, HEART_MASK_DST / category / f"heart-full-{slot}.png")
             print(f"{category} {slot}: {src_name} -> {left_out.name}, {right_out.name}")
 
+    generate_extra_images(heart_core)
     print("Done")
 
 
