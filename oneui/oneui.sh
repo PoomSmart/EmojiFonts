@@ -20,6 +20,8 @@ mkdir -p extra/images/96
 cp extra/original/*.png extra/images/96
 ../get-assets.sh oneui
 
+uv run python extra/gen-couple-nn.py
+
 uv run python $NAME.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
 uv run python $NAME.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
 

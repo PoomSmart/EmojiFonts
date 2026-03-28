@@ -146,12 +146,18 @@ def main(
     out_sep: str,
     *,
     caller_file: str | None = None,
+    images_root: str | Path | None = None,
 ) -> None:
     """Generate silhouettes for every available ppem strike.
 
     ``caller_file`` should be ``__file__`` from the calling shim so the script
     can locate the vendor's ``extra/`` and ``images/`` directories.  When
     omitted the call stack is used to infer the caller's directory.
+
+    ``images_root`` overrides the directory that is scanned for per-ppem source
+    couple images.  Defaults to ``<vendor>/images/``.  Set to
+    ``<vendor>/extra/images/`` for vendors (e.g. OneUI) whose couple PNGs live
+    inside the extra tree rather than the main images tree.
     """
     if caller_file is None:
         import inspect
@@ -159,7 +165,7 @@ def main(
         caller_file = frame.filename
 
     extra_root = Path(caller_file).resolve().parent
-    vendor_images = extra_root.parent / "images"
+    vendor_images = Path(images_root) if images_root is not None else extra_root.parent / "images"
 
     sizes_env = os.environ.get("IMAGE_SIZES", "160 96 64 40")
     ppems = [int(p) for p in sizes_env.split()]
