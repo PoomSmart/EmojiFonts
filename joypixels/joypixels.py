@@ -36,6 +36,9 @@ for ppem, strike in f['sbix'].strikes.items():
             continue
         name = base_norm_variants(name, True, True)
         name = base_norm_special(name, True)
+        if name in u17_0:
+            m_print(f'{name} is missing')
+            continue
         name = joypixels_name(name)
         path = f'{style}/images/{ppem}/{name}.png'
         if not os.path.exists(path):

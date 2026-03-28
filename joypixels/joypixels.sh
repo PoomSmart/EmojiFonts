@@ -23,6 +23,8 @@ cp -r $EMOJI_ASSETS/ $ASSETS/images/96
 
 ../get-assets.sh $NAME
 
+uv run python extra/gen-couple-nn.py
+
 if [[ $MOD == 'Decal' ]]
 then
     echo "Applying mod: Decal..."
@@ -32,9 +34,9 @@ fi
 
 echo "Resizing and optimizing PNGs..."
 cd $ASSETS
-../../resize.sh false true
+../../resize.sh false true true
 cd ../extra
-../../resize.sh false true
+../../resize.sh false true true
 cd ..
 
 uv run python $NAME.py ../apple/${FONT_NAME}_00.ttf $MOD

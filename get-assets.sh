@@ -105,6 +105,11 @@ do
                 magick $PNG_PATH/$category/left-d.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}l.png
                 magick $PNG_PATH/$category/right-d.png -fill gray -colorize 100 $FOLDER/images/$MAX_SIZE/${output_image}r.png
             else
+                if [ ! -d $PNG_PATH/$category ]
+                then
+                    echo "Warning: Directory $PNG_PATH/$category does not exist, skipping..."
+                    continue
+                fi
                 for png in $(find $PNG_PATH/$category -type f -name '*.png')
                 do
                     fname=$(basename $png)
