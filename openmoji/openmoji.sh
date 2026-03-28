@@ -16,6 +16,8 @@ uv run python gen-couple-heart.py
 uv run python gen-couple-kiss.py
 uv run python gen-couple-stand.py
 uv run python gen-handshake.py
+uv run python gen-bunny-ears.py
+uv run python gen-wrestling.py
 
 echo "Converting SVGs into PNGs..."
 for svg in $(find ./svgs -type f -name '*.svg')
