@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+trap 'kill $(jobs -p) 2>/dev/null; exit 130' INT TERM
 
 NAME=apple
 MOD=$1
@@ -18,16 +19,18 @@ if [[ $MOD == 'LQ' ]]
 then
     COLORS=8
     echo "Applying mod: LQ..."
-    mogrify +dither -posterize 8 -normalize $ASSETS/96/*.png
-    mogrify +dither -posterize 8 -normalize $ASSETS/64/*.png
-    mogrify +dither -posterize 8 -normalize $ASSETS/40/*.png
+    mogrify +dither -posterize 8 -normalize $ASSETS/96/*.png &
+    mogrify +dither -posterize 8 -normalize $ASSETS/64/*.png &
+    mogrify +dither -posterize 8 -normalize $ASSETS/40/*.png &
+    wait
 elif [[ $MOD == 'HD-flip' ]]
 then
     echo "Applying mod: HD-flip..."
-    mogrify -flop $ASSETS/160/*.png
-    mogrify -flop $ASSETS/96/*.png
-    mogrify -flop $ASSETS/64/*.png
-    mogrify -flop $ASSETS/40/*.png
+    mogrify -flop $ASSETS/160/*.png &
+    mogrify -flop $ASSETS/96/*.png &
+    mogrify -flop $ASSETS/64/*.png &
+    mogrify -flop $ASSETS/40/*.png &
+    wait
 elif [[ $MOD == 'pixel' ]]
 then
     echo "Applying mod: pixel..."
@@ -38,15 +41,19 @@ then
 fi
 
 echo "Optimizing PNGs..."
-[[ $HD == true ]] && [[ $MOD != 'LQ' ]] && pngquant --skip-if-larger -f --ext .png $ASSETS/160/*.png || true
-pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/96/*.png || true
-pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/64/*.png || true
-pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/40/*.png || true
+pq_pids=()
+[[ $HD == true ]] && [[ $MOD != 'LQ' ]] && { ( pngquant --skip-if-larger -f --ext .png $ASSETS/160/*.png || true ) & pq_pids+=($!); }
+( pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/96/*.png || true ) & pq_pids+=($!)
+( pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/64/*.png || true ) & pq_pids+=($!)
+( pngquant --skip-if-larger $COLORS -f --ext .png $ASSETS/40/*.png || true ) & pq_pids+=($!)
+for pid in "${pq_pids[@]}"; do wait "$pid"; done
 
-[[ $HD == true ]] && [[ $MOD != 'LQ' ]] && oxipng -q $ASSETS/160/*.png
-oxipng -q $ASSETS/96/*.png
-oxipng -q $ASSETS/64/*.png
-oxipng -q $ASSETS/40/*.png
+ox_pids=()
+[[ $HD == true ]] && [[ $MOD != 'LQ' ]] && { oxipng -q $ASSETS/160/*.png & ox_pids+=($!); }
+oxipng -q $ASSETS/96/*.png & ox_pids+=($!)
+oxipng -q $ASSETS/64/*.png & ox_pids+=($!)
+oxipng -q $ASSETS/40/*.png & ox_pids+=($!)
+for pid in "${ox_pids[@]}"; do wait "$pid"; done
 
 if [[ $MOD == 'EMJC' ]]; then
     ./convert_to_emjc.sh "$ASSETS"
@@ -62,8 +69,12 @@ fi
 
 [[ $HD == true ]] && HD_FLAG="--hd" || HD_FLAG=""
 [[ $MOD == 'EMJC' ]] && EMJC_FLAG="--emjc" || EMJC_FLAG=""
-uv run emojifonts-apple $HD_FLAG $EMJC_FLAG common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS
-uv run emojifonts-apple $HD_FLAG $EMJC_FLAG common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS
+uv run emojifonts-apple $HD_FLAG $EMJC_FLAG common/${IOS_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_00.ttf $ASSETS &
+pid_apple0=$!
+uv run emojifonts-apple $HD_FLAG $EMJC_FLAG common/${IOS_FONT_NAME}_01.ttf apple/${OUT_FONT_NAME}_01.ttf $ASSETS &
+pid_apple1=$!
+wait $pid_apple0
+wait $pid_apple1
 
 rm -f apple/$OUT_FONT_NAME.ttf
 if [[ $COMPAT_OUT_FONT_NAME != '' ]]

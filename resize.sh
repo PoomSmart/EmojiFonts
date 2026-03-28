@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+trap 'kill $(jobs -p) 2>/dev/null; exit 130' INT TERM
 
 HD=$1
 [[ $2 = true ]] && COLORS=256 || COLORS=

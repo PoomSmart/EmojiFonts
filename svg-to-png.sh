@@ -4,6 +4,7 @@
 # output_dir defaults to images/<size>/ (relative to cwd).
 
 set -e
+trap 'kill $(jobs -p) 2>/dev/null; exit 130' INT TERM
 
 SOURCE="$1"
 SIZE="$2"

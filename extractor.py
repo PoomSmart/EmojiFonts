@@ -4,6 +4,7 @@ import io
 import logging
 import xml.etree.ElementTree as ET
 from collections.abc import Iterable, Sequence
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 from PIL import Image
@@ -42,6 +43,18 @@ def _resolve_flip_source(strike: ET.Element, reference: ET.Element) -> ET.Elemen
     return match
 
 
+def _save_glyph(out_path: Path, data_bytes: bytes, graphic_type: str, ppem: int, is_flip: bool) -> None:
+    if graphic_type == "emjc":
+        _save_emjc(data_bytes, ppem, is_flip, out_path)
+    elif graphic_type == "png ":
+        if is_flip:
+            img = Image.open(io.BytesIO(data_bytes))
+            img = img.transpose(Image.FLIP_LEFT_RIGHT)
+            img.save(out_path)
+        else:
+            out_path.write_bytes(data_bytes)
+
+
 def extract_images(
     output_dir: Path,
     ios_sbix_ttx: Path,
@@ -70,6 +83,7 @@ def extract_images(
             if ms_ppem_node is not None:
                 macos_strikes_by_ppem[int(ms_ppem_node.attrib["value"])] = ms
 
+    tasks = []
     for strike in ios_data.iter("strike"):
         ppem_text = strike.find("ppem")
         if ppem_text is None:
@@ -130,18 +144,16 @@ def extract_images(
                 else:
                     LOGGER.debug("Glyph %s not found in macOS sbix table (ppem=%s); falling back to EMJC", name, ppem)
 
-            # 2. Extract based on (final) graphic_type
-            if graphic_type == "emjc":
-                _save_emjc(data_bytes, ppem, is_flip, out_path)
-            elif graphic_type == "png ":
-                if is_flip:
-                    img = Image.open(io.BytesIO(data_bytes))
-                    img = img.transpose(Image.FLIP_LEFT_RIGHT)
-                    img.save(out_path)
-                else:
-                    out_path.write_bytes(data_bytes)
-            else:
+            # 2. Queue for parallel extraction
+            if graphic_type not in ("emjc", "png "):
                 LOGGER.debug("Glyph %s uses unsupported type %s after processing", name, graphic_type)
+                continue
+            tasks.append((out_path, data_bytes, graphic_type, ppem, is_flip))
+
+    with ProcessPoolExecutor() as executor:
+        futures = [executor.submit(_save_glyph, *t) for t in tasks]
+    for f in futures:
+        f.result()
 
 
 def build_parser() -> argparse.ArgumentParser:

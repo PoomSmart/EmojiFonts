@@ -4,6 +4,7 @@
 # Usage: ./convert_to_emjc.sh <assets_dir>
 
 set -e
+trap 'kill $(jobs -p) 2>/dev/null; exit 130' INT TERM
 
 VERIFY=0
 if [ "$1" == "--verify" ]; then
