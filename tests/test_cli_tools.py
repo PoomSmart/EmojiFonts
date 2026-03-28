@@ -139,6 +139,55 @@ def test_apply_overrides_updates_metrics(tmp_path: Path) -> None:
 _REAL_FONT = Path(__file__).resolve().parents[1] / "common" / "AppleColorEmoji_iOS_00.ttf"
 
 
+def _strip_silhouette_from_font(font_path: Path) -> None:
+    """Remove previously-injected silhouette glyphs so injection tests start from an unpatched state."""
+    all_silhouette = set(
+        _inj.ALL_SILHOUETTE_GLYPHS_L
+        + _inj.ALL_SILHOUETTE_GLYPHS_R
+        + [_inj.FULL_SILHOUETTE_GLYPH]
+    )
+    font = ttLib.TTFont(str(font_path))
+    if not any(g in font.getGlyphOrder() for g in all_silhouette):
+        return  # already clean
+
+    # Force-decompile these tables BEFORE shrinking GlyphOrder.  Each table
+    # decompiles lazily on first access using the current GlyphOrder; if
+    # GlyphOrder is shortened first the binary size no longer matches and
+    # fontTools raises an IndexError when it tries to decompile later.
+    hmtx = font["hmtx"]
+    vmtx = font["vmtx"] if "vmtx" in font else None
+    glyf_table = font["glyf"]
+    sbix = font["sbix"]
+    morx = font["morx"]
+
+    font.setGlyphOrder([g for g in font.getGlyphOrder() if g not in all_silhouette])
+
+    for g in all_silhouette:
+        if g in glyf_table.glyphs:
+            del glyf_table.glyphs[g]
+
+    for g in all_silhouette:
+        hmtx.metrics.pop(g, None)
+    if vmtx is not None:
+        for g in all_silhouette:
+            vmtx.metrics.pop(g, None)
+
+    for strike in sbix.strikes.values():
+        for g in all_silhouette:
+            strike.glyphs.pop(g, None)
+
+    chain = morx.table.MorphChain[0]
+    for sub in chain.MorphSubtable:
+        subst = _inj._get_noncontextual_subst(sub)
+        if subst is None:
+            continue
+        to_delete = [k for k, v in subst.items() if k in all_silhouette or v in all_silhouette]
+        for k in to_delete:
+            del subst[k]
+
+    font.save(str(font_path))
+
+
 @pytest.fixture
 def font_copy(tmp_path: Path) -> Path:
     """Return a temporary copy of the compiled iOS font, or skip if not built yet."""
@@ -146,6 +195,7 @@ def font_copy(tmp_path: Path) -> Path:
         pytest.skip("Compiled font not available – run prepare.sh first")
     dst = tmp_path / "AppleColorEmoji_iOS_00.ttf"
     shutil.copy(_REAL_FONT, dst)
+    _strip_silhouette_from_font(dst)
     return dst
 
 
