@@ -14,7 +14,7 @@ uv run ttx -q -f -s -t GSUB $FONT_NAME.ttf
 
 echo "Resizing and optimizing PNGs..."
 mogrify -resize 96x96 -path images/96 bitmaps/strike0/*.png
-../resize.sh false false false
+../resize.sh false false
 
 mkdir -p extra/images/96
 cp extra/original/*.png extra/images/96

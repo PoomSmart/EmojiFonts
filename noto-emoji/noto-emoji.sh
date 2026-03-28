@@ -36,11 +36,11 @@ do
     fname=$(basename $svg)
     rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
 done
-../../resize.sh true false false
+../../resize.sh true false
 cd ..
 
 echo "Resizing and optimizing PNGs..."
-../resize.sh true false false
+../resize.sh true false
 
 IN_FONT_NAME=AppleColorEmoji-HD
 OUT_FONT_NAME=$NAME.ttc

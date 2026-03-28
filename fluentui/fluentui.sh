@@ -40,7 +40,7 @@ rm -f *.svg
 cd ../..
 
 echo "Resizing and optimizing PNGs..."
-../../resize.sh false false false
+../../resize.sh false false
 cd ..
 
 uv run python $NAME.py ../apple/${FONT_NAME}_00.ttf "$STYLE"

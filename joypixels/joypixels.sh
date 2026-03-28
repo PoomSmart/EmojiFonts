@@ -32,9 +32,9 @@ fi
 
 echo "Resizing and optimizing PNGs..."
 cd $ASSETS
-../../resize.sh false false false true
+../../resize.sh false true
 cd ../extra
-../../resize.sh false false false true
+../../resize.sh false true
 cd ..
 
 uv run python $NAME.py ../apple/${FONT_NAME}_00.ttf $MOD

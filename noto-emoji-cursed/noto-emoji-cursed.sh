@@ -15,7 +15,7 @@ ttx -q -f -s -t GSUB $FONT_NAME.ttf
 
 echo "Resizing and optimizing PNGs..."
 mogrify -resize 96x96 -path images/96 bitmaps/strike0/*.png
-../resize.sh false false false
+../resize.sh false false
 rm -rf bitmaps
 
 uv run $NAME.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx

@@ -18,7 +18,7 @@ uv run emojifonts-extract images $FONT_NAME._s_b_i_x.ttx
 echo "Resizing and optimizing PNGs..."
 mogrify -resize 96x96 -path $ASSETS/96 $ASSETS/$ORIGINAL_SIZE/*.png
 rm -rf $ASSETS/$ORIGINAL_SIZE
-../resize.sh false false false
+../resize.sh false false
 
 uv run python $NAME.py ../apple/${APPLE_FONT_NAME}_00.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx
 uv run python $NAME.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf $FONT_NAME.G_S_U_B_.ttx

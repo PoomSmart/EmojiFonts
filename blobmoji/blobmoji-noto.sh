@@ -35,11 +35,11 @@ MAX_SIZE=160
 #     fname=$(basename $svg)
 #     rsvg-convert -a -h $MAX_SIZE $svg -o images/$MAX_SIZE/${fname/.svg/.png}
 # done
-# ../../resize.sh true false false
+# ../../resize.sh true false
 # cd ..
 
 # echo "Resizing and optimizing PNGs..."
-# ../resize.sh true false false
+# ../resize.sh true false
 
 uv run python $NAME-noto.py ../apple/${APPLE_FONT_NAME}_00.ttf
 uv run python $NAME-noto.py ../apple/${APPLE_FONT_NAME}_01.ttf

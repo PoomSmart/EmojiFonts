@@ -9,7 +9,7 @@ ASSETS=../../whatsapp-emoji-linux/png/160
 cp -r $ASSETS/ images/160
 
 echo "Resizing and optimizing PNGs..."
-../resize.sh true false false
+../resize.sh true false
 
 echo "Generating couple split tiles..."
 uv run python split_from_160_restart.py

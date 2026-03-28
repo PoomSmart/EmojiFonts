@@ -17,9 +17,9 @@ cp extra/original/*.png extra/images/96
 ../get-assets.sh facebook
 
 echo "Resizing and optimizing PNGs..."
-../resize.sh false false false
+../resize.sh false false
 cd extra
-../../resize.sh false false false
+../../resize.sh false false
 cd ..
 
 uv run python $NAME.py ../apple/${FONT_NAME}_00.ttf
