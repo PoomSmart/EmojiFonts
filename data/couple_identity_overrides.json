@@ -1,0 +1,50 @@
+{
+  "heart-male": {
+    "d": {"visual_left": "1f468", "visual_right": "1f468"},
+    "0": {"visual_left": "1f468", "visual_right": "1f468"},
+    "1": {"visual_left": "1f468", "visual_right": "1f468"},
+    "2": {"visual_left": "1f468", "visual_right": "1f468"},
+    "3": {"visual_left": "1f468", "visual_right": "1f468"},
+    "4": {"visual_left": "1f468", "visual_right": "1f468"}
+  },
+  "heart-female": {
+    "d": {"visual_left": "1f469", "visual_right": "1f469"},
+    "0": {"visual_left": "1f469", "visual_right": "1f469"},
+    "1": {"visual_left": "1f469", "visual_right": "1f469"},
+    "2": {"visual_left": "1f469", "visual_right": "1f469"},
+    "3": {"visual_left": "1f469", "visual_right": "1f469"},
+    "4": {"visual_left": "1f469", "visual_right": "1f469"}
+  },
+  "heart-nogender": {
+    "d": {"visual_left": "1f9d1", "visual_right": "1f9d1"},
+    "0": {"visual_left": "1f9d1", "visual_right": "1f9d1"},
+    "1": {"visual_left": "1f9d1", "visual_right": "1f9d1"},
+    "2": {"visual_left": "1f9d1", "visual_right": "1f9d1"},
+    "3": {"visual_left": "1f9d1", "visual_right": "1f9d1"},
+    "4": {"visual_left": "1f9d1", "visual_right": "1f9d1"}
+  },
+  "kiss-male": {
+    "d": {"visual_left": "1f468", "visual_right": "1f468"},
+    "0": {"visual_left": "1f468", "visual_right": "1f468"},
+    "1": {"visual_left": "1f468", "visual_right": "1f468"},
+    "2": {"visual_left": "1f468", "visual_right": "1f468"},
+    "3": {"visual_left": "1f468", "visual_right": "1f468"},
+    "4": {"visual_left": "1f468", "visual_right": "1f468"}
+  },
+  "kiss-female": {
+    "d": {"visual_left": "1f469", "visual_right": "1f469"},
+    "0": {"visual_left": "1f469", "visual_right": "1f469"},
+    "1": {"visual_left": "1f469", "visual_right": "1f469"},
+    "2": {"visual_left": "1f469", "visual_right": "1f469"},
+    "3": {"visual_left": "1f469", "visual_right": "1f469"},
+    "4": {"visual_left": "1f469", "visual_right": "1f469"}
+  },
+  "kiss-nogender": {
+    "d": {"visual_left": "1f9d1", "visual_right": "1f9d1"},
+    "0": {"visual_left": "1f9d1", "visual_right": "1f9d1"},
+    "1": {"visual_left": "1f9d1", "visual_right": "1f9d1"},
+    "2": {"visual_left": "1f9d1", "visual_right": "1f9d1"},
+    "3": {"visual_left": "1f9d1", "visual_right": "1f9d1"},
+    "4": {"visual_left": "1f9d1", "visual_right": "1f9d1"}
+  }
+}
