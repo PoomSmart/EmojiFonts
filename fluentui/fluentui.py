@@ -21,6 +21,28 @@ missing = [
     '1f491',
     '1f491_1f3fb', '1f491_1f3fc', '1f491_1f3fd', '1f491_1f3fe', '1f491_1f3ff',
     '1f91d_1f3fb', '1f91d_1f3fc', '1f91d_1f3fd', '1f91d_1f3fe', '1f91d_1f3ff',
+    '1f46f_1f3fb', '1f46f_1f3fc', '1f46f_1f3fd', '1f46f_1f3fe', '1f46f_1f3ff',
+    '1f46f_1f3fb_200d_2640_fe0f', '1f46f_1f3fc_200d_2640_fe0f', '1f46f_1f3fd_200d_2640_fe0f', '1f46f_1f3fe_200d_2640_fe0f', '1f46f_1f3ff_200d_2640_fe0f',
+    '1f46f_1f3fb_200d_2642_fe0f', '1f46f_1f3fc_200d_2642_fe0f', '1f46f_1f3fd_200d_2642_fe0f', '1f46f_1f3fe_200d_2642_fe0f', '1f46f_1f3ff_200d_2642_fe0f',
+    '1f6d8',
+    '1f93c_1f3fb', '1f93c_1f3fc', '1f93c_1f3fd', '1f93c_1f3fe', '1f93c_1f3ff',
+    '1f93c_1f3fb_200d_2640_fe0f', '1f93c_1f3fc_200d_2640_fe0f', '1f93c_1f3fd_200d_2640_fe0f', '1f93c_1f3fe_200d_2640_fe0f', '1f93c_1f3ff_200d_2640_fe0f',
+    '1f93c_1f3fb_200d_2642_fe0f', '1f93c_1f3fc_200d_2642_fe0f', '1f93c_1f3fd_200d_2642_fe0f', '1f93c_1f3fe_200d_2642_fe0f', '1f93c_1f3ff_200d_2642_fe0f',
+    '1f9d1_200d_1fa70',
+    '1f9d1_1f3fb_200d_1fa70', '1f9d1_1f3fc_200d_1fa70', '1f9d1_1f3fd_200d_1fa70', '1f9d1_1f3fe_200d_1fa70', '1f9d1_1f3ff_200d_1fa70',
+    '1fa89',
+    '1fa8a',
+    '1fa8e',
+    '1fa8f',
+    '1fabe',
+    '1fac6',
+    '1fac8',
+    '1facd',
+    '1fadc',
+    '1fadf',
+    '1fae9',
+    '1faea',
+    '1faef',
 ]
 
 def norm_special(name: str):
@@ -36,7 +58,7 @@ def fluentui_name(name: str):
         name = name.replace('_20e3', '_fe0f_20e3')
     return name.replace('_', '-')
 
-prepare_strikes(f)
+prepare_strikes(f, True)
 for ppem, strike in f['sbix'].strikes.items():
     print(f'Reading strike of size {ppem}x{ppem}')
     for name, glyph in strike.glyphs.items():

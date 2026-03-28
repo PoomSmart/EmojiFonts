@@ -10,15 +10,15 @@ if [ -z "$STYLE" ]; then
     exit 1
 fi
 
-FONT_NAME=AppleColorEmoji
+FONT_NAME=AppleColorEmoji-HD
 NAME=fluentui
 ASSETS="$STYLE"
-MAX_SIZE=96
+MAX_SIZE=160
 SVG_TO_PNG="$(cd "$(dirname "$0")" && pwd)/../svg-to-png.sh"
 
 mkdir -p "$ASSETS"
 cd "$ASSETS"
-../../image-sizes.sh false
+../../image-sizes.sh true
 cd ..
 
 echo "Preparing SVGs..."
@@ -37,7 +37,7 @@ rm -f *.svg
 cd ../..
 
 echo "Resizing and optimizing PNGs..."
-../../resize.sh false false
+../../resize.sh true false
 cd ..
 
 uv run python $NAME.py ../apple/${FONT_NAME}_00.ttf "$STYLE"
