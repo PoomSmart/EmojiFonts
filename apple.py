@@ -30,14 +30,16 @@ def update_sbix_images(input_font: Path, output_font: Path, assets_dir: Path, *,
     for ppem, strike in sbix_table.strikes.items():
         LOGGER.info("Reading strike of size %sx%s", ppem, ppem)
         for name, glyph in strike.glyphs.items():
-            if glyph.graphicType not in {"emjc", "flip", "png "}:
+            is_placeholder = glyph.graphicType not in {"emjc", "flip", "png "}
+            if is_placeholder and glyph.graphicType is not None:
                 continue
 
             ext = "emjc" if emjc else "png"
             asset_path = assets_dir / str(ppem) / f"{name}.{ext}"
 
             if not asset_path.exists():
-                LOGGER.debug("Asset image missing: %s", asset_path)
+                if not is_placeholder:
+                    LOGGER.debug("Asset image missing: %s", asset_path)
                 continue
 
             glyph.graphicType = "emjc" if emjc else "png "

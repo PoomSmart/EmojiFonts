@@ -24,6 +24,9 @@ fi
 echo "Extracting PNGs from $MAC_FONT_NAME font..."
 uv run emojifonts-extract $ASSETS $NAME/${IOS_FONT_NAME}._s_b_i_x.ttx $NAME/${MAC_FONT_NAME}._s_b_i_x.ttx
 
+echo "Normalising strikes (filling any missing emojis from other strikes)..."
+uv run emojifonts-normalize-strikes $ASSETS
+
 echo "Creating neutral couple silhouette PNGs..."
 # Build per-ppem silhouette images for all 26 XY combos:
 #   .L.XY  = left half gray  + ML's right-of-center pixels (hand fix),  right in XY colour

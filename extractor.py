@@ -119,7 +119,21 @@ def extract_images(
                     continue
                 graphic_type = source_glyph.get("graphicType")
 
+            # For empty placeholder glyphs (no graphicType), try the macOS TTX first
+            # before giving up. Apple uses bare <glyph name="..."/> entries in some
+            # strikes as placeholders where the macOS font carries the real image.
             if graphic_type not in SUPPORTED_TYPES:
+                if macos_strikes_by_ppem:
+                    macos_strike_el = macos_strikes_by_ppem.get(ppem)
+                    macos_glyph_el = macos_strike_el.find(f'glyph[@name="{name}"]') if macos_strike_el is not None else None
+                    if macos_glyph_el is not None:
+                        macos_hexdata_node = macos_glyph_el.find("hexdata")
+                        if macos_hexdata_node is not None and macos_hexdata_node.text:
+                            data_bytes = _decode_hexdata(macos_hexdata_node.text.strip())
+                            out_path = strike_output_dir / f"{name}.png"
+                            LOGGER.debug("Using macOS PNG for placeholder glyph %s (ppem=%s)", name, ppem)
+                            tasks.append((out_path, data_bytes, "png ", ppem, False))
+                            continue
                 LOGGER.debug("Skipping glyph %s (%s); unsupported graphic type", name, graphic_type)
                 continue
 
