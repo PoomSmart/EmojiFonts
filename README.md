@@ -58,6 +58,10 @@ Also in `extractor.py`, it detects glyphs of type `flip`, reads the actual image
 
 `inject_neutral_couple_silhouette.py` (CLI alias `emojifonts-inject-silhouette`) patches the `morx` table in the compiled iOS font to add silhouette support for neutral-person (`U+1F9D1`) holding-hands couples — support that Apple never shipped. It inserts a ContextualMorph subtable and updates the two NoncontextualMorph silhouette subtables; themed fonts need no per-combination images. See [MORX.md](MORX.md) for a full technical explanation.
 
+`emjc.py` decodes Apple's proprietary **EMJC** (`emj1`) image format — the compressed bitmap encoding used for emoji strikes in newer `sbix` tables — back to raw BGRA pixel data.
+
+`emjc_encoder.py` (CLI entry point) is the companion encoder: given raw BGRA data and image dimensions it produces a valid EMJC file, with an optional color-quantization pass to reduce output size. `convert_to_emjc.sh` wraps the encoder for parallel batch conversion of PNG emoji assets. See [EMJC.md](EMJC.md) for a full technical explanation of the format.
+
 # PNG Optimization
 
 `pngquant` and `oxipng` are used to optimize the images with little to none changes to the quality. The Apple emoji font sizes are reduced by 50% using this method. The simpler the emoji images, the more size reduction is achieved.
