@@ -5,15 +5,13 @@ sys.path.append('..')
 from shared import *
 from shared_lig import *
 
-# input: apple font ttf, oneui font ttf, oneui GSUB ttx
+# input: apple font ttf, oneui font ttf
 
 ttf = sys.argv[1]
 bttf = sys.argv[2]
-bgsubttx = sys.argv[3]
-
 f = ttLib.TTFont(ttf)
 
-lig = Lig(f, bttf, bgsubttx)
+lig = Lig(f, bttf)
 lig.build()
 
 prepare_strikes(f)

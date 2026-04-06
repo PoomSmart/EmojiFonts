@@ -1,5 +1,3 @@
-import xml.etree.ElementTree as ET
-
 from fontTools import ttLib
 
 from shared import gender_selectors
@@ -21,9 +19,9 @@ name_map = {
 
 
 class Lig:
-    def __init__(self, f: ttLib.TTFont, bttf: str, bgsubttx: str):
+    def __init__(self, f: ttLib.TTFont, bttf: str):
         b = ttLib.TTFont(bttf)
-        self.bgsub = ET.parse(bgsubttx).getroot()
+        self.bgsub = b["GSUB"].table
         self.blig = {}
         self.icmap = f.get("cmap").buildReversed()
         self.cmap = f.get("cmap").tables[0].cmap
@@ -57,22 +55,16 @@ class Lig:
         for key in self.bicmap:
             self.bicmap_apple[self.get_apple_code(key)] = self.bicmap[key]
 
-        for lookup in self.bgsub.iter("Lookup"):
-            lookup_type = lookup.find("LookupType").get("value")
-            if lookup_type != "4":
+        for lookup in self.bgsub.LookupList.Lookup:
+            if lookup.LookupType != 4:
                 continue
-            for ligset in lookup.iter("LigatureSet"):
-                glyph = self.get_apple_code(ligset.get("glyph"))
-                for lig in ligset.iter("Ligature"):
-                    components = str(lig.get("components"))
-                    tokens = components.split(",")
-                    s = []
-                    for t in tokens:
-                        s.append(self.get_apple_code(t))
-                    remaining = "_".join(s)
-                    name = f"{glyph}_{remaining}"
-                    real_glyph = lig.get("glyph")
-                    self.blig[name] = real_glyph
+            for subtable in lookup.SubTable:
+                for first_glyph, ligs in subtable.ligatures.items():
+                    glyph = self.get_apple_code(first_glyph)
+                    for lig in ligs:
+                        s = [self.get_apple_code(c) for c in lig.Component]
+                        name = f"{glyph}_{'_'.join(s)}"
+                        self.blig[name] = lig.LigGlyph
 
     def get_glyph_name(self, name: str):
         if name in self.icmap:

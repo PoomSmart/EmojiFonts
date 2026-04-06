@@ -8,11 +8,9 @@ from shared_lig import *
 # input: font ttf
 ttf = sys.argv[1]
 bttf = sys.argv[2]
-bgsubttx = sys.argv[3]
-
 f = ttLib.TTFont(ttf)
 
-lig = Lig(f, bttf, bgsubttx)
+lig = Lig(f, bttf)
 lig.build()
 
 def norm_name(name: str):
