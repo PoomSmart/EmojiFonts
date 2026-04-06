@@ -69,7 +69,7 @@ flags = [
     "1f3f4_e0067",
 ]
 
-with_variants = [
+with_variants = {
     "00a9",
     "00ae",
     "203c",
@@ -274,7 +274,7 @@ with_variants = [
     "1f6e9",
     "1f6f0",
     "1f6f3",
-]
+}
 
 u15_1 = [
     "26d3_200d_1f4a5",
@@ -380,7 +380,7 @@ u17_0 = [
     "silhouette_1f9d1_1f3ff_1faef.l", "silhouette_1f9d1_1f3ff_1faef.r",
 ]
 
-whitelist = ["hiddenglyph"]
+whitelist = {"hiddenglyph"}
 signs = ["00a9", "00ae"]
 
 
@@ -390,10 +390,7 @@ def m_print(string: str):
 
 
 def is_flag(name: str):
-    for f in flags:
-        if f in name:
-            return True
-    return False
+    return any(f in name for f in flags)
 
 
 def base_is_whitelist(name: str):
