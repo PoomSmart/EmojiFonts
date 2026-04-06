@@ -1,3 +1,5 @@
+from concurrent.futures import ThreadPoolExecutor
+
 from fontTools import ttLib
 
 debug = False
@@ -572,6 +574,20 @@ def base_norm_special(name: str, with_variant_selector=False):
 def get_image_data(path: str):
     with open(path, "rb") as fin:
         return fin.read()
+
+
+def process_strikes(strikes, resolve):
+    for ppem, strike in strikes.items():
+        print(f"Reading strike of size {ppem}x{ppem}")
+        with ThreadPoolExecutor() as executor:
+            futures = {
+                executor.submit(resolve, name, glyph, ppem): glyph
+                for name, glyph in strike.glyphs.items()
+            }
+            for future, glyph in futures.items():
+                data = future.result()
+                if data is not None:
+                    glyph.imageData = data
 
 
 def prepare_strikes(f: ttLib.TTFont, hd=False):

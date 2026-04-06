@@ -53,38 +53,39 @@ noto = [
 ]
 
 prepare_strikes(f, True)
-for ppem, strike in f['sbix'].strikes.items():
-    print(f'Reading strike of size {ppem}x{ppem}')
-    for name, glyph in strike.glyphs.items():
-        if glyph.graphicType != 'png ':
-            continue
-        name = base_norm_name(name)
-        if base_is_whitelist(name):
-            continue
-        name = norm_fam(name)
-        name = norm_dual(name)
-        if name is None:
-            continue
-        name = base_norm_variants(name)
-        name = base_norm_special(name)
-        # name = norm_variant_selector(name)
-        name = blobmoji_name(name)
-        path = f'images/{ppem}/emoji_{name}.png'
+
+def resolve(name, glyph, ppem):
+    if glyph.graphicType != 'png ':
+        return None
+    name = base_norm_name(name)
+    if base_is_whitelist(name):
+        return None
+    name = norm_fam(name)
+    name = norm_dual(name)
+    if name is None:
+        return None
+    name = base_norm_variants(name)
+    name = base_norm_special(name)
+    # name = norm_variant_selector(name)
+    name = blobmoji_name(name)
+    path = f'images/{ppem}/emoji_{name}.png'
+    if not os.path.exists(path):
+        if name in corrections:
+            name = corrections[name]
+            path = f'images/{ppem}/emoji_{name}.png'
+        if len(name.split('_')) == 2 or name == 'u1f3f3_fe0f_200d_26a7_fe0f':
+            m_name = name.replace('_fe0f', '')
+            path = f'images/{ppem}/emoji_{m_name}.png'
+        # if name in noto:
+        #     path = f'../noto-emoji/images/{ppem}/emoji_{name}.png'
         if not os.path.exists(path):
-            if name in corrections:
-                name = corrections[name]
-                path = f'images/{ppem}/emoji_{name}.png'
-            if len(name.split('_')) == 2 or name == 'u1f3f3_fe0f_200d_26a7_fe0f':
-                m_name = name.replace('_fe0f', '')
-                path = f'images/{ppem}/emoji_{m_name}.png'
-            # if name in noto:
-            #     path = f'../noto-emoji/images/{ppem}/emoji_{name}.png'
+            name = name[1:] if name[0] == 'u' else name
+            path = f'extra/images/{ppem}/{name}.png'
             if not os.path.exists(path):
-                name = name[1:] if name[0] == 'u' else name
-                path = f'extra/images/{ppem}/{name}.png'
-                if not os.path.exists(path):
-                    path = f'../noto-emoji/extra/images/{ppem}/{name}.png'
-        glyph.imageData = get_image_data(path)
+                path = f'../noto-emoji/extra/images/{ppem}/{name}.png'
+    return get_image_data(path)
+
+process_strikes(f['sbix'].strikes, resolve)
 
 if not os.path.exists('../.test'):
     print('Saving changes...')

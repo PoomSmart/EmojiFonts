@@ -37,37 +37,38 @@ def fluentui_name(name: str):
     return name.replace('_', '-')
 
 prepare_strikes(f, True)
-for ppem, strike in f['sbix'].strikes.items():
-    print(f'Reading strike of size {ppem}x{ppem}')
-    for name, glyph in strike.glyphs.items():
-        if glyph.graphicType != 'png ':
-            continue
-        name = base_norm_name(name)
-        if is_whitelist(name):
-            continue
-        # FIXME: flags, hairs and standalone skins not available
-        if is_flag(name) or name in hairs or name in skins.values():
-            m_print(f'{name} is missing')
-            continue
-        o_name = name
-        name = norm_fam(name)
-        name = norm_dual(name)
-        if name is None:
-            continue
-        # FIXME: multi emojis not available
-        if name != o_name:
-            m_print(f'{name} is missing')
-            continue
-        name = base_norm_variants(name, True, True)
-        name = norm_special(name)
-        name = norm_variant_selector(name)
-        # FIXME: some emojis not available
-        if name in missing:
-            m_print(f'{name} is missing')
-            continue
-        name = fluentui_name(name)
-        path = f'{style}/images/{ppem}/{name}.png'
-        glyph.imageData = get_image_data(path)
+
+def resolve(name, glyph, ppem):
+    if glyph.graphicType != 'png ':
+        return None
+    name = base_norm_name(name)
+    if is_whitelist(name):
+        return None
+    # FIXME: flags, hairs and standalone skins not available
+    if is_flag(name) or name in hairs or name in skins.values():
+        m_print(f'{name} is missing')
+        return None
+    o_name = name
+    name = norm_fam(name)
+    name = norm_dual(name)
+    if name is None:
+        return None
+    # FIXME: multi emojis not available
+    if name != o_name:
+        m_print(f'{name} is missing')
+        return None
+    name = base_norm_variants(name, True, True)
+    name = norm_special(name)
+    name = norm_variant_selector(name)
+    # FIXME: some emojis not available
+    if name in missing:
+        m_print(f'{name} is missing')
+        return None
+    name = fluentui_name(name)
+    path = f'{style}/images/{ppem}/{name}.png'
+    return get_image_data(path)
+
+process_strikes(f['sbix'].strikes, resolve)
 
 if not os.path.exists('../.test'):
     print('Saving changes...')

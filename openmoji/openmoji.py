@@ -25,28 +25,29 @@ def openmoji_name(name: str):
     return name.replace('_', '-').upper()
 
 prepare_strikes(f, True)
-for ppem, strike in f['sbix'].strikes.items():
-    print(f'Reading strike of size {ppem}x{ppem}')
-    for name, glyph in strike.glyphs.items():
-        if glyph.graphicType != 'png ':
-            continue
-        name = norm_name(name)
-        if base_is_whitelist(name):
-            continue
-        name = norm_fam(name)
-        name = norm_dual(name)
-        if name is None:
-            continue
-        name = base_norm_variants(name, True, True)
-        name = norm_special(name)
-        name = openmoji_name(name)
-        path = f'images/{ppem}/{name}.png'
-        if not os.path.exists(path):
-            if name.startswith('silhouette'):
-                name = name.lower()
-            name = name.replace('.L', '.l').replace('.R', '.r')
-            path = f'extra/images/{ppem}/{name}.png'
-        glyph.imageData = get_image_data(path)
+
+def resolve(name, glyph, ppem):
+    if glyph.graphicType != 'png ':
+        return None
+    name = norm_name(name)
+    if base_is_whitelist(name):
+        return None
+    name = norm_fam(name)
+    name = norm_dual(name)
+    if name is None:
+        return None
+    name = base_norm_variants(name, True, True)
+    name = norm_special(name)
+    name = openmoji_name(name)
+    path = f'images/{ppem}/{name}.png'
+    if not os.path.exists(path):
+        if name.startswith('silhouette'):
+            name = name.lower()
+        name = name.replace('.L', '.l').replace('.R', '.r')
+        path = f'extra/images/{ppem}/{name}.png'
+    return get_image_data(path)
+
+process_strikes(f['sbix'].strikes, resolve)
 
 if not os.path.exists('../.test'):
     print('Saving changes...')

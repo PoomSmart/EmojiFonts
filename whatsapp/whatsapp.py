@@ -23,38 +23,38 @@ def whatsapp_name(name: str):
     return 'u' + result
 
 prepare_strikes(f, True)
-for ppem, strike in f['sbix'].strikes.items():
-    print(f'Reading strike of size {ppem}x{ppem}')
-    for name, glyph in strike.glyphs.items():
-        if glyph.graphicType != 'png ':
-            continue
-        name = base_norm_name(name)
-        if base_is_whitelist(name):
-            continue
-        name = norm_fam(name)
-        name = norm_dual(name)
-        if name is None:
-            continue
-        name = base_norm_variants(name)
-        name = base_norm_special(name)
-        flipped = False
-        if name.endswith('_200d_27a1'):
-            flipped = True
-            name = name[:-len('_200d_27a1')]
-        o_name = name
-        name = whatsapp_name(name)
-        path = f'images/{ppem}/emoji_{name}.png'
-        if not os.path.exists(path):
-            name = name[1:] if name[0] == 'u' else name
-            path = f'extra/images/{ppem}/{name}.png'
-        data = get_image_data(path)
-        if flipped:
-            img = Image.open(io.BytesIO(data))
-            img = img.transpose(Image.FLIP_LEFT_RIGHT)
-            data = io.BytesIO()
-            img.save(data, format='PNG')
-            data = data.getvalue()
-        glyph.imageData = data
+
+def resolve(name, glyph, ppem):
+    if glyph.graphicType != 'png ':
+        return None
+    name = base_norm_name(name)
+    if base_is_whitelist(name):
+        return None
+    name = norm_fam(name)
+    name = norm_dual(name)
+    if name is None:
+        return None
+    name = base_norm_variants(name)
+    name = base_norm_special(name)
+    flipped = False
+    if name.endswith('_200d_27a1'):
+        flipped = True
+        name = name[:-len('_200d_27a1')]
+    name = whatsapp_name(name)
+    path = f'images/{ppem}/emoji_{name}.png'
+    if not os.path.exists(path):
+        name = name[1:] if name[0] == 'u' else name
+        path = f'extra/images/{ppem}/{name}.png'
+    data = get_image_data(path)
+    if flipped:
+        img = Image.open(io.BytesIO(data))
+        img = img.transpose(Image.FLIP_LEFT_RIGHT)
+        buf = io.BytesIO()
+        img.save(buf, format='PNG')
+        data = buf.getvalue()
+    return data
+
+process_strikes(f['sbix'].strikes, resolve)
 
 if not os.path.exists('../.test'):
     print('Saving changes...')
