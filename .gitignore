@@ -12,6 +12,7 @@ update-deb.sh
 
 # Project assets
 **/images/*/*.png
+catrinity/**/*.svg
 fluentui/**/*.png
 fluentui/**/*.svg
 apple
