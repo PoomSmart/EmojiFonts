@@ -13,6 +13,8 @@ brew install bash pngquant oxipng freetype imagemagick librsvg svgo
 
 ```
 # Copy iOS AppleColorEmoji font to ./AppleColorEmoji_iOS.ttc
+# ...
+# Copy macOS AppleColorEmoji font to ./AppleColorEmoji_macOS.ttc
 cp /System/Library/Fonts/Apple\ Color\ Emoji.ttc ./AppleColorEmoji_macOS.ttc
 ./prepare.sh && ./apple-prepare.sh macOS && ./apple.sh HD
 ```
