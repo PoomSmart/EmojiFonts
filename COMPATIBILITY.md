@@ -10,11 +10,11 @@ This table lists the supported Unicode version and known limitations for each no
 | **FluentUI** | 15.1 | Missing family, couple, flag, skinned handshake, paperclip, technologist, and more |
 | **Google Noto Color** | 17.0 | |
 | **JoyPixels** | 16.0 | |
-| **OpenMoji** | 16.0 | Unique skin/hair color logic for couple emojis |
+| **OpenMoji** | 17.0 | Unique skin/hair color logic for couple emojis |
 | **Samsung One UI** | 17.0 | |
 | **Toss Face** | 15.0 | Missing emojis replaced with Twemoji |
 | **Twitter Twemoji** | 17.0 | |
-| **WhatsApp** | 16.0 | |
+| **WhatsApp** | 17.0 | |
 
 ## Notes
 
