@@ -8,6 +8,7 @@ update-deb.sh
 *.ttx
 *.ttc
 *.ttf
+*.otf
 
 # Project assets
 **/images/*/*.png
@@ -30,3 +31,5 @@ __pycache__/
 .venv/
 .pytest_cache/
 .ruff_cache/
+
+temp

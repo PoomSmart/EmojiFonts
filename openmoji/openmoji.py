@@ -41,7 +41,7 @@ def resolve(name, glyph, ppem):
     name = openmoji_name(name)
     path = f'images/{ppem}/{name}.png'
     if not os.path.exists(path):
-        if name.startswith('silhouette'):
+        if name.lower().startswith('silhouette'):
             name = name.lower()
         name = name.replace('.L', '.l').replace('.R', '.r')
         path = f'extra/images/{ppem}/{name}.png'

@@ -1,4 +1,9 @@
-"""Generate neutral-couple (NN) silhouette PNGs for a themed emoji font.
+"""Generate neutral-couple (NN) per-skin-combo silhouette PNGs for a themed emoji font.
+
+This module is **only** responsible for the 26 per-XY combination tiles:
+  * ``silhouette{sep}1f9d1{sep}1f91d.l.{xy}.png``  (left person gray, right in colour)
+  * ``silhouette{sep}1f9d1{sep}1f91d.r.{xy}.png``  (right person gray, left in colour)
+  * ``silhouette{sep}1f9d1{sep}1f91d.lr.png``       (both persons gray)
 
 Vendor-specific shims in ``<vendor>/extra/gen-couple-nn.py`` call :func:`main`
 with two parameters:

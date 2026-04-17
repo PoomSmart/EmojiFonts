@@ -29,6 +29,8 @@ cd ..
 echo "Resizing and optimizing PNGs..."
 ../resize.sh true true
 
+uv run python extra/gen-couple-nn.py
+
 IN_FONT_NAME=AppleColorEmoji-HD
 OUT_FONT_NAME=$NAME.ttc
 

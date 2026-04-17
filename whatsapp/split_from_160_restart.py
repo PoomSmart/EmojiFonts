@@ -36,8 +36,6 @@ HEART_MASK_DST = Path("extra/heart-mask")
 HEART_MASK_REF = Path("extra/original/heart-mask.png")
 
 ALPHA_THRESHOLD = 10
-UPPER_HEAD_Y_MAX = 66
-SIDE_PAD = 8
 # First row guaranteed to be fully below the heart mask (heart_full covers y=3–86).
 HEART_BOTTOM = 87
 # How many pixels beyond the heart mask edge are filled with the standalone filler.
@@ -305,53 +303,6 @@ def alpha_bounds(img: Image.Image, y_max: int | None = None) -> Tuple[int, int, 
                 ys.append(y)
     if not xs:
         raise ValueError("Missing alpha bounds for reference image")
-    return min(xs), max(xs), min(ys), max(ys)
-
-
-def mask_bounds_with_limit(mask: List[List[bool]], y_max: int | None = None) -> Tuple[int, int, int, int]:
-    xs: List[int] = []
-    ys: List[int] = []
-    for y, row in enumerate(mask):
-        if y_max is not None and y > y_max:
-            continue
-        for x, value in enumerate(row):
-            if value:
-                xs.append(x)
-                ys.append(y)
-    if not xs:
-        raise ValueError("Missing bounds for target mask")
-    return min(xs), max(xs), min(ys), max(ys)
-
-
-def side_head_mask(img: Image.Image, side: str) -> List[List[bool]]:
-    w, h = img.size
-    minx, maxx, _, _ = alpha_bounds(img, y_max=UPPER_HEAD_Y_MAX)
-    center_x = (minx + maxx) // 2
-    mask = [[False] * w for _ in range(h)]
-    for y in range(h):
-        if y > UPPER_HEAD_Y_MAX:
-            continue
-        for x in range(w):
-            if rgba_at(img, (x, y))[3] <= ALPHA_THRESHOLD:
-                continue
-            if side == "right" and x < center_x - SIDE_PAD:
-                continue
-            if side == "left" and x > center_x + SIDE_PAD:
-                continue
-            mask[y][x] = True
-    return mask
-
-
-def mask_bounds(mask: List[List[bool]]) -> Tuple[int, int, int, int]:
-    xs: List[int] = []
-    ys: List[int] = []
-    for y, row in enumerate(mask):
-        for x, value in enumerate(row):
-            if value:
-                xs.append(x)
-                ys.append(y)
-    if not xs:
-        raise ValueError("Missing bounds for shifted mask")
     return min(xs), max(xs), min(ys), max(ys)
 
 
@@ -681,6 +632,300 @@ def apply_rules(
     return left_out, right_out
 
 
+# ── Cross-skin couple tiles (bunny / hamsa) ───────────────────────────────────
+# WhatsApp ships these couples only as cross-skin pairs (left_tone ≠ right_tone).
+# There are no default-skin (no-tone) or same-skin versions in the WhatsApp set.
+
+# Joiners where the two persons form clearly non-overlapping pixel blobs.
+# For these, connected-component analysis assigns each blob to the tile whose
+# side it is centred on, preserving full arms without any colour heuristics.
+_CONTACT_JOINERS: set = {"1faef"}
+
+_CROSS_COUPLE_JOINERS: List[str] = ["1f430", "1faef"]
+_CROSS_COUPLE_PERSONS: List[str] = ["1f468", "1f469", "1f9d1"]
+_CROSS_COUPLE_TONES: List[str] = ["1f3fb", "1f3fc", "1f3fd", "1f3fe", "1f3ff"]
+
+
+def _find_cross_src(person: str, joiner: str, left_tone: str, right_tone: str) -> "Path | None":
+    p = COUPLE_SRC / f"emoji_u{person}_{left_tone}_200d_{joiner}_200d_{person}_{right_tone}.png"
+    return p if p.exists() else None
+
+
+def _split_by_components(img: Image.Image) -> "Tuple[Image.Image, Image.Image]":
+    """Split *img* into two tiles by connected-component analysis.
+
+    All opaque blobs are found via BFS.  Each blob is assigned to the left or
+    right output tile based on which horizontal half contains the majority of
+    its pixels.  This correctly handles arms that cross the vertical midpoint
+    without requiring any colour heuristics.
+
+    Returns ``(left_tile, right_tile)``, both the same size as *img*.
+    """
+    w, h = img.size
+    pixels = img.load()
+    visited = [[False] * w for _ in range(h)]
+    components: "List[List[Tuple[int, int]]]" = []
+
+    for sy in range(h):
+        for sx in range(w):
+            if not visited[sy][sx] and pixels[sx, sy][3] >= ALPHA_THRESHOLD:
+                comp: "List[Tuple[int, int]]" = []
+                queue = [(sx, sy)]
+                while queue:
+                    x, y = queue.pop()
+                    if visited[y][x]:
+                        continue
+                    visited[y][x] = True
+                    comp.append((x, y))
+                    for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+                        nx, ny = x + dx, y + dy
+                        if 0 <= nx < w and 0 <= ny < h and not visited[ny][nx]:
+                            if pixels[nx, ny][3] >= ALPHA_THRESHOLD:
+                                queue.append((nx, ny))
+                components.append(comp)
+
+    left_out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    right_out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    ld, rd = left_out.load(), right_out.load()
+
+    for comp in components:
+        left_count = sum(1 for x, _ in comp if x < w // 2)
+        goes_left = left_count >= len(comp) / 2
+        dst = ld if goes_left else rd
+        for x, y in comp:
+            dst[x, y] = pixels[x, y]
+
+    return left_out, right_out
+
+
+def _populate_wrestling_originals() -> None:
+    """Populate skin-tone slots in extra/original/wrestling-{male,female}/.
+
+    For each slot n (0-4, corresponding to 1f3fb-1f3ff):
+      left-{n}.png  = left  half of a source where the LEFT  person has that tone
+      right-{n}.png = right half of a source where the RIGHT person has that tone
+    Both halves are split via connected-component analysis.
+    Slot 'd' (default, no skin) is assumed to already exist.
+    """
+    tones = ["1f3fb", "1f3fc", "1f3fd", "1f3fe", "1f3ff"]
+    slots = list(enumerate(tones))  # [(0, '1f3fb'), (1, '1f3fc'), ...]
+    for gender, person in [("male", "1f468"), ("female", "1f469")]:
+        out_dir = DST / f"wrestling-{gender}"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        for slot_idx, tone in slots:
+            slot = str(slot_idx)
+            left_out = out_dir / f"left-{slot}.png"
+            right_out = out_dir / f"right-{slot}.png"
+            if left_out.exists() and right_out.exists():
+                continue
+            # Find any cross-skin source with `tone` on the LEFT → take left half
+            other = next(t for t in tones if t != tone)
+            left_src = COUPLE_SRC / f"emoji_u{person}_{tone}_200d_1faef_200d_{person}_{other}.png"
+            # Find any cross-skin source with `tone` on the RIGHT → take right half
+            right_src = COUPLE_SRC / f"emoji_u{person}_{other}_200d_1faef_200d_{person}_{tone}.png"
+            if not left_src.exists():
+                print(f"  Warning: missing {left_src.name}, skipping wrestling-{gender}/left-{slot}")
+                continue
+            if not right_src.exists():
+                print(f"  Warning: missing {right_src.name}, skipping wrestling-{gender}/right-{slot}")
+                continue
+            left_half, _ = _split_by_components(Image.open(left_src).convert("RGBA"))
+            _, right_half = _split_by_components(Image.open(right_src).convert("RGBA"))
+            left_half.save(left_out)
+            right_half.save(right_out)
+            print(f"  wrestling-{gender}/left-{slot}.png right-{slot}.png <- {left_src.name}")
+
+
+def generate_cross_couple_tiles() -> None:
+    """Generate split tiles and silhouettes for bunny/hamsa cross-skin couples.
+
+    For simple side-by-side couples (bunny ears, ``1f430``): midpoint crop.
+    For contact couples (wrestling, ``1faef``): connected-component split —
+    each person's full body (including arms that cross the midpoint) is kept
+    intact by assigning every blob to the tile it is centred on.
+
+    A single source image (left_tone=1f3fb, right_tone=1f3fc) is used for both
+    tiles; both persons are present in the same image so one open-file suffices.
+
+    Outputs go to ``extra/images/160/``::
+
+        {person}_{joiner}.{l|r}.png                    ← default skin proxy
+        {person}_{tone}_{joiner}.{l|r}.png             ← per skin
+        silhouette_{person}_{joiner}.{l|r}.png
+        silhouette_{person}_{tone}_{joiner}.{l|r}.png
+    """
+    EXTRA_IMAGES_DST.mkdir(parents=True, exist_ok=True)
+
+    for joiner in _CROSS_COUPLE_JOINERS:
+        for person in _CROSS_COUPLE_PERSONS:
+            # proxy tone used for the no-tone default output
+            proxy = _CROSS_COUPLE_TONES[0]
+            tones: "List[Tuple[str, str]]" = [("", proxy)] + [
+                (t, t) for t in _CROSS_COUPLE_TONES
+            ]
+            count = 0
+            for out_tone, src_tone in tones:
+                tone_part = f"_{out_tone}" if out_tone else ""
+
+                # Pick any cross-skin source that has src_tone on the LEFT side.
+                other_tone = next(
+                    t for t in _CROSS_COUPLE_TONES if t != src_tone
+                )
+                src = _find_cross_src(person, joiner, src_tone, other_tone)
+                if src is None:
+                    print(
+                        f"  Warning: no source for {person}+{joiner} "
+                        f"left={src_tone}, skipping"
+                    )
+                    continue
+
+                img = Image.open(src).convert("RGBA")
+                w, h = img.size
+
+                if joiner in _CONTACT_JOINERS:
+                    left_half, right_half = _split_by_components(img)
+                else:
+                    blank = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+                    left_half = blank.copy()
+                    left_half.paste(img.crop((0, 0, w // 2, h)), (0, 0))
+                    right_half = blank.copy()
+                    right_half.paste(img.crop((w // 2, 0, w, h)), (w // 2, 0))
+
+                out_l = f"{person}{tone_part}_{joiner}.l.png"
+                out_r = f"{person}{tone_part}_{joiner}.r.png"
+                left_half.save(EXTRA_IMAGES_DST / out_l)
+                right_half.save(EXTRA_IMAGES_DST / out_r)
+                to_silhouette(left_half).save(EXTRA_IMAGES_DST / f"silhouette_{out_l}")
+                to_silhouette(right_half).save(EXTRA_IMAGES_DST / f"silhouette_{out_r}")
+                count += 4
+
+            print(f"  cross tiles: {person}+{joiner} -> {count} files")
+
+
+# Standing-couple images used as source for the MORX half-person silhouette glyphs.
+_STANDING_SOURCES: Dict[str, str] = {
+    # glyph_L -> source couple filename (right half → glyph_R inferred from L→R)
+    "ML": "emoji_u1f46c.png",  # man-man: left half → ML, right half → MR
+    "WL": "emoji_u1f46d.png",  # woman-woman: left half → WL, right half → WR
+}
+
+
+def generate_person_half_tiles() -> None:
+    """Generate extra/images/160 half-person tiles from same-skin couple images.
+
+    Apple's MORX tables use standalone person half glyphs such as
+    ``u1F468.1.L`` / ``u1F468.1.R`` (man, 1f3fb skin, left/right half).
+    These map to filenames like ``1f468_1f3fb.l.png`` / ``1f468_1f3fb.r.png``.
+
+    Source images:
+      Man  (1f468): left and right halves of emoji_u1f46c_{tone}.png (man+man same skin)
+      Woman(1f469): left and right halves of emoji_u1f46d_{tone}.png (woman+woman same skin)
+    """
+    EXTRA_IMAGES_DST.mkdir(parents=True, exist_ok=True)
+    # (person_codepoint, same-skin couple filename prefix)
+    pairs = [("1f468", "1f46c"), ("1f469", "1f46d")]
+    tones = ["1f3fb", "1f3fc", "1f3fd", "1f3fe", "1f3ff"]
+
+    count = 0
+    for person, couple in pairs:
+        for tone in tones:
+            src_path = COUPLE_SRC / f"emoji_u{couple}_{tone}.png"
+            if not src_path.exists():
+                print(f"  Warning: missing {src_path}, skipping {person}_{tone} halves")
+                continue
+            img = Image.open(src_path).convert("RGBA")
+            w, h = img.size
+            blank = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+            left_half = blank.copy()
+            left_half.paste(img.crop((0, 0, w // 2, h)), (0, 0))
+            right_half = blank.copy()
+            right_half.paste(img.crop((w // 2, 0, w, h)), (w // 2, 0))
+            left_half.save(EXTRA_IMAGES_DST / f"{person}_{tone}.l.png")
+            right_half.save(EXTRA_IMAGES_DST / f"{person}_{tone}.r.png")
+            count += 2
+    print(f"  person half tiles -> {count} files in {EXTRA_IMAGES_DST}")
+
+
+def generate_handshake_tiles() -> None:
+    """Generate extra/images/160 tiles for handshake (1faf1/1faf2).
+
+    LEFT tiles  come from extra/original/handshake/left-{slot}.png
+    (slot d=default, 0=1f3fb, 1=1f3fc, 2=1f3fd, 3=1f3fe, 4=1f3ff).
+
+    RIGHT tiles are generated by splitting a cross-skin source image where
+    the RIGHT hand already carries the target skin tone, so we just take
+    the right half (handshake is a simple side-by-side composition).
+
+    Silhouettes are generated only for the default (no-skin) variant.
+    """
+    src_dir = DST / "handshake"
+    if not src_dir.exists():
+        print(f"  Warning: {src_dir} not found, skipping handshake tiles")
+        return
+    EXTRA_IMAGES_DST.mkdir(parents=True, exist_ok=True)
+
+    tones = ["1f3fb", "1f3fc", "1f3fd", "1f3fe", "1f3ff"]
+
+    # Default (no-skin) tiles from slot 'd'
+    left_d = Image.open(src_dir / "left-d.png").convert("RGBA")
+    right_d = Image.open(src_dir / "right-d.png").convert("RGBA")
+    left_d.save(EXTRA_IMAGES_DST / "1faf1.l.png")
+    right_d.save(EXTRA_IMAGES_DST / "1faf2.r.png")
+    to_silhouette(left_d).save(EXTRA_IMAGES_DST / "silhouette_1faf1.l.png")
+    to_silhouette(right_d).save(EXTRA_IMAGES_DST / "silhouette_1faf2.r.png")
+
+    # Per-skin LEFT tiles: handshake/left-{n}.png -> 1faf1_{tone}.l.png
+    # slot 0=1f3fb, 1=1f3fc, 2=1f3fd, 3=1f3fe, 4=1f3ff
+    for i, tone in enumerate(tones):
+        left_img = Image.open(src_dir / f"left-{i}.png").convert("RGBA")
+        left_img.save(EXTRA_IMAGES_DST / f"1faf1_{tone}.l.png")
+
+    # Per-skin RIGHT tiles: split source where RIGHT hand = target tone.
+    # For tone T, any emoji_u1faf1_{other}_200d_1faf2_{T}.png will do.
+    for tone in tones:
+        other = next(t for t in tones if t != tone)
+        src_path = COUPLE_SRC / f"emoji_u1faf1_{other}_200d_1faf2_{tone}.png"
+        if not src_path.exists():
+            print(f"  Warning: no source for 1faf2_{tone}.r, skipping")
+            continue
+        img = Image.open(src_path).convert("RGBA")
+        w, h = img.size
+        blank = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        right_half = blank.copy()
+        right_half.paste(img.crop((w // 2, 0, w, h)), (w // 2, 0))
+        right_half.save(EXTRA_IMAGES_DST / f"1faf2_{tone}.r.png")
+
+    count = 4 + len(tones) + len(tones)  # default+sil + left tones + right tones
+    print(f"  handshake tiles -> {count} files in {EXTRA_IMAGES_DST}")
+
+
+def generate_standing_silhouettes() -> None:
+    """Split standing-couple images to produce silhouette.ML/MR/WL/WR PNGs.
+
+    These are the half-person silhouette glyphs used by Apple's MORX subtables
+    23/24 to render person halves in gray.  WhatsApp has no SVG pipeline, so we
+    split the pre-rendered couple PNGs at the vertical midpoint.
+    """
+    EXTRA_IMAGES_DST.mkdir(parents=True, exist_ok=True)
+    for l_name, src_file in _STANDING_SOURCES.items():
+        r_name = l_name.replace("L", "R")
+        src_path = COUPLE_SRC / src_file
+        if not src_path.exists():
+            print(f"  Warning: {src_path} not found, skipping silhouette.{l_name}/{r_name}")
+            continue
+        img = Image.open(src_path).convert("RGBA")
+        w, h = img.size
+        blank = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        sil = to_silhouette(img)
+        left_half = blank.copy()
+        left_half.paste(sil.crop((0, 0, w // 2, h)), (0, 0))
+        right_half = blank.copy()
+        right_half.paste(sil.crop((w // 2, 0, w, h)), (w // 2, 0))
+        left_half.save(EXTRA_IMAGES_DST / f"silhouette.{l_name}.png")
+        right_half.save(EXTRA_IMAGES_DST / f"silhouette.{r_name}.png")
+        print(f"  silhouette.{l_name}.png / silhouette.{r_name}.png <- {src_file}")
+
+
 def generate_extra_images(heart_core: List[List[bool]]) -> None:
     """Write extra/images/160/ files consumed by whatsapp.py as fallback sources.
 
@@ -726,6 +971,23 @@ def generate_extra_images(heart_core: List[List[bool]]) -> None:
         sil_left.save(EXTRA_IMAGES_DST / f"silhouette_{gender}_{kind_code}.l.png")
         sil_right.save(EXTRA_IMAGES_DST / f"silhouette_{gender}_{kind_code}.r.png")
         print(f"{category}: wrote {len(SKINS) * 2} tiles + 2 silhouettes to {EXTRA_IMAGES_DST}")
+
+
+def resize_extra_images() -> None:
+    """Resize all extra/images/160 tiles to 40, 64, 96 for the font's other ppem strikes."""
+    src_dir = EXTRA_IMAGES_DST  # extra/images/160
+    other_sizes = [40, 64, 96]
+    count = 0
+    for size in other_sizes:
+        dst_dir = Path(f"extra/images/{size}")
+        dst_dir.mkdir(parents=True, exist_ok=True)
+        for src_path in src_dir.glob("*.png"):
+            dst_path = dst_dir / src_path.name
+            img = Image.open(src_path).convert("RGBA")
+            resized = img.resize((size, size), Image.LANCZOS)
+            resized.save(dst_path)
+            count += 1
+    print(f"  resized extra/images: {count} files across {len(other_sizes)} sizes")
 
 
 def main() -> None:
@@ -803,7 +1065,13 @@ def main() -> None:
             save_mask_png(heart_full, HEART_MASK_DST / category / f"heart-full-{slot}.png")
             print(f"{category} {slot}: {src_name} -> {left_out.name}, {right_out.name}")
 
+    generate_standing_silhouettes()
+    _populate_wrestling_originals()
+    generate_cross_couple_tiles()
+    generate_person_half_tiles()
+    generate_handshake_tiles()
     generate_extra_images(heart_core)
+    resize_extra_images()
     print("Done")
 
 
