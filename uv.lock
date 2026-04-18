@@ -346,11 +346,11 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "afdko", specifier = ">=4.0.3" },
-    { name = "fonttools", extras = ["repacker"], specifier = ">=4.61.1" },
-    { name = "pillow", specifier = ">=12.1.1" },
-    { name = "pyliblzfse", specifier = ">=0.4.1" },
-    { name = "pytest-cov", specifier = ">=7.0.0" },
+    { name = "afdko", specifier = ">=5,<6" },
+    { name = "fonttools", extras = ["repacker"], specifier = ">=4.61.1,<5" },
+    { name = "pillow", specifier = ">=12.1.1,<13" },
+    { name = "pyliblzfse", specifier = ">=0.4.1,<1" },
+    { name = "pytest-cov", specifier = ">=7.0.0,<8" },
 ]
 
 [package.metadata.requires-dev]

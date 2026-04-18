@@ -299,6 +299,7 @@ def test_inject_silhouette_injects_png(tmp_path: Path, font_copy: Path) -> None:
         assert sil.graphicType == "png "
         assert sil.imageData == png_bytes[glyph_name]
 
+
 # ---------------------------------------------------------------------------
 # EMJC round-trip tests
 # ---------------------------------------------------------------------------
@@ -443,6 +444,7 @@ def test_make_resolver_returns_image_data(tmp_path: Path) -> None:
         graphicType = "png "
 
     import os
+
     _orig = os.getcwd()
     os.chdir(tmp_path)
     try:
@@ -466,7 +468,7 @@ def test_make_resolver_skips_whitelist(tmp_path: Path) -> None:
     calls: list[str] = []
 
     resolve = shared.make_resolver(
-        vendor_name_fn=lambda n: (calls.append(n) or n),
+        vendor_name_fn=lambda n: calls.append(n) or n,
         image_paths_fn=lambda ppem, name: [],
     )
     # 'hiddenglyph' is the sole whitelist entry in emoji_constants.json

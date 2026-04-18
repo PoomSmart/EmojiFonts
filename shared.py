@@ -108,8 +108,6 @@ def norm_variant_selector(name: str):
     return name
 
 
-
-
 def base_norm_variants(name: str, with_variant_selector=False, gender_need_selector=False, convert_male=False):
     if name.startswith("silhouette_1f9d1_1f91d"):
         return name
