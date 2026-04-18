@@ -1,6 +1,7 @@
-import os
 import io
+import os
 import sys
+import threading
 from PIL import Image
 
 sys.path.append('..')
@@ -12,21 +13,11 @@ ttf = sys.argv[1]
 
 f = ttLib.TTFont(ttf)
 
-def whatsapp_name(name: str):
-    tokens = name.split('_')
-    n = []
-    for t in tokens:
-        if t[0] == 'u':
-            t = t[1:] # strip u prefix
-        n.append(t)
-    result = '_'.join(n)
-    return 'u' + result
-
-_flip_state = [False]
+_tls = threading.local()
 
 def post_special_filter_fn(name: str):
-    _flip_state[0] = name.endswith('_200d_27a1')
-    if _flip_state[0]:
+    _tls.flip = name.endswith('_200d_27a1')
+    if _tls.flip:
         return name[:-len('_200d_27a1')]
     return name
 
@@ -35,7 +26,7 @@ def image_paths_fn(ppem: int, name: str):
     return [f'images/{ppem}/emoji_{name}.png', f'extra/images/{ppem}/{no_u}.png']
 
 def post_process_fn(data: bytes):
-    if not _flip_state[0]:
+    if not getattr(_tls, 'flip', False):
         return data
     img = Image.open(io.BytesIO(data)).transpose(Image.FLIP_LEFT_RIGHT)
     buf = io.BytesIO()
@@ -45,7 +36,7 @@ def post_process_fn(data: bytes):
 prepare_strikes(f, True)
 resolve = make_resolver(
     post_special_filter_fn=post_special_filter_fn,
-    vendor_name_fn=whatsapp_name,
+    vendor_name_fn=noto_style_name,
     image_paths_fn=image_paths_fn,
     post_process_fn=post_process_fn,
 )

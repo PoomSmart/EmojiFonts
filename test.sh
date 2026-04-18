@@ -5,6 +5,7 @@ set -e
 FONT_NAME=AppleColorEmoji
 
 touch .test
+trap 'rm -f .test' EXIT
 
 cd blobmoji && uv run python blobmoji.py ../apple/${FONT_NAME}_00.ttf Blobmoji.ttf Blobmoji.G_S_U_B_.ttx && cd ..
 cd facebook && uv run python facebook.py ../apple/${FONT_NAME}_00.ttf && cd ..
@@ -15,6 +16,6 @@ cd oneui && uv run python oneui.py ../apple/${FONT_NAME}_00.ttf NotoColorEmoji.t
 cd openmoji && uv run python openmoji.py ../apple/${FONT_NAME}_00.ttf && cd ..
 cd tossface && uv run python tossface.py ../apple/${FONT_NAME}_00.ttf TossFaceFontMac.ttf TossFaceFontMac.G_S_U_B_.ttx && cd ..
 cd twemoji && uv run python twemoji.py ../apple/${FONT_NAME}_00.ttf && cd ..
-cd whatsapp && uv run python whatsapp.py ../apple/${FONT_NAME}_00.ttf NotoColorEmoji.ttf NotoColorEmoji.G_S_U_B_.ttx && cd ..
+cd whatsapp && uv run python whatsapp.py ../apple/${FONT_NAME}_00.ttf && cd ..
 
 rm .test

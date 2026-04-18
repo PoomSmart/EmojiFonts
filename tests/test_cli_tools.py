@@ -363,30 +363,43 @@ import importlib.util as _ilu
 
 
 def _load_vendor(rel_path: str):
-    """Import a vendor .py module without executing its top-level script code."""
+    """Import a vendor .py module without executing its top-level script code.
+
+    Vendor files call ``ttLib.TTFont(sys.argv[1])`` at module level, before
+    any function definitions.  We mock TTFont so the call succeeds and the
+    rest of the module (the functions we want to test) is executed normally.
+    """
+    from unittest.mock import MagicMock
+    from fontTools import ttLib as _ttLib
+
+    # Use a unique name per path so sys.modules caching never returns a stale module.
+    mod_name = f"_vendor_{rel_path.replace('/', '_').replace('.py', '')}"
     spec = _ilu.spec_from_file_location(
-        "_vendor_mod",
+        mod_name,
         str(Path(__file__).resolve().parents[1] / rel_path),
     )
     mod = _ilu.module_from_spec(spec)  # type: ignore[arg-type]
-    # Patch sys.argv so ttLib.TTFont() is never called at import time.
-    _orig = sys.argv[:]
-    sys.argv = ["test", "dummy.ttf"]
+
+    _orig_argv = sys.argv[:]
+    _orig_ttfont = _ttLib.TTFont
+    # Some vendors (joypixels) read sys.argv[2]; supply a dummy style value.
+    sys.argv = ["test", "dummy.ttf", "default"]
+    _ttLib.TTFont = MagicMock(return_value=MagicMock())
     try:
         spec.loader.exec_module(mod)  # type: ignore[union-attr]
     except Exception:
         pass
     finally:
-        sys.argv = _orig
+        sys.argv = _orig_argv
+        _ttLib.TTFont = _orig_ttfont
     return mod
 
 
-def test_noto_name_strips_u_prefix() -> None:
-    """noto_name should prepend a single 'u' and strip per-token 'u' prefixes."""
-    # noto-emoji.py defines noto_name at module level
-    mod = _load_vendor("noto-emoji/noto-emoji.py")
-    assert mod.noto_name("1f600") == "u1f600"
-    assert mod.noto_name("1f1e6_1f1e8") == "u1f1e6_1f1e8"
+def test_noto_style_name_strips_u_prefix() -> None:
+    """noto_style_name in shared.py should prepend a single 'u' and strip per-token 'u' prefixes."""
+    assert shared.noto_style_name("1f600") == "u1f600"
+    assert shared.noto_style_name("1f1e6_1f1e8") == "u1f1e6_1f1e8"
+    assert shared.noto_style_name("u1f468_u200d_u1f469") == "u1f468_200d_1f469"
 
 
 def test_twitter_name_replaces_underscores() -> None:

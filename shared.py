@@ -66,6 +66,17 @@ def native_norm_name(name: str):
     return name
 
 
+def noto_style_name(name: str):
+    """Convert a normalised emoji name to Noto/WhatsApp/Blobmoji file-name style.
+
+    Strips any per-token leading ``u`` prefix, rejoins with ``_``, then
+    prepends a single ``u`` — e.g. ``u1f468_u200d_u1f469`` → ``u1f468_200d_1f469``.
+    """
+    tokens = name.split("_")
+    stripped = [t[1:] if t.startswith("u") else t for t in tokens]
+    return "u" + "_".join(stripped)
+
+
 def norm_fam(name: str):
     if name in neutral_fams:
         return "_200d_".join(name.split("_"))
@@ -108,7 +119,7 @@ def norm_variant_selector(name: str):
     return name
 
 
-def base_norm_variants(name: str, with_variant_selector=False, gender_need_selector=False, convert_male=False):
+def base_norm_variants(name: str, with_variant_selector=False, gender_need_selector=False):
     if name.startswith("silhouette_1f9d1_1f91d"):
         return name
     v = "_fe0f" if with_variant_selector else ""
