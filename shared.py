@@ -1,484 +1,31 @@
+import json as _json
+import os
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path as _Path
 
 from fontTools import ttLib
 
 debug = False
 
-hairs = ["1f9b0", "1f9b1", "1f9b2", "1f9b3"]
-
-# and hairs
-professions = [
-    "1f33e",
-    "1f373",
-    "1f37c",
-    "1f393",
-    "1f3a4",
-    "1f3a8",
-    "1f3eb",
-    "1f3ed",
-    "1f4bb",
-    "1f4bc",
-    "1f527",
-    "1f52c",
-    "1f680",
-    "1f692",
-    "1f9af",
-    "1f9bc",
-    "1f9bd",
-    "1fa70",
-    "1f430",
-    "1faef",
-] + hairs
-directions = ["2194", "2195", "27a1"]
-heart = "2764"
-kiss = "1f48b"
-modifiers = ["2695", "2696", "2708"]
-gender_selectors = {"m": "2642", "w": "2640"}
-skins = {1: "1f3fb", 2: "1f3fc", 3: "1f3fd", 4: "1f3fe", 5: "1f3ff"}
+_data = _json.loads((_Path(__file__).parent / "data" / "emoji_constants.json").read_text())
+hairs: list = _data["hairs"]
+professions: list = _data["professions"]
+directions: list = _data["directions"]
+modifiers: list = _data["modifiers"]
+gender_selectors: dict = _data["gender_selectors"]
+skins: dict = {int(k): v for k, v in _data["skins"].items()}
+neutral_fams: list = _data["neutral_fams"]
+flags: list = _data["flags"]
+with_variants: set = set(_data["with_variants"])
+u15_1: list = _data["u15_1"]
+u17_0: list = _data["u17_0"]
+whitelist: set = set(_data["whitelist"])
+signs: list = _data["signs"]
+gender_with_selector: list = _data["gender_with_selector"]
 
 man, woman, neutral = "1f468", "1f469", "1f9d1"
 boy, girl = "1f466", "1f467"
 persons = {"m": man, "w": woman, "b": boy, "g": girl, "": ""}
-neutral_fams = ["1f9d1_1f9d2", "1f9d1_1f9d2_1f9d2", "1f9d1_1f9d1_1f9d2_1f9d2"]
-
-flags = [
-    "1f1e6",
-    "1f1e7",
-    "1f1e8",
-    "1f1e9",
-    "1f1ea",
-    "1f1eb",
-    "1f1ec",
-    "1f1ed",
-    "1f1ee",
-    "1f1ef",
-    "1f1f0",
-    "1f1f1",
-    "1f1f2",
-    "1f1f3",
-    "1f1f4",
-    "1f1f5",
-    "1f1f6",
-    "1f1f7",
-    "1f1f8",
-    "1f1f9",
-    "1f1fa",
-    "1f1fb",
-    "1f1fc",
-    "1f1fd",
-    "1f1fe",
-    "1f1ff",
-    "1f3f4_e0067",
-]
-
-with_variants = {
-    "00a9",
-    "00ae",
-    "203c",
-    "2049",
-    "2122",
-    "2139",
-    "2194",
-    "2195",
-    "2196",
-    "2197",
-    "2198",
-    "2199",
-    "21a9",
-    "21aa",
-    "2328",
-    "23cf",
-    "23ed",
-    "23ee",
-    "23ef",
-    "23f1",
-    "23f2",
-    "23f8",
-    "23f9",
-    "23fa",
-    "24c2",
-    "25aa",
-    "25ab",
-    "25b6",
-    "25c0",
-    "25fb",
-    "25fc",
-    "2600",
-    "2601",
-    "2602",
-    "2603",
-    "2604",
-    "2611",
-    "2618",
-    "261d",
-    "2620",
-    "2622",
-    "2623",
-    "2626",
-    "2638",
-    "2639",
-    "2660",
-    "2663",
-    "2665",
-    "2666",
-    "2668",
-    "2692",
-    "2694",
-    "2696",
-    "2697",
-    "2699",
-    "26a0",
-    "26a7",
-    "26b0",
-    "26b1",
-    "26c8",
-    "26cf",
-    "26d1",
-    "26d3",
-    "26e9",
-    "26f0",
-    "26f1",
-    "26f4",
-    "26f7",
-    "26f8",
-    "26f9",
-    "27a1",
-    "260e",
-    "262a",
-    "262e",
-    "262f",
-    "263a",
-    "265f",
-    "267b",
-    "267e",
-    "269b",
-    "269c",
-    "2702",
-    "2708",
-    "2709",
-    "270c",
-    "270d",
-    "270f",
-    "2712",
-    "2714",
-    "2716",
-    "271d",
-    "2721",
-    "2733",
-    "2734",
-    "2744",
-    "2747",
-    "2763",
-    "2764",
-    "2934",
-    "2935",
-    "2b05",
-    "2b06",
-    "2b07",
-    "303d",
-    "3030",
-    "3297",
-    "3299",
-    "1f170",
-    "1f171",
-    "1f17e",
-    "1f17f",
-    "1f202",
-    "1f237",
-    "1f321",
-    "1f324",
-    "1f325",
-    "1f326",
-    "1f327",
-    "1f328",
-    "1f329",
-    "1f32a",
-    "1f32b",
-    "1f32c",
-    "1f336",
-    "1f37d",
-    "1f396",
-    "1f397",
-    "1f399",
-    "1f39a",
-    "1f39b",
-    "1f39e",
-    "1f39f",
-    "1f3cb",
-    "1f3cc",
-    "1f3cd",
-    "1f3ce",
-    "1f3d4",
-    "1f3d5",
-    "1f3d6",
-    "1f3d7",
-    "1f3d8",
-    "1f3d9",
-    "1f3da",
-    "1f3db",
-    "1f3dc",
-    "1f3dd",
-    "1f3de",
-    "1f3df",
-    "1f3f3",
-    "1f3f5",
-    "1f3f7",
-    "1f43f",
-    "1f441",
-    "1f4fd",
-    "1f549",
-    "1f54a",
-    "1f56f",
-    "1f570",
-    "1f573",
-    "1f574",
-    "1f575",
-    "1f576",
-    "1f577",
-    "1f578",
-    "1f579",
-    "1f587",
-    "1f58a",
-    "1f58b",
-    "1f58c",
-    "1f58d",
-    "1f590",
-    "1f5a5",
-    "1f5a8",
-    "1f5b1",
-    "1f5b2",
-    "1f5bc",
-    "1f5c2",
-    "1f5c3",
-    "1f5c4",
-    "1f5d1",
-    "1f5d2",
-    "1f5d3",
-    "1f5dc",
-    "1f5dd",
-    "1f5de",
-    "1f5e1",
-    "1f5e3",
-    "1f5e8",
-    "1f5ef",
-    "1f5f3",
-    "1f5fa",
-    "1f6cb",
-    "1f6cd",
-    "1f6ce",
-    "1f6cf",
-    "1f6e0",
-    "1f6e1",
-    "1f6e2",
-    "1f6e3",
-    "1f6e4",
-    "1f6e5",
-    "1f6e9",
-    "1f6f0",
-    "1f6f3",
-}
-
-u15_1 = [
-    "26d3_200d_1f4a5",
-    "1f344_200d_1f7eb",
-    "1f34b_200d_1f7e9",
-    "1f426_200d_1f525",
-    "1f642_200d_2194",
-    "1f642_200d_2195",
-    "1f9d1_200d_1f9d1_200d_1f9d2_200d_1f9d2",
-    "1f9d1_200d_1f9d2",
-    "1f9d1_200d_1f9d2_200d_1f9d2",
-]
-
-u17_0 = [
-    "1f46f_1f3fb",
-    "1f46f_1f3fc",
-    "1f46f_1f3fd",
-    "1f46f_1f3fe",
-    "1f46f_1f3ff",
-    "1f46f_1f3fb_200d_2640_fe0f",
-    "1f46f_1f3fc_200d_2640_fe0f",
-    "1f46f_1f3fd_200d_2640_fe0f",
-    "1f46f_1f3fe_200d_2640_fe0f",
-    "1f46f_1f3ff_200d_2640_fe0f",
-    "1f46f_1f3fb_200d_2642_fe0f",
-    "1f46f_1f3fc_200d_2642_fe0f",
-    "1f46f_1f3fd_200d_2642_fe0f",
-    "1f46f_1f3fe_200d_2642_fe0f",
-    "1f46f_1f3ff_200d_2642_fe0f",
-    "1f6d8",
-    "1f93c_1f3fb",
-    "1f93c_1f3fc",
-    "1f93c_1f3fd",
-    "1f93c_1f3fe",
-    "1f93c_1f3ff",
-    "1f93c_1f3fb_200d_2640_fe0f",
-    "1f93c_1f3fc_200d_2640_fe0f",
-    "1f93c_1f3fd_200d_2640_fe0f",
-    "1f93c_1f3fe_200d_2640_fe0f",
-    "1f93c_1f3ff_200d_2640_fe0f",
-    "1f93c_1f3fb_200d_2642_fe0f",
-    "1f93c_1f3fc_200d_2642_fe0f",
-    "1f93c_1f3fd_200d_2642_fe0f",
-    "1f93c_1f3fe_200d_2642_fe0f",
-    "1f93c_1f3ff_200d_2642_fe0f",
-    "1f9d1_200d_1fa70",
-    "1f9d1_1f3fb_200d_1fa70",
-    "1f9d1_1f3fc_200d_1fa70",
-    "1f9d1_1f3fd_200d_1fa70",
-    "1f9d1_1f3fe_200d_1fa70",
-    "1f9d1_1f3ff_200d_1fa70",
-    "1fa89",
-    "1fa8a",
-    "1fa8e",
-    "1fa8f",
-    "1fabe",
-    "1fac6",
-    "1fac8",
-    "1facd",
-    "1fadc",
-    "1fadf",
-    "1fae9",
-    "1faea",
-    "1faef",
-    "1f468_1f430.l",
-    "1f468_1f430.r",
-    "1f468_1f3fb_1f430.l",
-    "1f468_1f3fb_1f430.r",
-    "1f468_1f3fc_1f430.l",
-    "1f468_1f3fc_1f430.r",
-    "1f468_1f3fd_1f430.l",
-    "1f468_1f3fd_1f430.r",
-    "1f468_1f3fe_1f430.l",
-    "1f468_1f3fe_1f430.r",
-    "1f468_1f3ff_1f430.l",
-    "1f468_1f3ff_1f430.r",
-    "1f468_1faef.l",
-    "1f468_1faef.r",
-    "1f468_1f3fb_1faef.l",
-    "1f468_1f3fb_1faef.r",
-    "1f468_1f3fc_1faef.l",
-    "1f468_1f3fc_1faef.r",
-    "1f468_1f3fd_1faef.l",
-    "1f468_1f3fd_1faef.r",
-    "1f468_1f3fe_1faef.l",
-    "1f468_1f3fe_1faef.r",
-    "1f468_1f3ff_1faef.l",
-    "1f468_1f3ff_1faef.r",
-    "1f469_1f430.l",
-    "1f469_1f430.r",
-    "1f469_1f3fb_1f430.l",
-    "1f469_1f3fb_1f430.r",
-    "1f469_1f3fc_1f430.l",
-    "1f469_1f3fc_1f430.r",
-    "1f469_1f3fd_1f430.l",
-    "1f469_1f3fd_1f430.r",
-    "1f469_1f3fe_1f430.l",
-    "1f469_1f3fe_1f430.r",
-    "1f469_1f3ff_1f430.l",
-    "1f469_1f3ff_1f430.r",
-    "1f469_1faef.l",
-    "1f469_1faef.r",
-    "1f469_1f3fb_1faef.l",
-    "1f469_1f3fb_1faef.r",
-    "1f469_1f3fc_1faef.l",
-    "1f469_1f3fc_1faef.r",
-    "1f469_1f3fd_1faef.l",
-    "1f469_1f3fd_1faef.r",
-    "1f469_1f3fe_1faef.l",
-    "1f469_1f3fe_1faef.r",
-    "1f469_1f3ff_1faef.l",
-    "1f469_1f3ff_1faef.r",
-    "1f9d1_1f430.l",
-    "1f9d1_1f430.r",
-    "1f9d1_1f3fb_1f430.l",
-    "1f9d1_1f3fb_1f430.r",
-    "1f9d1_1f3fc_1f430.l",
-    "1f9d1_1f3fc_1f430.r",
-    "1f9d1_1f3fd_1f430.l",
-    "1f9d1_1f3fd_1f430.r",
-    "1f9d1_1f3fe_1f430.l",
-    "1f9d1_1f3fe_1f430.r",
-    "1f9d1_1f3ff_1f430.l",
-    "1f9d1_1f3ff_1f430.r",
-    "1f9d1_1faef.l",
-    "1f9d1_1faef.r",
-    "1f9d1_1f3fb_1faef.l",
-    "1f9d1_1f3fb_1faef.r",
-    "1f9d1_1f3fc_1faef.l",
-    "1f9d1_1f3fc_1faef.r",
-    "1f9d1_1f3fd_1faef.l",
-    "1f9d1_1f3fd_1faef.r",
-    "1f9d1_1f3fe_1faef.l",
-    "1f9d1_1f3fe_1faef.r",
-    "1f9d1_1f3ff_1faef.l",
-    "1f9d1_1f3ff_1faef.r",
-    "silhouette_1f468_1f430.l",
-    "silhouette_1f468_1f430.r",
-    "silhouette_1f468_1f3fb_1f430.l",
-    "silhouette_1f468_1f3fb_1f430.r",
-    "silhouette_1f468_1f3fc_1f430.l",
-    "silhouette_1f468_1f3fc_1f430.r",
-    "silhouette_1f468_1f3fd_1f430.l",
-    "silhouette_1f468_1f3fd_1f430.r",
-    "silhouette_1f468_1f3fe_1f430.l",
-    "silhouette_1f468_1f3fe_1f430.r",
-    "silhouette_1f468_1f3ff_1f430.l",
-    "silhouette_1f468_1f3ff_1f430.r",
-    "silhouette_1f468_1faef.l",
-    "silhouette_1f468_1faef.r",
-    "silhouette_1f469_1f430.l",
-    "silhouette_1f469_1f430.r",
-    "silhouette_1f469_1f3fb_1f430.l",
-    "silhouette_1f469_1f3fb_1f430.r",
-    "silhouette_1f469_1f3fc_1f430.l",
-    "silhouette_1f469_1f3fc_1f430.r",
-    "silhouette_1f469_1f3fd_1f430.l",
-    "silhouette_1f469_1f3fd_1f430.r",
-    "silhouette_1f469_1f3fe_1f430.l",
-    "silhouette_1f469_1f3fe_1f430.r",
-    "silhouette_1f469_1f3ff_1f430.l",
-    "silhouette_1f469_1f3ff_1f430.r",
-    "silhouette_1f469_1faef.l",
-    "silhouette_1f469_1faef.r",
-    "silhouette_1f469_1f3fb_1faef.l",
-    "silhouette_1f469_1f3fb_1faef.r",
-    "silhouette_1f469_1f3fc_1faef.l",
-    "silhouette_1f469_1f3fc_1faef.r",
-    "silhouette_1f469_1f3fd_1faef.l",
-    "silhouette_1f469_1f3fd_1faef.r",
-    "silhouette_1f469_1f3fe_1faef.l",
-    "silhouette_1f469_1f3fe_1faef.r",
-    "silhouette_1f469_1f3ff_1faef.l",
-    "silhouette_1f469_1f3ff_1faef.r",
-    "silhouette_1f9d1_1f430.l",
-    "silhouette_1f9d1_1f430.r",
-    "silhouette_1f9d1_1f3fb_1f430.l",
-    "silhouette_1f9d1_1f3fb_1f430.r",
-    "silhouette_1f9d1_1f3fc_1f430.l",
-    "silhouette_1f9d1_1f3fc_1f430.r",
-    "silhouette_1f9d1_1f3fd_1f430.l",
-    "silhouette_1f9d1_1f3fd_1f430.r",
-    "silhouette_1f9d1_1f3fe_1f430.l",
-    "silhouette_1f9d1_1f3fe_1f430.r",
-    "silhouette_1f9d1_1f3ff_1f430.l",
-    "silhouette_1f9d1_1f3ff_1f430.r",
-    "silhouette_1f9d1_1faef.l",
-    "silhouette_1f9d1_1faef.r",
-    "silhouette_1f9d1_1f3fb_1faef.l",
-    "silhouette_1f9d1_1f3fb_1faef.r",
-    "silhouette_1f9d1_1f3fc_1faef.l",
-    "silhouette_1f9d1_1f3fc_1faef.r",
-    "silhouette_1f9d1_1f3fd_1faef.l",
-    "silhouette_1f9d1_1f3fd_1faef.r",
-    "silhouette_1f9d1_1f3fe_1faef.l",
-    "silhouette_1f9d1_1f3fe_1faef.r",
-    "silhouette_1f9d1_1f3ff_1faef.l",
-    "silhouette_1f9d1_1f3ff_1faef.r",
-]
-
-whitelist = {"hiddenglyph"}
-signs = ["00a9", "00ae"]
 
 
 def m_print(string: str):
@@ -561,7 +108,6 @@ def norm_variant_selector(name: str):
     return name
 
 
-gender_with_selector = ["26f9", "1f3cb", "1f3cc", "1f3fb", "1f575"]
 
 
 def base_norm_variants(name: str, with_variant_selector=False, gender_need_selector=False, convert_male=False):
@@ -687,3 +233,63 @@ def prepare_strikes(f: ttLib.TTFont, hd=False):
         raise Exception("No 160 strike")
     if not hd and 160 in f["sbix"].strikes:
         f["sbix"].strikes.pop(160)
+
+
+def make_resolver(
+    *,
+    norm_name_fn=None,
+    extra_whitelist_fn=None,
+    pre_norm_filter_fn=None,
+    skip_if_multi=False,
+    with_variant_selector=False,
+    gender_need_selector=False,
+    norm_special_fn=None,
+    post_special_filter_fn=None,
+    vendor_name_fn,
+    image_paths_fn,
+    post_process_fn=None,
+):
+    """Factory that returns a resolve(name, glyph, ppem) function for sbix strike processing.
+
+    The returned resolver applies the shared normalisation chain and delegates vendor-specific
+    naming and path lookup to the provided callbacks.
+    """
+    _norm_name = norm_name_fn or base_norm_name
+    _norm_special = norm_special_fn or (lambda n: base_norm_special(n, with_variant_selector))
+
+    def resolve(name, glyph, ppem):
+        if glyph.graphicType != "png ":
+            return None
+        name = _norm_name(name)
+        if base_is_whitelist(name):
+            return None
+        if extra_whitelist_fn is not None and extra_whitelist_fn(name):
+            return None
+        if pre_norm_filter_fn is not None:
+            name = pre_norm_filter_fn(name)
+            if name is None:
+                return None
+        o_name = name
+        name = norm_fam(name)
+        name = norm_dual(name)
+        if name is None:
+            return None
+        if skip_if_multi and name != o_name:
+            m_print(f"{name} is missing")
+            return None
+        name = base_norm_variants(name, with_variant_selector, gender_need_selector)
+        name = _norm_special(name)
+        if post_special_filter_fn is not None:
+            name = post_special_filter_fn(name)
+            if name is None:
+                return None
+        name = vendor_name_fn(name)
+        for path in image_paths_fn(ppem, name):
+            if os.path.exists(path):
+                data = get_image_data(path)
+                if post_process_fn is not None:
+                    data = post_process_fn(data)
+                return data
+        return None
+
+    return resolve

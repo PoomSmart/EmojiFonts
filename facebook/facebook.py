@@ -19,29 +19,22 @@ def norm_name(name: str):
 def facebook_name(name: str):
     return name.replace('_', '-')
 
+def image_paths_fn(ppem: int, name: str):
+    underscored = name.replace('-', '_')
+    if name.startswith('1f491') or name.startswith('1f48f'):
+        return [f'extra/images/{ppem}/{name}.png', f'extra/images/{ppem}/{underscored}.png']
+    return [
+        f'images/{ppem}/{name}.png',
+        f'extra/images/{ppem}/{name}.png',
+        f'extra/images/{ppem}/{underscored}.png',
+    ]
+
 prepare_strikes(f)
-
-def resolve(name, glyph, ppem):
-    if glyph.graphicType != 'png ':
-        return None
-    name = norm_name(name)
-    if base_is_whitelist(name):
-        return None
-    name = norm_fam(name)
-    name = norm_dual(name)
-    if name is None:
-        return None
-    name = base_norm_variants(name)
-    name = base_norm_special(name)
-    name = facebook_name(name)
-    path = f'images/{ppem}/{name}.png'
-    if not os.path.exists(path) or name.startswith('1f491') or name.startswith('1f48f'):
-        path = f'extra/images/{ppem}/{name}.png'
-        if not os.path.exists(path):
-            name = name.replace('-', '_')
-            path = f'extra/images/{ppem}/{name}.png'
-    return get_image_data(path)
-
+resolve = make_resolver(
+    norm_name_fn=norm_name,
+    vendor_name_fn=facebook_name,
+    image_paths_fn=image_paths_fn,
+)
 process_strikes(f['sbix'].strikes, resolve)
 
 if not os.path.exists('../.test'):

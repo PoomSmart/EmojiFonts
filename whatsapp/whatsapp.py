@@ -22,38 +22,33 @@ def whatsapp_name(name: str):
     result = '_'.join(n)
     return 'u' + result
 
+_flip_state = [False]
+
+def post_special_filter_fn(name: str):
+    _flip_state[0] = name.endswith('_200d_27a1')
+    if _flip_state[0]:
+        return name[:-len('_200d_27a1')]
+    return name
+
+def image_paths_fn(ppem: int, name: str):
+    no_u = name[1:] if name.startswith('u') else name
+    return [f'images/{ppem}/emoji_{name}.png', f'extra/images/{ppem}/{no_u}.png']
+
+def post_process_fn(data: bytes):
+    if not _flip_state[0]:
+        return data
+    img = Image.open(io.BytesIO(data)).transpose(Image.FLIP_LEFT_RIGHT)
+    buf = io.BytesIO()
+    img.save(buf, format='PNG')
+    return buf.getvalue()
+
 prepare_strikes(f, True)
-
-def resolve(name, glyph, ppem):
-    if glyph.graphicType != 'png ':
-        return None
-    name = base_norm_name(name)
-    if base_is_whitelist(name):
-        return None
-    name = norm_fam(name)
-    name = norm_dual(name)
-    if name is None:
-        return None
-    name = base_norm_variants(name)
-    name = base_norm_special(name)
-    flipped = False
-    if name.endswith('_200d_27a1'):
-        flipped = True
-        name = name[:-len('_200d_27a1')]
-    name = whatsapp_name(name)
-    path = f'images/{ppem}/emoji_{name}.png'
-    if not os.path.exists(path):
-        name = name[1:] if name[0] == 'u' else name
-        path = f'extra/images/{ppem}/{name}.png'
-    data = get_image_data(path)
-    if flipped:
-        img = Image.open(io.BytesIO(data))
-        img = img.transpose(Image.FLIP_LEFT_RIGHT)
-        buf = io.BytesIO()
-        img.save(buf, format='PNG')
-        data = buf.getvalue()
-    return data
-
+resolve = make_resolver(
+    post_special_filter_fn=post_special_filter_fn,
+    vendor_name_fn=whatsapp_name,
+    image_paths_fn=image_paths_fn,
+    post_process_fn=post_process_fn,
+)
 process_strikes(f['sbix'].strikes, resolve)
 
 if not os.path.exists('../.test'):

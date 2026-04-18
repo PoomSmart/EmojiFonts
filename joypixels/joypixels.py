@@ -21,30 +21,17 @@ def joypixels_name(name: str):
         n.append(token)
     return '-'.join(n)
 
+def image_paths_fn(ppem: int, name: str):
+    underscored = name.replace('-', '_')
+    return [f'{style}/images/{ppem}/{name}.png', f'extra/images/{ppem}/{underscored}.png']
+
 prepare_strikes(f)
-
-def resolve(name, glyph, ppem):
-    if glyph.graphicType != 'png ':
-        return None
-    name = base_norm_name(name)
-    if base_is_whitelist(name):
-        return None
-    name = norm_fam(name)
-    name = norm_dual(name)
-    if name is None:
-        return None
-    name = base_norm_variants(name, True, True)
-    name = base_norm_special(name, True)
-    if name in u17_0:
-        m_print(f'{name} is missing')
-        return None
-    name = joypixels_name(name)
-    path = f'{style}/images/{ppem}/{name}.png'
-    if not os.path.exists(path):
-        name = name.replace('-', '_')
-        path = f'extra/images/{ppem}/{name}.png'
-    return get_image_data(path)
-
+resolve = make_resolver(
+    with_variant_selector=True,
+    gender_need_selector=True,
+    vendor_name_fn=joypixels_name,
+    image_paths_fn=image_paths_fn,
+)
 process_strikes(f['sbix'].strikes, resolve)
 
 if not os.path.exists('../.test'):

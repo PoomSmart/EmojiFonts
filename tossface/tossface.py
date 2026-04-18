@@ -14,37 +14,27 @@ f = ttLib.TTFont(ttf)
 lig = Lig(f, bttf)
 lig.build()
 
-prepare_strikes(f)
-
-def resolve(name, glyph, ppem):
-    if glyph.graphicType != 'png ':
-        return None
-    name = base_norm_name(name)
-    if base_is_whitelist(name):
-        return None
-    name = norm_fam(name)
-    name = norm_dual(name)
-    if name is None:
-        return None
-    name = base_norm_variants(name)
-    name = base_norm_special(name)
+def post_special_filter_fn(name: str):
     if name in u15_1 or name.endswith('_200d_27a1'):
         m_print(f'{name} is missing')
         return None
-    name = lig.norm_name(name)
-    name = lig.get_glyph_name(name)
-    path = f'images/{ppem}/{name}.png'
-    if not os.path.exists(path):
-        name = native_norm_name(name)
-        # FIXME: Remove twemoji workaround
-        path = f'../twemoji/images/{ppem}/{name}.png'
-        if not os.path.exists(path):
-            path = f'../twemoji/extra/images/{ppem}/{name}.png'
-            if not os.path.exists(path):
-                name = name.replace('_', '-')
-                path = f'../twemoji/extra/images/{ppem}/{name}.png'
-    return get_image_data(path)
+    return name
 
+def image_paths_fn(ppem: int, name: str):
+    native = native_norm_name(name)
+    return [
+        f'images/{ppem}/{name}.png',
+        f'../twemoji/images/{ppem}/{native}.png',
+        f'../twemoji/extra/images/{ppem}/{native}.png',
+        f'../twemoji/extra/images/{ppem}/{native.replace("_", "-")}.png',
+    ]
+
+prepare_strikes(f)
+resolve = make_resolver(
+    post_special_filter_fn=post_special_filter_fn,
+    vendor_name_fn=lambda name: lig.get_glyph_name(lig.norm_name(name)),
+    image_paths_fn=image_paths_fn,
+)
 process_strikes(f['sbix'].strikes, resolve)
 
 if not os.path.exists('../.test'):

@@ -20,27 +20,12 @@ def noto_name(name: str):
     result = '_'.join(n)
     return 'u' + result
 
+def image_paths_fn(ppem: int, name: str):
+    no_u = name[1:] if name.startswith('u') else name
+    return [f'images/{ppem}/emoji_{name}.png', f'extra/images/{ppem}/{no_u}.png']
+
 prepare_strikes(f, True)
-
-def resolve(name, glyph, ppem):
-    if glyph.graphicType != 'png ':
-        return None
-    name = base_norm_name(name)
-    if base_is_whitelist(name):
-        return None
-    name = norm_fam(name)
-    name = norm_dual(name)
-    if name is None:
-        return None
-    name = base_norm_variants(name)
-    name = base_norm_special(name)
-    name = noto_name(name)
-    path = f'images/{ppem}/emoji_{name}.png'
-    if not os.path.exists(path):
-        name = name[1:] if name[0] == 'u' else name
-        path = f'extra/images/{ppem}/{name}.png'
-    return get_image_data(path)
-
+resolve = make_resolver(vendor_name_fn=noto_name, image_paths_fn=image_paths_fn)
 process_strikes(f['sbix'].strikes, resolve)
 
 if not os.path.exists('../.test'):
