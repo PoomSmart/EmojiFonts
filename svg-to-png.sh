@@ -5,6 +5,7 @@
 
 set -e
 trap 'kill $(jobs -p) 2>/dev/null; exit 130' INT TERM
+trap 'echo "Error in $(basename "$0") at line $LINENO" >&2' ERR
 
 SOURCE="$1"
 SIZE="$2"
@@ -12,6 +13,6 @@ OUTPUT="${3:-images/$SIZE}"
 
 export SIZE OUTPUT
 find "$SOURCE" -type f -name '*.svg' -print0 | \
-    xargs -0 -P "$(sysctl -n hw.logicalcpu)" -I {} bash -c \
+    xargs -0 -P "$(nproc 2>/dev/null || sysctl -n hw.logicalcpu)" -I {} bash -c \
     'fname=$(basename "$1"); rsvg-convert -a -h "$SIZE" "$1" -o "$OUTPUT/${fname/.svg/.png}"' \
     _ {}

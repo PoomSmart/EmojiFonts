@@ -2,6 +2,7 @@
 
 set -e
 trap 'kill $(jobs -p) 2>/dev/null; exit 130' INT TERM
+trap 'echo "Error in $(basename "$0") at line $LINENO" >&2' ERR
 
 NAME=apple
 KIND=$1
@@ -41,7 +42,7 @@ done
 for pid in "${sil_pids[@]}"; do wait "$pid"; done
 
 echo "Optimizing silhouette PNGs..."
-JOBS=$(sysctl -n hw.logicalcpu)
+JOBS=$(nproc 2>/dev/null || sysctl -n hw.logicalcpu)
 find "$ASSETS" -maxdepth 2 -name 'silhouette.u1F9D1.u1F91D.*.png' -print0 | \
     xargs -0 -P "$JOBS" -n 1 pngquant --skip-if-larger -f --ext .png || true
 find "$ASSETS" -maxdepth 2 -name 'silhouette.u1F9D1.u1F91D.*.png' -print0 | \

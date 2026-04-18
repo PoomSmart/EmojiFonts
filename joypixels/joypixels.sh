@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+trap 'echo "Error in $(basename "$0") at line $LINENO" >&2' ERR
 
 MOD=$1
 if [ -z $MOD ]; then

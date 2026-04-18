@@ -2,6 +2,7 @@
 
 set -e
 trap 'kill $(jobs -p) 2>/dev/null; exit 130' INT TERM
+trap 'echo "Error in $(basename "$0") at line $LINENO" >&2' ERR
 
 NAME=apple
 MOD=$1
