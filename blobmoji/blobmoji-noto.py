@@ -52,39 +52,23 @@ noto = [
     'u1f9d1_1f3ff_200d_1f9b2',
 ]
 
+def image_paths_fn(ppem: int, name: str):
+    paths = [f'images/{ppem}/emoji_{name}.png']
+    corrected = corrections.get(name, name)
+    if corrected != name:
+        paths.append(f'images/{ppem}/emoji_{corrected}.png')
+    if len(name.split('_')) == 2 or name == 'u1f3f3_fe0f_200d_26a7_fe0f':
+        paths.append(f'images/{ppem}/emoji_{name.replace("_fe0f", "")}.png')
+    no_u = name[1:] if name.startswith('u') else name
+    paths.append(f'extra/images/{ppem}/{no_u}.png')
+    paths.append(f'../noto-emoji/extra/images/{ppem}/{no_u}.png')
+    return paths
+
 prepare_strikes(f, True)
-
-def resolve(name, glyph, ppem):
-    if glyph.graphicType != 'png ':
-        return None
-    name = base_norm_name(name)
-    if base_is_whitelist(name):
-        return None
-    name = norm_fam(name)
-    name = norm_dual(name)
-    if name is None:
-        return None
-    name = base_norm_variants(name)
-    name = base_norm_special(name)
-    # name = norm_variant_selector(name)
-    name = blobmoji_name(name)
-    path = f'images/{ppem}/emoji_{name}.png'
-    if not os.path.exists(path):
-        if name in corrections:
-            name = corrections[name]
-            path = f'images/{ppem}/emoji_{name}.png'
-        if len(name.split('_')) == 2 or name == 'u1f3f3_fe0f_200d_26a7_fe0f':
-            m_name = name.replace('_fe0f', '')
-            path = f'images/{ppem}/emoji_{m_name}.png'
-        # if name in noto:
-        #     path = f'../noto-emoji/images/{ppem}/emoji_{name}.png'
-        if not os.path.exists(path):
-            name = name[1:] if name[0] == 'u' else name
-            path = f'extra/images/{ppem}/{name}.png'
-            if not os.path.exists(path):
-                path = f'../noto-emoji/extra/images/{ppem}/{name}.png'
-    return get_image_data(path)
-
+resolve = make_resolver(
+    vendor_name_fn=blobmoji_name,
+    image_paths_fn=image_paths_fn,
+)
 process_strikes(f['sbix'].strikes, resolve)
 
 if not os.path.exists('../.test'):

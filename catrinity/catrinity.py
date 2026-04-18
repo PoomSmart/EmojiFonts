@@ -18,40 +18,23 @@ def norm_name(name: str) -> str:
     return result
 
 
-prepare_strikes(f, True)
-
-
-def resolve(name, glyph, ppem):
-    if glyph.graphicType != "png ":
-        return None
-    name = norm_name(name)
-    if base_is_whitelist(name):
-        return None
-    name = norm_fam(name)
-    name = norm_dual(name)
-    if name is None:
-        return None
-    name = base_norm_variants(name, True, True)
-    name = base_norm_special(name, True)
-    # Catrinity images (main + extra composites)
-    path = f"images/{ppem}/{name}.png"
-    if os.path.exists(path):
-        return get_image_data(path)
-    path = f"extra/images/{ppem}/{name}.png"
-    if os.path.exists(path):
-        return get_image_data(path)
-    # Fall back to Twemoji for any glyph Catrinity doesn't cover.
-    # Requires twemoji.sh to have been run first.
+def image_paths_fn(ppem: int, name: str):
     tw = name.replace("_", "-")
-    path = f"../twemoji/images/{ppem}/{tw}.png"
-    if os.path.exists(path):
-        return get_image_data(path)
-    path = f"../twemoji/extra/images/{ppem}/{tw}.png"
-    if os.path.exists(path):
-        return get_image_data(path)
-    return None
+    return [
+        f"images/{ppem}/{name}.png",
+        f"extra/images/{ppem}/{name}.png",
+        f"../twemoji/images/{ppem}/{tw}.png",
+        f"../twemoji/extra/images/{ppem}/{tw}.png",
+    ]
 
-
+prepare_strikes(f, True)
+resolve = make_resolver(
+    norm_name_fn=norm_name,
+    with_variant_selector=True,
+    gender_need_selector=True,
+    vendor_name_fn=lambda n: n,
+    image_paths_fn=image_paths_fn,
+)
 process_strikes(f["sbix"].strikes, resolve)
 
 if not os.path.exists("../.test"):
