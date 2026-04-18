@@ -38,11 +38,7 @@ for ppem in get_ppems():
             right.save(dst / f"1f469{skin}.r.png")
 
         # ── neutral person holding hands (1f9d1 ZWJ 1f91d ZWJ 1f9d1) ─────────
-        nn_stem = (
-            "1f9d1_200d_1f91d_200d_1f9d1"
-            if skin == ""
-            else f"1f9d1{skin}_200d_1f91d_200d_1f9d1{skin}"
-        )
+        nn_stem = "1f9d1_200d_1f91d_200d_1f9d1" if skin == "" else f"1f9d1{skin}_200d_1f91d_200d_1f9d1{skin}"
         pair = split_png(src / f"{nn_stem}.png")
         if pair is not None:
             left, right = pair

@@ -141,11 +141,7 @@ _REAL_FONT = Path(__file__).resolve().parents[1] / "common" / "AppleColorEmoji_i
 
 def _strip_silhouette_from_font(font_path: Path) -> None:
     """Remove previously-injected silhouette glyphs so injection tests start from an unpatched state."""
-    all_silhouette = set(
-        _inj.ALL_SILHOUETTE_GLYPHS_L
-        + _inj.ALL_SILHOUETTE_GLYPHS_R
-        + [_inj.FULL_SILHOUETTE_GLYPH]
-    )
+    all_silhouette = set(_inj.ALL_SILHOUETTE_GLYPHS_L + _inj.ALL_SILHOUETTE_GLYPHS_R + [_inj.FULL_SILHOUETTE_GLYPH])
     font = ttLib.TTFont(str(font_path))
     if not any(g in font.getGlyphOrder() for g in all_silhouette):
         return  # already clean
@@ -258,12 +254,8 @@ def test_inject_silhouette_morx_subtables(_patched_font_path: Path) -> None:
     for src, dst_l, dst_r in zip(
         _inj.NEUTRAL_COUPLE_GLYPHS, _inj.ALL_SILHOUETTE_GLYPHS_L, _inj.ALL_SILHOUETTE_GLYPHS_R
     ):
-        assert left_subst.get(src) == dst_l, (
-            f"{src} not mapped to {dst_l} in Left morx subtable"
-        )
-        assert right_subst.get(src) == dst_r, (
-            f"{src} not mapped to {dst_r} in Right morx subtable"
-        )
+        assert left_subst.get(src) == dst_l, f"{src} not mapped to {dst_l} in Left morx subtable"
+        assert right_subst.get(src) == dst_r, f"{src} not mapped to {dst_r} in Right morx subtable"
 
     for subst in identity_substs:
         for g in _inj.ALL_SILHOUETTE_GLYPHS_L[:2] + _inj.ALL_SILHOUETTE_GLYPHS_R[:2]:

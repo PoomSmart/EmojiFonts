@@ -93,9 +93,7 @@ def normalize_strikes(assets_dir: Path) -> None:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        description="Ensure all strike sizes contain the same set of PNG emoji images."
-    )
+    parser = argparse.ArgumentParser(description="Ensure all strike sizes contain the same set of PNG emoji images.")
     parser.add_argument("assets_dir", type=Path, help="Directory containing ppem subdirectories (e.g. apple/images)")
     parser.add_argument("--log-level", default="INFO", help="Python logging level (default: INFO)")
     return parser

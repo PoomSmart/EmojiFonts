@@ -224,10 +224,7 @@ def render_font(
         out_path.write_text(svg, encoding="utf-8")
         written += 1
 
-    print(
-        f"[{otf_path.name}] written={written}, "
-        f"no_seq={skipped_no_seq}, empty={skipped_empty}"
-    )
+    print(f"[{otf_path.name}] written={written}, no_seq={skipped_no_seq}, empty={skipped_empty}")
     return written
 
 

@@ -62,9 +62,7 @@ def _bootstrap_ml_mr(images_dir: Path, nn6_stem: str) -> tuple[Image.Image, Imag
     """
     src = images_dir / f"{nn6_stem}.png"
     if not src.exists():
-        raise FileNotFoundError(
-            f"silhouette.ml.png not found and no bootstrap couple image at {src}"
-        )
+        raise FileNotFoundError(f"silhouette.ml.png not found and no bootstrap couple image at {src}")
     img = Image.open(src).convert("RGBA")
     w, h = img.size
     alpha = img.split()[3]
@@ -166,6 +164,7 @@ def main(
     """
     if caller_file is None:
         import inspect
+
         frame = inspect.stack()[1]
         caller_file = frame.filename
 

@@ -48,9 +48,7 @@ LOGGER = logging.getLogger(__name__)
 
 # XY suffix order: 11..15, 21..25, ..., 51..55, 66
 _SKIN_ROWS = list(range(1, 6))
-_XY_SUFFIXES: list[str] = [
-    f"{x}{y}" for x in _SKIN_ROWS for y in _SKIN_ROWS
-] + ["66"]
+_XY_SUFFIXES: list[str] = [f"{x}{y}" for x in _SKIN_ROWS for y in _SKIN_ROWS] + ["66"]
 
 # The 26 source composite couple glyphs and their 52 per-XY silhouette targets.
 NEUTRAL_COUPLE_GLYPHS: list[str] = [f"u1F9D1_u1F91D_u1F9D1.{xy}" for xy in _XY_SUFFIXES]
@@ -191,8 +189,7 @@ def inject_silhouette(font_path: Path, assets_dir: Path) -> bool:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "Inject silhouette support for the neutral couple holding-hands emoji "
-            "into an AppleColorEmoji TTF."
+            "Inject silhouette support for the neutral couple holding-hands emoji into an AppleColorEmoji TTF."
         )
     )
     parser.add_argument(

@@ -88,7 +88,7 @@ def predict_filter(filter_type, x, y, width, buffer, i):
         if x > 0 and y > 0:
             return tuple(filter4_value(left[c], upper[c]) for c in range(3))
         elif x > 0:
-            return left   # decoder: adds left directly
+            return left  # decoder: adds left directly
         elif y > 0:
             return upper  # decoder: adds upper directly
         return (0, 0, 0)
@@ -101,7 +101,6 @@ def encode_emjc(rgba_data, width, height, quantize_colors=None):
 
     # Optional quantization
     if quantize_colors:
-
         from PIL import Image
 
         # Convert BGRA to RGBA for PIL

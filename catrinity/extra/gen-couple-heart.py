@@ -39,15 +39,16 @@ ET.register_namespace("", _NS)
 
 # ── SVG helpers ────────────────────────────────────────────────────────────────
 
+
 def _parse_tx(transform: str) -> float:
     """Extract the translate-x from a 'translate(tx,ty) scale(1,-1)' string."""
-    m = re.search(r'translate\(\s*([-+]?\d*\.?\d+)', transform)
+    m = re.search(r"translate\(\s*([-+]?\d*\.?\d+)", transform)
     return float(m.group(1)) if m else 0.0
 
 
 def _split_subpaths(d: str) -> list[str]:
     """Split a compound SVG path data string into individual subpaths."""
-    return [p.strip() for p in re.split(r'(?=[Mm])', d.strip()) if p.strip()]
+    return [p.strip() for p in re.split(r"(?=[Mm])", d.strip()) if p.strip()]
 
 
 def _subpath_x_mean(subpath: str) -> float | None:
@@ -59,7 +60,7 @@ def _subpath_x_mean(subpath: str) -> float | None:
     whose first M lies near the centre but whose body extends far to one side
     (e.g. the semi-transparent heart shadow).
     """
-    nums = re.findall(r'[-+]?\d+(?:\.\d+)?', subpath)
+    nums = re.findall(r"[-+]?\d+(?:\.\d+)?", subpath)
     if not nums:
         return None
     xs = [float(nums[i]) for i in range(0, len(nums), 2)]
@@ -167,6 +168,7 @@ def _sil_right(svg_root: ET.Element, out_path: Path, size: int) -> None:
     black; subpaths beyond that threshold are the person outline and turn gray.
     """
     import copy
+
     root = copy.deepcopy(svg_root)
 
     vb = root.get("viewBox", "0 0 100 100").split()
@@ -218,9 +220,7 @@ def _sil_right(svg_root: ET.Element, out_path: Path, size: int) -> None:
 # ── Generation ─────────────────────────────────────────────────────────────────
 
 if not SVG_DIR.exists():
-    raise RuntimeError(
-        f"{SVG_DIR} not found — run catrinity_render.py (or catrinity.sh) first"
-    )
+    raise RuntimeError(f"{SVG_DIR} not found — run catrinity_render.py (or catrinity.sh) first")
 
 for ppem in get_ppems():
     dst = extra_images(ppem)

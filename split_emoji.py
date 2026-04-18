@@ -124,10 +124,7 @@ def split_by_components(img: Image.Image, min_size: int = 30) -> tuple[Image.Ima
     )
 
     if len(significant) < 2:
-        raise ValueError(
-            f"Found only {len(significant)} significant component(s); "
-            "consider using --method valley."
-        )
+        raise ValueError(f"Found only {len(significant)} significant component(s); consider using --method valley.")
 
     def cx(comp: list[tuple[int, int]]) -> float:
         return sum(x for x, _ in comp) / len(comp)

@@ -125,7 +125,9 @@ def extract_images(
             if graphic_type not in SUPPORTED_TYPES:
                 if macos_strikes_by_ppem:
                     macos_strike_el = macos_strikes_by_ppem.get(ppem)
-                    macos_glyph_el = macos_strike_el.find(f'glyph[@name="{name}"]') if macos_strike_el is not None else None
+                    macos_glyph_el = (
+                        macos_strike_el.find(f'glyph[@name="{name}"]') if macos_strike_el is not None else None
+                    )
                     if macos_glyph_el is not None:
                         macos_hexdata_node = macos_glyph_el.find("hexdata")
                         if macos_hexdata_node is not None and macos_hexdata_node.text:

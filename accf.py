@@ -52,19 +52,19 @@ MAGIC_V1 = b"\x40\x30\x20\x10"
 #: Total header size (= image-data base offset) for v2.
 HEADER_SIZE = 0x19B74  # 105 332
 
-_OFF_NUM_STORED = 208           # offset of numStoredGlyphs in v2 header
-_TIER_LUT_BYTES = 5000          # bytes per tier-LUT slot (v2)
-_TIER_LUT_BASE = 212            # file offset of tier-LUT area (v2)
-_TIER_LUT_MAX_GID = 2500        # max glyph ID in a v2 LUT slot
-_NUM_TIER_SLOTS = 7             # allocated LUT slots (v2)
+_OFF_NUM_STORED = 208  # offset of numStoredGlyphs in v2 header
+_TIER_LUT_BYTES = 5000  # bytes per tier-LUT slot (v2)
+_TIER_LUT_BASE = 212  # file offset of tier-LUT area (v2)
+_TIER_LUT_MAX_GID = 2500  # max glyph ID in a v2 LUT slot
+_NUM_TIER_SLOTS = 7  # allocated LUT slots (v2)
 _OFF_TIER_RANGE_META = _TIER_LUT_BASE + _NUM_TIER_SLOTS * _TIER_LUT_BYTES  # 35 212
-_OFF_GLYPH_OFFSET_TABLE = 0x89FC   # 35 324
+_OFF_GLYPH_OFFSET_TABLE = 0x89FC  # 35 324
 _OFF_IMAGE_DATA = HEADER_SIZE
 
 # ── v1 layout ───────────────────────────────────────────────────────────────
 
 #: Total header size (= image-data base offset) for v1.
-HEADER_SIZE_V1 = 48112          # 0xBBF0
+HEADER_SIZE_V1 = 48112  # 0xBBF0
 
 _V1_OFF_NUM_STORED = 36
 _V1_LUT_BASE = 40
@@ -79,6 +79,7 @@ _V1_OFF_IMAGE_DATA = HEADER_SIZE_V1
 # ---------------------------------------------------------------------------
 # Palette helpers
 # ---------------------------------------------------------------------------
+
 
 def _decode_palette(palette_bytes: bytes) -> List[Tuple[int, int, int]]:
     """Decode packed 21-bit-per-entry BGR palette to a list of ``(R, G, B)`` tuples.
@@ -128,6 +129,7 @@ def _encode_palette(palette: List[Tuple[int, int, int]]) -> bytes:
 # Bit-stream helper
 # ---------------------------------------------------------------------------
 
+
 def _read_bits_lsb(data: bytes, bit_pos: int, n: int) -> Tuple[int, int]:
     """Read *n* bits from *data* starting at *bit_pos* (LSB-first convention).
 
@@ -145,6 +147,7 @@ def _read_bits_lsb(data: bytes, bit_pos: int, n: int) -> Tuple[int, int]:
 # ---------------------------------------------------------------------------
 # Image record decode / encode
 # ---------------------------------------------------------------------------
+
 
 def decode_image_record(record: bytes) -> bytes:
     """Decode a single CCF image record to raw RGBA bytes.
@@ -320,9 +323,7 @@ def encode_image_record(rgba: bytes, width: int, height: int) -> bytes:
                     j += 1
                 count = len(mb)
                 alphas_b = bytes(p[2] for p in mb)
-                runs_parts.append(
-                    struct.pack("<HB", mb[0][0], 0x80 | count) + alphas_b
-                )
+                runs_parts.append(struct.pack("<HB", mb[0][0], 0x80 | count) + alphas_b)
                 for p in mb:
                     emit_color(p[1])
 
@@ -359,6 +360,7 @@ def encode_image_record(rgba: bytes, width: int, height: int) -> bytes:
 # ---------------------------------------------------------------------------
 # RGBA ↔ PNG helpers
 # ---------------------------------------------------------------------------
+
 
 def _rgba_to_png(rgba: bytes, width: int, height: int) -> bytes:
     """Convert raw RGBA bytes to PNG bytes (uses Pillow if available)."""
@@ -404,12 +406,7 @@ def _write_png(rgba: bytes, width: int, height: int) -> bytes:
     idat_data = zlib.compress(bytes(raw_rows), 9)
 
     sig = b"\x89PNG\r\n\x1a\n"
-    return (
-        sig
-        + make_chunk(b"IHDR", ihdr)
-        + make_chunk(b"IDAT", idat_data)
-        + make_chunk(b"IEND", b"")
-    )
+    return sig + make_chunk(b"IHDR", ihdr) + make_chunk(b"IDAT", idat_data) + make_chunk(b"IEND", b"")
 
 
 def _read_png(png_data: bytes) -> Tuple[bytes, int, int]:
@@ -457,6 +454,7 @@ def _read_png(png_data: bytes) -> Tuple[bytes, int, int]:
 # ---------------------------------------------------------------------------
 # Private structural helpers
 # ---------------------------------------------------------------------------
+
 
 def _get_image_record(
     data: bytes,
@@ -526,6 +524,7 @@ def _build_resolution_map(header: bytearray, sorted_sizes: List[int]) -> None:
 # ---------------------------------------------------------------------------
 # Public data model
 # ---------------------------------------------------------------------------
+
 
 class CcfGlyph:
     """A single glyph image within one :class:`CcfStrike`.
@@ -652,20 +651,13 @@ class AccfTable:
             off_gt = _V1_OFF_GLYPH_OFFSET_TABLE
             off_img = _V1_OFF_IMAGE_DATA
         else:
-            raise ValueError(
-                f"Unknown CCF magic {magic!r}; "
-                f"expected {MAGIC!r} (v2) or {MAGIC_V1!r} (v1)"
-            )
+            raise ValueError(f"Unknown CCF magic {magic!r}; expected {MAGIC!r} (v2) or {MAGIC_V1!r} (v1)")
 
         if len(data) < hdr_size + 1:
-            raise ValueError(
-                f"CCF data too short: expected ≥ {hdr_size + 1} bytes, got {len(data)}"
-            )
+            raise ValueError(f"CCF data too short: expected ≥ {hdr_size + 1} bytes, got {len(data)}")
 
         num_tiers = struct.unpack_from("<I", data, 12)[0]
-        stored_sizes = [
-            struct.unpack_from("<I", data, 16 + 4 * i)[0] for i in range(num_tiers)
-        ]
+        stored_sizes = [struct.unpack_from("<I", data, 16 + 4 * i)[0] for i in range(num_tiers)]
 
         self._rawHeader = data[:hdr_size]
         gid_to_name = {gid: name for gid, name in enumerate(glyph_order)}
@@ -777,9 +769,7 @@ class AccfTable:
             if self._rawHeader is None:
                 _build_v1_tier_range_meta(header, tier_luts)
         else:
-            struct.pack_into(
-                "<4sIII", header, 0, MAGIC, self.version, self.field3, num_tiers
-            )
+            struct.pack_into("<4sIII", header, 0, MAGIC, self.version, self.field3, num_tiers)
             for i, sz in enumerate(sorted_sizes):
                 struct.pack_into("<I", header, 16 + 4 * i, sz)
             struct.pack_into("<I", header, off_num_stored, num_stored)
