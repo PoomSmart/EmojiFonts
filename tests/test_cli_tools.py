@@ -298,3 +298,192 @@ def test_inject_silhouette_injects_png(tmp_path: Path, font_copy: Path) -> None:
         sil = font["sbix"].strikes[64].glyphs[glyph_name]
         assert sil.graphicType == "png "
         assert sil.imageData == png_bytes[glyph_name]
+
+# ---------------------------------------------------------------------------
+# EMJC round-trip tests
+# ---------------------------------------------------------------------------
+
+import emjc
+import emjc_encoder
+
+
+def _make_bgra(width: int, height: int, b: int, g: int, r: int, a: int) -> bytearray:
+    """Build a flat BGRA pixel buffer."""
+    pixel = bytes([b, g, r, a])
+    return bytearray(pixel * width * height)
+
+
+def test_emjc_roundtrip_solid_color() -> None:
+    """Encoding then decoding a solid-colour image should reproduce the original pixels."""
+    width, height = 4, 4
+    bgra = _make_bgra(width, height, b=0x11, g=0x22, r=0x33, a=0xFF)
+    encoded = emjc_encoder.encode_emjc(bgra, width, height)
+    assert encoded is not None
+    decoded = emjc.decode_emjc(encoded)
+    assert decoded is not None
+    assert len(decoded) == width * height * 4
+    # Allow ±1 per channel for any rounding in the forward/inverse transform.
+    for i in range(0, len(decoded), 4):
+        assert abs(decoded[i + 0] - bgra[i + 0]) <= 1, f"B mismatch at pixel {i // 4}"
+        assert abs(decoded[i + 1] - bgra[i + 1]) <= 1, f"G mismatch at pixel {i // 4}"
+        assert abs(decoded[i + 2] - bgra[i + 2]) <= 1, f"R mismatch at pixel {i // 4}"
+        assert abs(decoded[i + 3] - bgra[i + 3]) <= 1, f"A mismatch at pixel {i // 4}"
+
+
+def test_emjc_roundtrip_transparent() -> None:
+    """Fully transparent image should survive the round-trip."""
+    width, height = 2, 2
+    bgra = _make_bgra(width, height, 0, 0, 0, 0)
+    encoded = emjc_encoder.encode_emjc(bgra, width, height)
+    assert encoded is not None
+    decoded = emjc.decode_emjc(encoded)
+    assert decoded is not None
+    assert all(b == 0 for b in decoded)
+
+
+def test_emjc_header_magic() -> None:
+    """Encoded data should start with the 'emj1' magic header."""
+    bgra = _make_bgra(2, 2, 0x80, 0x80, 0x80, 0xFF)
+    encoded = emjc_encoder.encode_emjc(bgra, 2, 2)
+    assert encoded[:4] == b"emj1"
+
+
+# ---------------------------------------------------------------------------
+# Vendor name-normalisation function unit tests
+# ---------------------------------------------------------------------------
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "noto-emoji"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "twemoji"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "openmoji"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "joypixels"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "facebook"))
+
+import importlib.util as _ilu
+
+
+def _load_vendor(rel_path: str):
+    """Import a vendor .py module without executing its top-level script code."""
+    spec = _ilu.spec_from_file_location(
+        "_vendor_mod",
+        str(Path(__file__).resolve().parents[1] / rel_path),
+    )
+    mod = _ilu.module_from_spec(spec)  # type: ignore[arg-type]
+    # Patch sys.argv so ttLib.TTFont() is never called at import time.
+    _orig = sys.argv[:]
+    sys.argv = ["test", "dummy.ttf"]
+    try:
+        spec.loader.exec_module(mod)  # type: ignore[union-attr]
+    except Exception:
+        pass
+    finally:
+        sys.argv = _orig
+    return mod
+
+
+def test_noto_name_strips_u_prefix() -> None:
+    """noto_name should prepend a single 'u' and strip per-token 'u' prefixes."""
+    # noto-emoji.py defines noto_name at module level
+    mod = _load_vendor("noto-emoji/noto-emoji.py")
+    assert mod.noto_name("1f600") == "u1f600"
+    assert mod.noto_name("1f1e6_1f1e8") == "u1f1e6_1f1e8"
+
+
+def test_twitter_name_replaces_underscores() -> None:
+    mod = _load_vendor("twemoji/twemoji.py")
+    assert mod.twitter_name("1f600") == "1f600"
+    assert mod.twitter_name("1f468_200d_1f469") == "1f468-200d-1f469"
+
+
+def test_openmoji_name_upper_hyphen() -> None:
+    mod = _load_vendor("openmoji/openmoji.py")
+    assert mod.openmoji_name("1f600") == "1F600"
+    assert mod.openmoji_name("1f468_200d_1f469") == "1F468-200D-1F469"
+
+
+def test_joypixels_name_removes_zwj_vs16() -> None:
+    mod = _load_vendor("joypixels/joypixels.py")
+    # fe0f and 200d should be stripped; tokens joined with '-'
+    assert mod.joypixels_name("1f468_200d_1f469_fe0f") == "1f468-1f469"
+    assert mod.joypixels_name("1f600") == "1f600"
+
+
+def test_facebook_name_replaces_underscores() -> None:
+    mod = _load_vendor("facebook/facebook.py")
+    assert mod.facebook_name("1f468_200d_1f469") == "1f468-200d-1f469"
+
+
+# ---------------------------------------------------------------------------
+# make_resolver unit tests
+# ---------------------------------------------------------------------------
+
+import shared
+
+
+def test_make_resolver_returns_none_for_non_png(tmp_path: Path) -> None:
+    """Resolver must skip glyphs whose graphicType is not 'png '."""
+
+    class FakeGlyph:
+        graphicType = "sbix"
+
+    resolve = shared.make_resolver(
+        vendor_name_fn=lambda n: n,
+        image_paths_fn=lambda ppem, name: [],
+    )
+    assert resolve("u1f600", FakeGlyph(), 40) is None
+
+
+def test_make_resolver_returns_image_data(tmp_path: Path) -> None:
+    """Resolver should return file bytes when a matching path exists."""
+    img_dir = tmp_path / "40"
+    img_dir.mkdir()
+    png_data = b"\x89PNG\r\nfakepng"
+    (img_dir / "1f600.png").write_bytes(png_data)
+
+    class FakeGlyph:
+        graphicType = "png "
+
+    import os
+    _orig = os.getcwd()
+    os.chdir(tmp_path)
+    try:
+        resolve = shared.make_resolver(
+            vendor_name_fn=lambda n: n,
+            image_paths_fn=lambda ppem, name: [f"{ppem}/{name}.png"],
+        )
+        result = resolve("u1F600", FakeGlyph(), 40)
+    finally:
+        os.chdir(_orig)
+
+    assert result == png_data
+
+
+def test_make_resolver_skips_whitelist(tmp_path: Path) -> None:
+    """Resolver must skip glyphs whose base name is in the whitelist."""
+
+    class FakeGlyph:
+        graphicType = "png "
+
+    calls: list[str] = []
+
+    resolve = shared.make_resolver(
+        vendor_name_fn=lambda n: (calls.append(n) or n),
+        image_paths_fn=lambda ppem, name: [],
+    )
+    # 'hiddenglyph' is the sole whitelist entry in emoji_constants.json
+    result = resolve("hiddenglyph", FakeGlyph(), 40)
+    assert result is None
+    assert calls == [], "vendor_name_fn must not be called for whitelisted glyphs"
+
+
+def test_make_resolver_pre_norm_filter_can_reject(tmp_path: Path) -> None:
+    """pre_norm_filter_fn returning None must cause resolver to return None."""
+
+    class FakeGlyph:
+        graphicType = "png "
+
+    resolve = shared.make_resolver(
+        pre_norm_filter_fn=lambda name: None,
+        vendor_name_fn=lambda n: n,
+        image_paths_fn=lambda ppem, name: [],
+    )
+    assert resolve("u1f600", FakeGlyph(), 40) is None
