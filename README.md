@@ -105,7 +105,9 @@ Theming scripts for all emojis vendors produce the font in TTC format. The font 
 
 ## JoyPixels Emoji
 
-1. Clone [emoji-assets](https://github.com/joypixels/emoji-assets) and place its folder alongside this project.
+> Discontinuation note: JoyPixels v11 requires Enterprise license for it to be used as a native font. Its GitHub repository also stripped all images of size 128x128 (you need to pay to get them).
+
+1. Clone [emoji-assets](https://github.com/joypixels/emoji-assets) (tag: `v10.0.0`) and place its folder alongside this project.
 2. Execute `cd joypixels && ./joypixels.sh` to create themed font, output at `joypixels/joypixels.ttc`.
 
 ## OpenMoji Emoji
