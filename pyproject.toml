@@ -42,7 +42,6 @@ extend-exclude = [
     "blobmoji/Blobmoji*.ttx",
     "common/AppleColorEmoji_iOS_*",
     "Fonts/",
-    "noto-emoji/NotoColorEmoji.*",
     "twemoji/",
     "whatsapp/",
     "facebook/",
