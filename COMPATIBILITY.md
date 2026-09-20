@@ -8,7 +8,7 @@ This table lists the supported Unicode version and known limitations for each no
 | **Blobmoji** | 17.0 | |
 | **Facebook** | 15.0 | |
 | **FluentUI** | 15.1 | Missing family, couple, flag, skinned handshake, paperclip, technologist, and more |
-| **Google Noto Color** | 17.0 | |
+| **Google Noto Color** | 17.0 | 2D and 3D styles |
 | **JoyPixels** | 16.0 | |
 | **OpenMoji** | 17.0 | Unique skin/hair color logic for couple emojis |
 | **Samsung One UI** | 17.0 | |

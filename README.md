@@ -101,7 +101,9 @@ Theming scripts for all emojis vendors produce the font in TTC format. The font 
 ## Google Noto Color Emoji
 
 1. Clone [noto-emoji](https://github.com/googlefonts/noto-emoji) and place its folder alongside this project.
-2. Execute `cd noto-emoji && ./noto-emoji.sh` to create the themed font, output at `noto-emoji/noto-emoji.ttc`.
+2. Execute `cd noto-emoji && ./noto-emoji.sh STYLE` (where `STYLE` is `2D` or `3D`). `2D` writes `noto-emoji/noto-emoji.ttc`; `3D` writes `noto-emoji/noto-emoji-3D.ttc`.
+
+`2D` rasterizes `2D/svg` (plus waved flags) and splits multi-person glyphs from extra SVGs. `3D` resizes `3D/png/512` and splits those PNGs into Apple left/right halves.
 
 ## JoyPixels Emoji
 

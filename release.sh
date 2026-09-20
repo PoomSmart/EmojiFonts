@@ -16,6 +16,7 @@ ln fluentui/fluentui-Flat.ttc release/fluentui-Flat.ttc
 ln joypixels/joypixels.ttc release/joypixels.ttc
 ln joypixels/joypixels-Decal.ttc release/joypixels-Decal.ttc
 ln noto-emoji/noto-emoji.ttc release/noto-emoji.ttc
+ln noto-emoji/noto-emoji-3D.ttc release/noto-emoji-3D.ttc
 ln oneui/oneui.ttc release/oneui.ttc
 ln openmoji/openmoji.ttc release/openmoji.ttc
 ln tossface/tossface.ttc release/tossface.ttc

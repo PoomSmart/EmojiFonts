@@ -11,7 +11,7 @@ All fonts are to be used with [WDBFontOverwrite 1.7.1+ (@ginsudev's fork)](https
 - `fluentui-Flat.ttc` and `fluentui-Color.ttc` for Windows 11 FluentUI emojis of Flat and Color style
 - `joypixels.ttc` for JoyPixels emojis
 - `joypixels-Decal.ttc` for JoyPixels Decal emojis
-- `noto-emoji.ttc` for Google Noto Color emojis
+- `noto-emoji.ttc` and `noto-emoji-3D.ttc` for Google Noto Color emojis of 2D and 3D style
 - `noto-emoji-cursed.ttc` for Google Noto Color (Cursed flavor) emojis
 - `oneui.ttc` for Samsung One UI emojis
 - `openmoji.ttc` for OpenMoji emojis
