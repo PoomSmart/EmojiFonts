@@ -103,8 +103,6 @@ Theming scripts for all emojis vendors produce the font in TTC format. The font 
 1. Clone [noto-emoji](https://github.com/googlefonts/noto-emoji) and place its folder alongside this project.
 2. Execute `cd noto-emoji && ./noto-emoji.sh STYLE` (where `STYLE` is `2D` or `3D`). `2D` writes `noto-emoji/noto-emoji.ttc`; `3D` writes `noto-emoji/noto-emoji-3D.ttc`.
 
-`2D` rasterizes `2D/svg` (plus waved flags) and splits multi-person glyphs from extra SVGs. `3D` resizes `3D/png/512` and splits those PNGs into Apple left/right halves.
-
 ## JoyPixels Emoji
 
 > Discontinuation note: JoyPixels v11 requires Enterprise license for it to be used as a native font. Its GitHub repository also stripped all images of size 128x128 (you need to pay to get them).
