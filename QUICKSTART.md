@@ -6,7 +6,7 @@ Assuming a macOS machine with homebrew and Python 3.11+ installed:
 
 ```
 uv sync
-brew install bash pngquant oxipng freetype imagemagick librsvg svgo
+brew install bash pngquant oxipng freetype imagemagick librsvg svgo harfbuzz
 ```
 
 ## AppleColorEmoji font

@@ -103,3 +103,5 @@ if [[ $MOD != '' && $MOD != 'HD' ]]
 then
     rm -f apple/${OUT_FONT_NAME}_00.ttf apple/${OUT_FONT_NAME}_01.ttf
 fi
+
+./preview.sh apple/${OUT_FONT_NAME}.ttc

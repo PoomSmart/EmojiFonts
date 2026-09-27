@@ -24,4 +24,6 @@ uv run $NAME.py ../apple/${APPLE_FONT_NAME}_01.ttf $FONT_NAME.ttf
 
 uv run otf2otc ${APPLE_FONT_NAME}_00.ttf ${APPLE_FONT_NAME}_01.ttf -o $NAME.ttc
 
+../preview.sh "$NAME.ttc"
+
 echo "Output file at $NAME/$NAME.ttc"

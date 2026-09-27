@@ -11,10 +11,11 @@ The following tools are required to build and theme the font.
 * **[uv](https://github.com/astral-sh/uv)** (Recommended for managing Python environment and dependencies)
 * **[pngquant](https://pngquant.org)** & **[oxipng](https://github.com/shssoichiro/oxipng)** (For PNG optimization)
 * **For Theming**: [ImageMagick](https://imagemagick.org/), [librsvg](https://wiki.gnome.org/Projects/LibRsvg), and [svgo](https://github.com/svg/svgo)
+* **For Font Previews**: [HarfBuzz](https://harfbuzz.github.io) (`hb-view`, macOS build with CoreText shaper)
 
 **Install all system tools with Homebrew:**
 ```bash
-brew install bash uv pngquant oxipng imagemagick librsvg svgo
+brew install bash uv pngquant oxipng imagemagick librsvg svgo harfbuzz
 ```
 
 ### Python Dependencies
@@ -66,18 +67,29 @@ Also in `extractor.py`, it detects glyphs of type `flip`, reads the actual image
 
 `pngquant` and `oxipng` are used to optimize the images with little to none changes to the quality. The Apple emoji font sizes are reduced by 50% using this method. The simpler the emoji images, the more size reduction is achieved.
 
+# Font Previews
+
+`preview.sh` renders a three-row specimen with HarfBuzz `hb-view --shaper=coretext`, using the same sample string as Font Book (`CTFontCopySampleString`) and the CoreText shaper so `morx` keycap ligatures resolve. Theme build scripts and `./release.sh` invoke it automatically. Output is `previews/<font>.png`.
+
+```bash
+./preview.sh                         # every .ttc in the repo
+./preview.sh noto-emoji/noto-emoji-3D.ttc
+```
+
 # Verification
 
 - Run `uv run pytest` to ensure the extractor, class trimming, and metric overrides behave as expected against the bundled fixtures.
 - Run `uv run ruff check .` to lint the Python toolchain, or `uv run ruff format .` to auto-format when needed.
 - After running `emojifonts-extract`, spot-check output with `open apple/images/64/u1F600.png` (or any glyph) and verify flipped glyphs are emitted.
 - After `emojifonts-apple`, diff the sbix table with `ttx -o - apple/AppleColorEmoji@2x.ttc | grep -c '<glyph'` to confirm the strike counts remain unchanged.
+- After a themed TTC is built, run `./preview.sh` (or `./preview.sh path/to/font.ttc`) and open `previews/<font>.png`. Theme scripts and `./release.sh` invoke it automatically.
 
 # Troubleshooting
 
 - `Flip glyph references unknown glyph`: regenerate TTX tables with `./prepare.sh` to keep sbix data in sync with recent Apple font updates.
 - `Overrides refer to missing glyph metrics`: re-run `emojifonts-shift-multi` against the freshly exported `hmtx.ttx`; stale files from earlier releases omit the new handshake glyphs.
 - `pngquant: command not found`: install the dependency via `brew install pngquant` (or remove the optimizer by setting `PNGQUANT=0` before invoking shell helpers).
+- `hb-view not found` / missing CoreText shaper: install macOS HarfBuzz via `brew install harfbuzz`. The default OpenType shaper skips `morx` keycap ligatures.
 
 # Theming
 

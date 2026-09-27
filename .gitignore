@@ -34,3 +34,6 @@ __pycache__/
 .ruff_cache/
 
 temp
+
+# hb-view font specimens
+previews

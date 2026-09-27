@@ -22,3 +22,5 @@ ln openmoji/openmoji.ttc release/openmoji.ttc
 ln tossface/tossface.ttc release/tossface.ttc
 ln twemoji/twemoji.ttc release/twemoji.ttc
 ln whatsapp/whatsapp.ttc release/whatsapp.ttc
+
+./preview.sh release/*.ttc

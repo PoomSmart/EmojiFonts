@@ -54,4 +54,6 @@ if [ $OUT_FONT_NAME = "$NAME-Default.ttc" ]; then
     OUT_FONT_NAME=$NAME.ttc
 fi
 
+../preview.sh "$OUT_FONT_NAME"
+
 echo "Output file at $NAME/$OUT_FONT_NAME"
