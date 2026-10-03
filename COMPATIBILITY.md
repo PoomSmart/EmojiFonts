@@ -20,6 +20,3 @@ This table lists the supported Unicode version and known limitations for each no
 
 ### OpenMoji
 Couple emojis of different skins in OpenMoji do not share the same hair color, unlike some other vendors. This design choice is intended to better represent diversity in couples of different races.
-
-### Special Thanks
-Special thanks to [@Dayanch96](https://twitter.com/Dayanch96) for splitting PNG-only couple emojis from certain vendors into the format suitable for Apple Color Emoji.
